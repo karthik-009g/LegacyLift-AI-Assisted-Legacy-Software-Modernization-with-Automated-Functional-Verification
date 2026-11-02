@@ -196,7 +196,7 @@ def run_evaluation(
             "guidance_runtime_trace_sha256": _sha256(_stable_json(guidance_trace)),
         },
         "environment": {
-            "python": platform.python_version(),
+            "python": ".".join(platform.python_version_tuple()[:2]),
             "packages": _runtime_versions(),
         },
         "baseline_result": {

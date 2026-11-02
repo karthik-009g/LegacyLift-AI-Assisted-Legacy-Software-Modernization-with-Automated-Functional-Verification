@@ -30,6 +30,8 @@ The evaluation audits each prepared context for held-out runtime scenario IDs. I
 
 The checked-in report records the hand-built FastAPI baseline at **3/3 scenarios** and **6/6 steps**, with **100% agreement** on each measured response, session, and database field. Those values describe only the current implementation and finite synthetic fixtures. Unsupported-claim count and correction effort are explicitly marked `not_measured` because no model-generated reconstruction has been evaluated.
 
+The report records the Python minor version and locked package versions so a patch-level Python update does not make the generated artifact differ across Windows and GitHub Actions.
+
 ## What the result does not show
 
 No model-generated reconstruction has been run for source-only, runtime-only, or hybrid evidence. The deterministic mock provider does not produce code, and the Groq provider only saves proposals for review; it does not execute generated code. Therefore there is no measured condition-level functional fidelity and no evidence that combining evidence improves outcomes. Manual correction time, model cost, and repeated split variance are also unmeasured. A future model experiment must review and run a separate reconstruction per condition in a controlled environment, keep held-out traces out of runtime/hybrid context, and compare the resulting apps against the same held-out set. Free-tier limits are account-specific and may constrain the experiment.

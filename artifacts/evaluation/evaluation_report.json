@@ -788,7 +788,7 @@
       "pydantic": "2.14.2",
       "starlette": "1.10.0"
     },
-    "python": "3.11.9"
+    "python": "3.11"
   },
   "evaluation_schema_version": "1.0",
   "input_fingerprints": {
