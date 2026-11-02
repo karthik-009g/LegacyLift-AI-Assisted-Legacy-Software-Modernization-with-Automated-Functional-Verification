@@ -1,0 +1,463 @@
+{
+  "application": "legacylift.legacy_app",
+  "scenarios": [
+    {
+      "description": "An owner creates a ticket with normalized text.",
+      "scenario_id": "create_ticket",
+      "steps": [
+        {
+          "database_after": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "open",
+              "subject": "Synthetic support request"
+            }
+          ],
+          "database_before": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "open",
+              "subject": "Synthetic support request"
+            }
+          ],
+          "database_delta": {
+            "added": [],
+            "removed": [],
+            "updated": []
+          },
+          "request": {
+            "json": {
+              "user_id": "alice"
+            },
+            "method": "POST",
+            "path": "/session"
+          },
+          "response": {
+            "cookies": [
+              {
+                "http_only": true,
+                "name": "session",
+                "path": "/",
+                "same_site": null,
+                "secure": false,
+                "value_redacted": true
+              }
+            ],
+            "headers": {
+              "Content-Type": "application/json",
+              "Vary": "Cookie"
+            },
+            "json": {
+              "user_id": "alice"
+            },
+            "status": 200
+          },
+          "session_after": {
+            "user_id": "alice"
+          },
+          "session_before": {
+            "user_id": null
+          },
+          "step_id": "start_session"
+        },
+        {
+          "database_after": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "open",
+              "subject": "Synthetic support request"
+            },
+            {
+              "description": "Synthetic request.",
+              "id": 2,
+              "owner_id": "alice",
+              "status": "open",
+              "subject": "Capture scenario"
+            }
+          ],
+          "database_before": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "open",
+              "subject": "Synthetic support request"
+            }
+          ],
+          "database_delta": {
+            "added": [
+              {
+                "description": "Synthetic request.",
+                "id": 2,
+                "owner_id": "alice",
+                "status": "open",
+                "subject": "Capture scenario"
+              }
+            ],
+            "removed": [],
+            "updated": []
+          },
+          "request": {
+            "json": {
+              "description": "  Synthetic request.  ",
+              "subject": "  Capture scenario  "
+            },
+            "method": "POST",
+            "path": "/tickets"
+          },
+          "response": {
+            "cookies": [],
+            "headers": {
+              "Content-Type": "application/json",
+              "Vary": "Cookie"
+            },
+            "json": {
+              "description": "Synthetic request.",
+              "id": 2,
+              "status": "open",
+              "subject": "Capture scenario"
+            },
+            "status": 201
+          },
+          "session_after": {
+            "user_id": "alice"
+          },
+          "session_before": {
+            "user_id": "alice"
+          },
+          "step_id": "create_ticket"
+        }
+      ]
+    },
+    {
+      "description": "An owner retrieves the seeded synthetic ticket.",
+      "scenario_id": "retrieve_owned_ticket",
+      "steps": [
+        {
+          "database_after": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "open",
+              "subject": "Synthetic support request"
+            }
+          ],
+          "database_before": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "open",
+              "subject": "Synthetic support request"
+            }
+          ],
+          "database_delta": {
+            "added": [],
+            "removed": [],
+            "updated": []
+          },
+          "request": {
+            "json": {
+              "user_id": "alice"
+            },
+            "method": "POST",
+            "path": "/session"
+          },
+          "response": {
+            "cookies": [
+              {
+                "http_only": true,
+                "name": "session",
+                "path": "/",
+                "same_site": null,
+                "secure": false,
+                "value_redacted": true
+              }
+            ],
+            "headers": {
+              "Content-Type": "application/json",
+              "Vary": "Cookie"
+            },
+            "json": {
+              "user_id": "alice"
+            },
+            "status": 200
+          },
+          "session_after": {
+            "user_id": "alice"
+          },
+          "session_before": {
+            "user_id": null
+          },
+          "step_id": "start_session"
+        },
+        {
+          "database_after": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "open",
+              "subject": "Synthetic support request"
+            }
+          ],
+          "database_before": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "open",
+              "subject": "Synthetic support request"
+            }
+          ],
+          "database_delta": {
+            "added": [],
+            "removed": [],
+            "updated": []
+          },
+          "request": {
+            "json": null,
+            "method": "GET",
+            "path": "/tickets/1"
+          },
+          "response": {
+            "cookies": [],
+            "headers": {
+              "Content-Type": "application/json",
+              "Vary": "Cookie"
+            },
+            "json": {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "status": "open",
+              "subject": "Synthetic support request"
+            },
+            "status": 200
+          },
+          "session_after": {
+            "user_id": "alice"
+          },
+          "session_before": {
+            "user_id": "alice"
+          },
+          "step_id": "get_owned_ticket"
+        }
+      ]
+    },
+    {
+      "description": "The owner advances a ticket through both allowed status transitions.",
+      "scenario_id": "valid_status_transitions",
+      "steps": [
+        {
+          "database_after": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "open",
+              "subject": "Synthetic support request"
+            }
+          ],
+          "database_before": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "open",
+              "subject": "Synthetic support request"
+            }
+          ],
+          "database_delta": {
+            "added": [],
+            "removed": [],
+            "updated": []
+          },
+          "request": {
+            "json": {
+              "user_id": "alice"
+            },
+            "method": "POST",
+            "path": "/session"
+          },
+          "response": {
+            "cookies": [
+              {
+                "http_only": true,
+                "name": "session",
+                "path": "/",
+                "same_site": null,
+                "secure": false,
+                "value_redacted": true
+              }
+            ],
+            "headers": {
+              "Content-Type": "application/json",
+              "Vary": "Cookie"
+            },
+            "json": {
+              "user_id": "alice"
+            },
+            "status": 200
+          },
+          "session_after": {
+            "user_id": "alice"
+          },
+          "session_before": {
+            "user_id": null
+          },
+          "step_id": "start_session"
+        },
+        {
+          "database_after": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "in_progress",
+              "subject": "Synthetic support request"
+            }
+          ],
+          "database_before": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "open",
+              "subject": "Synthetic support request"
+            }
+          ],
+          "database_delta": {
+            "added": [],
+            "removed": [],
+            "updated": [
+              {
+                "after": {
+                  "description": "Fixture ticket for local tests.",
+                  "id": 1,
+                  "owner_id": "alice",
+                  "status": "in_progress",
+                  "subject": "Synthetic support request"
+                },
+                "before": {
+                  "description": "Fixture ticket for local tests.",
+                  "id": 1,
+                  "owner_id": "alice",
+                  "status": "open",
+                  "subject": "Synthetic support request"
+                },
+                "id": 1
+              }
+            ]
+          },
+          "request": {
+            "json": {
+              "status": "in_progress"
+            },
+            "method": "PATCH",
+            "path": "/tickets/1/status"
+          },
+          "response": {
+            "cookies": [],
+            "headers": {
+              "Content-Type": "application/json",
+              "Vary": "Cookie"
+            },
+            "json": {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "status": "in_progress",
+              "subject": "Synthetic support request"
+            },
+            "status": 200
+          },
+          "session_after": {
+            "user_id": "alice"
+          },
+          "session_before": {
+            "user_id": "alice"
+          },
+          "step_id": "move_to_in_progress"
+        },
+        {
+          "database_after": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "closed",
+              "subject": "Synthetic support request"
+            }
+          ],
+          "database_before": [
+            {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "in_progress",
+              "subject": "Synthetic support request"
+            }
+          ],
+          "database_delta": {
+            "added": [],
+            "removed": [],
+            "updated": [
+              {
+                "after": {
+                  "description": "Fixture ticket for local tests.",
+                  "id": 1,
+                  "owner_id": "alice",
+                  "status": "closed",
+                  "subject": "Synthetic support request"
+                },
+                "before": {
+                  "description": "Fixture ticket for local tests.",
+                  "id": 1,
+                  "owner_id": "alice",
+                  "status": "in_progress",
+                  "subject": "Synthetic support request"
+                },
+                "id": 1
+              }
+            ]
+          },
+          "request": {
+            "json": {
+              "status": "closed"
+            },
+            "method": "PATCH",
+            "path": "/tickets/1/status"
+          },
+          "response": {
+            "cookies": [],
+            "headers": {
+              "Content-Type": "application/json",
+              "Vary": "Cookie"
+            },
+            "json": {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "status": "closed",
+              "subject": "Synthetic support request"
+            },
+            "status": 200
+          },
+          "session_after": {
+            "user_id": "alice"
+          },
+          "session_before": {
+            "user_id": "alice"
+          },
+          "step_id": "close_ticket"
+        }
+      ]
+    }
+  ],
+  "trace_schema_version": "1.0"
+}

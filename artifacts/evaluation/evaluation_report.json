@@ -1,0 +1,808 @@
+{
+  "baseline_result": {
+    "differential_report": {
+      "differential_schema_version": "1.0",
+      "legacy_application": "legacylift.legacy_app",
+      "reconstructed_application": "legacylift.reconstructed_app",
+      "scenarios": [
+        {
+          "description": "A different session owner receives not found for the seeded ticket.",
+          "passed": true,
+          "scenario_id": "hide_other_users_ticket",
+          "steps": [
+            {
+              "legacy": {
+                "database_after": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_before": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_delta": {
+                  "added": [],
+                  "removed": [],
+                  "updated": []
+                },
+                "response": {
+                  "cookies": [
+                    {
+                      "http_only": true,
+                      "name": "session",
+                      "path": "/",
+                      "same_site": null,
+                      "secure": false,
+                      "value_redacted": true
+                    }
+                  ],
+                  "headers": {
+                    "content-type": "application/json",
+                    "vary": "Cookie"
+                  },
+                  "json": {
+                    "user_id": "bob"
+                  },
+                  "status": 200
+                },
+                "session_after": {
+                  "user_id": "bob"
+                },
+                "session_before": {
+                  "user_id": null
+                }
+              },
+              "mismatches": [],
+              "passed": true,
+              "reconstructed": {
+                "database_after": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_before": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_delta": {
+                  "added": [],
+                  "removed": [],
+                  "updated": []
+                },
+                "response": {
+                  "cookies": [
+                    {
+                      "http_only": true,
+                      "name": "session",
+                      "path": "/",
+                      "same_site": null,
+                      "secure": false,
+                      "value_redacted": true
+                    }
+                  ],
+                  "headers": {
+                    "content-type": "application/json",
+                    "vary": "Cookie"
+                  },
+                  "json": {
+                    "user_id": "bob"
+                  },
+                  "status": 200
+                },
+                "session_after": {
+                  "user_id": "bob"
+                },
+                "session_before": {
+                  "user_id": null
+                }
+              },
+              "request": {
+                "json": {
+                  "user_id": "bob"
+                },
+                "method": "POST",
+                "path": "/session"
+              },
+              "step_id": "start_session"
+            },
+            {
+              "legacy": {
+                "database_after": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_before": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_delta": {
+                  "added": [],
+                  "removed": [],
+                  "updated": []
+                },
+                "response": {
+                  "cookies": [],
+                  "headers": {
+                    "content-type": "application/json",
+                    "vary": "Cookie"
+                  },
+                  "json": {
+                    "error": "ticket_not_found",
+                    "message": "ticket does not exist"
+                  },
+                  "status": 404
+                },
+                "session_after": {
+                  "user_id": "bob"
+                },
+                "session_before": {
+                  "user_id": "bob"
+                }
+              },
+              "mismatches": [],
+              "passed": true,
+              "reconstructed": {
+                "database_after": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_before": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_delta": {
+                  "added": [],
+                  "removed": [],
+                  "updated": []
+                },
+                "response": {
+                  "cookies": [],
+                  "headers": {
+                    "content-type": "application/json",
+                    "vary": "Cookie"
+                  },
+                  "json": {
+                    "error": "ticket_not_found",
+                    "message": "ticket does not exist"
+                  },
+                  "status": 404
+                },
+                "session_after": {
+                  "user_id": "bob"
+                },
+                "session_before": {
+                  "user_id": "bob"
+                }
+              },
+              "request": {
+                "json": null,
+                "method": "GET",
+                "path": "/tickets/1"
+              },
+              "step_id": "get_unowned_ticket"
+            }
+          ]
+        },
+        {
+          "description": "Ticket creation rejects an empty subject without changing the database.",
+          "passed": true,
+          "scenario_id": "reject_empty_subject",
+          "steps": [
+            {
+              "legacy": {
+                "database_after": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_before": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_delta": {
+                  "added": [],
+                  "removed": [],
+                  "updated": []
+                },
+                "response": {
+                  "cookies": [
+                    {
+                      "http_only": true,
+                      "name": "session",
+                      "path": "/",
+                      "same_site": null,
+                      "secure": false,
+                      "value_redacted": true
+                    }
+                  ],
+                  "headers": {
+                    "content-type": "application/json",
+                    "vary": "Cookie"
+                  },
+                  "json": {
+                    "user_id": "alice"
+                  },
+                  "status": 200
+                },
+                "session_after": {
+                  "user_id": "alice"
+                },
+                "session_before": {
+                  "user_id": null
+                }
+              },
+              "mismatches": [],
+              "passed": true,
+              "reconstructed": {
+                "database_after": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_before": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_delta": {
+                  "added": [],
+                  "removed": [],
+                  "updated": []
+                },
+                "response": {
+                  "cookies": [
+                    {
+                      "http_only": true,
+                      "name": "session",
+                      "path": "/",
+                      "same_site": null,
+                      "secure": false,
+                      "value_redacted": true
+                    }
+                  ],
+                  "headers": {
+                    "content-type": "application/json",
+                    "vary": "Cookie"
+                  },
+                  "json": {
+                    "user_id": "alice"
+                  },
+                  "status": 200
+                },
+                "session_after": {
+                  "user_id": "alice"
+                },
+                "session_before": {
+                  "user_id": null
+                }
+              },
+              "request": {
+                "json": {
+                  "user_id": "alice"
+                },
+                "method": "POST",
+                "path": "/session"
+              },
+              "step_id": "start_session"
+            },
+            {
+              "legacy": {
+                "database_after": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_before": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_delta": {
+                  "added": [],
+                  "removed": [],
+                  "updated": []
+                },
+                "response": {
+                  "cookies": [],
+                  "headers": {
+                    "content-type": "application/json",
+                    "vary": "Cookie"
+                  },
+                  "json": {
+                    "error": "invalid_subject",
+                    "message": "subject must not be empty"
+                  },
+                  "status": 400
+                },
+                "session_after": {
+                  "user_id": "alice"
+                },
+                "session_before": {
+                  "user_id": "alice"
+                }
+              },
+              "mismatches": [],
+              "passed": true,
+              "reconstructed": {
+                "database_after": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_before": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_delta": {
+                  "added": [],
+                  "removed": [],
+                  "updated": []
+                },
+                "response": {
+                  "cookies": [],
+                  "headers": {
+                    "content-type": "application/json",
+                    "vary": "Cookie"
+                  },
+                  "json": {
+                    "error": "invalid_subject",
+                    "message": "subject must not be empty"
+                  },
+                  "status": 400
+                },
+                "session_after": {
+                  "user_id": "alice"
+                },
+                "session_before": {
+                  "user_id": "alice"
+                }
+              },
+              "request": {
+                "json": {
+                  "subject": "  "
+                },
+                "method": "POST",
+                "path": "/tickets"
+              },
+              "step_id": "create_invalid_ticket"
+            }
+          ]
+        },
+        {
+          "description": "The application rejects skipping directly from open to closed.",
+          "passed": true,
+          "scenario_id": "reject_skipped_status",
+          "steps": [
+            {
+              "legacy": {
+                "database_after": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_before": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_delta": {
+                  "added": [],
+                  "removed": [],
+                  "updated": []
+                },
+                "response": {
+                  "cookies": [
+                    {
+                      "http_only": true,
+                      "name": "session",
+                      "path": "/",
+                      "same_site": null,
+                      "secure": false,
+                      "value_redacted": true
+                    }
+                  ],
+                  "headers": {
+                    "content-type": "application/json",
+                    "vary": "Cookie"
+                  },
+                  "json": {
+                    "user_id": "alice"
+                  },
+                  "status": 200
+                },
+                "session_after": {
+                  "user_id": "alice"
+                },
+                "session_before": {
+                  "user_id": null
+                }
+              },
+              "mismatches": [],
+              "passed": true,
+              "reconstructed": {
+                "database_after": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_before": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_delta": {
+                  "added": [],
+                  "removed": [],
+                  "updated": []
+                },
+                "response": {
+                  "cookies": [
+                    {
+                      "http_only": true,
+                      "name": "session",
+                      "path": "/",
+                      "same_site": null,
+                      "secure": false,
+                      "value_redacted": true
+                    }
+                  ],
+                  "headers": {
+                    "content-type": "application/json",
+                    "vary": "Cookie"
+                  },
+                  "json": {
+                    "user_id": "alice"
+                  },
+                  "status": 200
+                },
+                "session_after": {
+                  "user_id": "alice"
+                },
+                "session_before": {
+                  "user_id": null
+                }
+              },
+              "request": {
+                "json": {
+                  "user_id": "alice"
+                },
+                "method": "POST",
+                "path": "/session"
+              },
+              "step_id": "start_session"
+            },
+            {
+              "legacy": {
+                "database_after": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_before": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_delta": {
+                  "added": [],
+                  "removed": [],
+                  "updated": []
+                },
+                "response": {
+                  "cookies": [],
+                  "headers": {
+                    "content-type": "application/json",
+                    "vary": "Cookie"
+                  },
+                  "json": {
+                    "current_status": "open",
+                    "error": "invalid_status_transition",
+                    "requested_status": "closed"
+                  },
+                  "status": 409
+                },
+                "session_after": {
+                  "user_id": "alice"
+                },
+                "session_before": {
+                  "user_id": "alice"
+                }
+              },
+              "mismatches": [],
+              "passed": true,
+              "reconstructed": {
+                "database_after": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_before": [
+                  {
+                    "description": "Fixture ticket for local tests.",
+                    "id": 1,
+                    "owner_id": "alice",
+                    "status": "open",
+                    "subject": "Synthetic support request"
+                  }
+                ],
+                "database_delta": {
+                  "added": [],
+                  "removed": [],
+                  "updated": []
+                },
+                "response": {
+                  "cookies": [],
+                  "headers": {
+                    "content-type": "application/json",
+                    "vary": "Cookie"
+                  },
+                  "json": {
+                    "current_status": "open",
+                    "error": "invalid_status_transition",
+                    "requested_status": "closed"
+                  },
+                  "status": 409
+                },
+                "session_after": {
+                  "user_id": "alice"
+                },
+                "session_before": {
+                  "user_id": "alice"
+                }
+              },
+              "request": {
+                "json": {
+                  "status": "closed"
+                },
+                "method": "PATCH",
+                "path": "/tickets/1/status"
+              },
+              "step_id": "skip_to_closed"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "failed_step_count": 0,
+        "passed": true,
+        "passed_step_count": 6,
+        "scenario_count": 3,
+        "step_count": 6
+      }
+    },
+    "failed_step_count": 0,
+    "implementation": "hand_built_fastapi_baseline",
+    "passed": true,
+    "passed_step_count": 6,
+    "scenario_count": 3,
+    "scenario_match_count": 3,
+    "scenario_match_rate": 1.0,
+    "scope": "held-out scenarios only",
+    "step_count": 6,
+    "step_match_rate": 1.0
+  },
+  "condition_audit": [
+    {
+      "condition": "source_only",
+      "executable_reconstruction_generated": false,
+      "external_provider_calls": 0,
+      "held_out_runtime_workflows_in_context": [],
+      "omitted_evidence_count": 0,
+      "prompt_char_count": 10990,
+      "prompt_sha256": "d0e629c70dc832d47267d1670f6708b1b2ee9be11c6d17404cdd3978b9792ddc",
+      "runtime_workflows": [],
+      "selected_evidence_counts": {
+        "facts": 23,
+        "inferences": 0,
+        "runtime_contracts": 0,
+        "unknowns": 1
+      },
+      "source_excerpt_char_count": 2000,
+      "source_excerpt_truncated": true,
+      "status": "context_prepared_reconstruction_not_run"
+    },
+    {
+      "condition": "runtime_only",
+      "executable_reconstruction_generated": false,
+      "external_provider_calls": 0,
+      "held_out_runtime_workflows_in_context": [],
+      "omitted_evidence_count": 0,
+      "prompt_char_count": 11260,
+      "prompt_sha256": "f661004e1aece3761a185a608d7d020ba4fb167364b9963794de6f27f21287a6",
+      "runtime_workflows": [
+        "create_ticket",
+        "retrieve_owned_ticket",
+        "valid_status_transitions"
+      ],
+      "selected_evidence_counts": {
+        "facts": 7,
+        "inferences": 0,
+        "runtime_contracts": 7,
+        "unknowns": 1
+      },
+      "source_excerpt_char_count": 0,
+      "source_excerpt_truncated": false,
+      "status": "context_prepared_reconstruction_not_run"
+    },
+    {
+      "condition": "hybrid",
+      "executable_reconstruction_generated": false,
+      "external_provider_calls": 0,
+      "held_out_runtime_workflows_in_context": [],
+      "omitted_evidence_count": 0,
+      "prompt_char_count": 21842,
+      "prompt_sha256": "6d98d6e8cbb27b20a1a6a44754951b41fdd10ef303aa345cfbad33763e5014db",
+      "runtime_workflows": [
+        "create_ticket",
+        "retrieve_owned_ticket",
+        "valid_status_transitions"
+      ],
+      "selected_evidence_counts": {
+        "facts": 30,
+        "inferences": 0,
+        "runtime_contracts": 7,
+        "unknowns": 2
+      },
+      "source_excerpt_char_count": 2000,
+      "source_excerpt_truncated": true,
+      "status": "context_prepared_reconstruction_not_run"
+    }
+  ],
+  "environment": {
+    "packages": {
+      "fastapi": "0.162.0",
+      "flask": "3.1.3",
+      "httpx": "0.28.1",
+      "pydantic": "2.14.2",
+      "starlette": "1.10.0"
+    },
+    "python": "3.11.9"
+  },
+  "evaluation_schema_version": "1.0",
+  "input_fingerprints": {
+    "complete_runtime_trace_sha256": "3a515cbdeb9051c5e632c49ba0c979240622e17942b6c0ddd1cac64de02de3d6",
+    "guidance_runtime_trace_sha256": "43e3e54ad99b95e9718b5bdff91f23fe048761d1cef531482f4f1f4db13c46e1",
+    "legacy_source_sha256": "d0748ec1d607a58eabc0bb390926e37fae14331705833dd18152007452493906"
+  },
+  "limitations": [
+    "The evaluation uses six small, synthetic scenarios and one ticket workflow.",
+    "The FastAPI baseline was written by hand, not generated under an evidence condition.",
+    "The guidance/held-out split is fixed and not repeated with alternative partitions.",
+    "Source-only and hybrid contexts include source code for held-out branches.",
+    "Correction time, generated-code quality, and model cost are not measured."
+  ],
+  "methodology": {
+    "guidance_evidence": "Only runtime traces from the guidance split enter the guidance EER.",
+    "hybrid_condition": "Hybrid receives source findings/excerpts and guidance traces.",
+    "metrics": {
+      "scenario_match_rate": "Held-out scenarios with every compared step matching / held-out scenarios.",
+      "step_match_rate": "Held-out steps with all compared fields matching / held-out steps."
+    },
+    "runtime_condition": "Runtime-only receives guidance traces and no source excerpt.",
+    "source_condition": "Source-only uses static findings and source excerpts from the complete legacy application; source code includes held-out branch implementations."
+  },
+  "scenario_partition": {
+    "guidance": [
+      "create_ticket",
+      "retrieve_owned_ticket",
+      "valid_status_transitions"
+    ],
+    "held_out": [
+      "hide_other_users_ticket",
+      "reject_empty_subject",
+      "reject_skipped_status"
+    ]
+  },
+  "strategy_comparison": {
+    "comparative_claims_supported": false,
+    "conditions": {
+      "hybrid": "context_prepared_only",
+      "runtime_only": "context_prepared_only",
+      "source_only": "context_prepared_only"
+    },
+    "reason": "The repository has a hand-built FastAPI baseline and an offline mock provider, but no model-generated reconstruction for any evidence condition.",
+    "status": "not_run"
+  },
+  "study": "initial_ticket_workflow_evidence_conditions"
+}

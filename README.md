@@ -151,6 +151,18 @@ Regenerate it with:
 python -c "from legacylift.verification.runner import write_differential_report; write_differential_report('artifacts/verification/differential_report.json')"
 ```
 
+## Milestone 6: Held-Out Evaluation
+
+The initial split uses `create_ticket`, `retrieve_owned_ticket`, and `valid_status_transitions` as guidance scenarios. `hide_other_users_ticket`, `reject_empty_subject`, and `reject_skipped_status` are held out from runtime evidence. The evaluation builds and stores a guidance-only trace and EER, audits the source-only/runtime-only/hybrid contexts for held-out runtime leakage, and measures the hand-built FastAPI baseline against the held-out cases.
+
+The baseline matched all 3 held-out scenarios and all 6 request steps. This measures the hand-built implementation only. The source-only, runtime-only, and hybrid model reconstruction comparison has **not been run**: there is no model-generated app for any condition, and the mock provider does not generate executable code. The report makes no claim that one evidence condition performs better.
+
+The guidance inputs and report are in [`artifacts/evaluation/`](artifacts/evaluation/). Regenerate them with:
+
+```powershell
+python -c "from legacylift.evaluation import write_evaluation_artifacts; write_evaluation_artifacts('artifacts/evaluation')"
+```
+
 ## Setup and local checks
 
 Requires Python 3.11 or newer.
@@ -179,7 +191,9 @@ The local SQLite database is stored under Flask's `instance` directory. Set `LEG
 - [x] Static source-code analysis and versioned Engineering Evidence Record
 - [x] FastAPI reconstruction baseline behind a provider-independent interface
 - [x] Differential comparison of responses and state changes
-- [ ] Controlled evaluation and reproducible report
+- [x] Reproducible held-out baseline evaluation and evidence-context audit
+- [ ] Model-generated source-only/runtime-only/hybrid comparison
+- [ ] Final documentation and one-command demo
 
 ---
 
@@ -187,7 +201,7 @@ The local SQLite database is stored under Flask's `instance` directory. Set `LEG
 
 <kbd>Currently in development</kbd>
 
-Milestones 0 through 5 are complete. The repository contains the Python project setup, deterministic Flask/SQLite reference workflows, repeatable runtime traces, a best-effort AST report, a validated Engineering Evidence Record, an independently implemented FastAPI baseline, a provider boundary, and a reproducible differential report. The remaining work is a controlled evaluation, final documentation, and a one-command demo.
+Milestones 0 through 5 and the initial held-out baseline evaluation are complete. The report confirms the manually implemented FastAPI baseline matches all current held-out cases and that runtime/hybrid evidence contexts contain guidance traces only. A model-generated comparison remains unrun, so the project makes no comparative performance claim. Final documentation and a one-command demo remain in progress.
 
 The project is being built incrementally so that each reconstructed implementation can be compared with observable behaviour from its reference workflow.
 

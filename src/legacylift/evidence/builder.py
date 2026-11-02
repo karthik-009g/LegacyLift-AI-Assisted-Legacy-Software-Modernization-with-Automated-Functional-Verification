@@ -37,6 +37,7 @@ def build_eer(
     trace_bundle: dict[str, Any],
     *,
     trace_artifact: str = "artifacts/traces/ticket_workflows.json",
+    record_id: str = "legacylift-ticket-workflows-v1",
 ) -> EngineeringEvidenceRecord:
     """Build a versioned EER from analyzer output and a captured trace bundle."""
     provenance: list[ProvenanceRecord] = []
@@ -304,7 +305,7 @@ def build_eer(
 
     return EngineeringEvidenceRecord(
         schema_version=EER_SCHEMA_VERSION,
-        record_id="legacylift-ticket-workflows-v1",
+        record_id=record_id,
         scope="Selected Flask/SQLite ticket workflows in the local synthetic reference app.",
         provenance=provenance,
         observed_facts=facts,

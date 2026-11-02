@@ -1,0 +1,794 @@
+{
+  "contracts": [
+    {
+      "contract_id": "contract-create-ticket-start-session",
+      "expected_cookies": [
+        {
+          "http_only": true,
+          "name": "session",
+          "path": "/",
+          "same_site": null,
+          "secure": false,
+          "value_redacted": true
+        }
+      ],
+      "expected_database_delta": {
+        "added": [],
+        "removed": [],
+        "updated": []
+      },
+      "expected_response_headers": {
+        "Content-Type": "application/json",
+        "Vary": "Cookie"
+      },
+      "expected_response_json": {
+        "user_id": "alice"
+      },
+      "expected_status": 200,
+      "method": "POST",
+      "path": "/session",
+      "provenance_ids": [
+        "prov-trace-create-ticket-start-session"
+      ],
+      "request_json": {
+        "user_id": "alice"
+      },
+      "session_after": {
+        "user_id": "alice"
+      },
+      "session_before": {
+        "user_id": null
+      },
+      "workflow_id": "create_ticket"
+    },
+    {
+      "contract_id": "contract-create-ticket-create-ticket",
+      "expected_cookies": [],
+      "expected_database_delta": {
+        "added": [
+          {
+            "description": "Synthetic request.",
+            "id": 2,
+            "owner_id": "alice",
+            "status": "open",
+            "subject": "Capture scenario"
+          }
+        ],
+        "removed": [],
+        "updated": []
+      },
+      "expected_response_headers": {
+        "Content-Type": "application/json",
+        "Vary": "Cookie"
+      },
+      "expected_response_json": {
+        "description": "Synthetic request.",
+        "id": 2,
+        "status": "open",
+        "subject": "Capture scenario"
+      },
+      "expected_status": 201,
+      "method": "POST",
+      "path": "/tickets",
+      "provenance_ids": [
+        "prov-trace-create-ticket-create-ticket"
+      ],
+      "request_json": {
+        "description": "  Synthetic request.  ",
+        "subject": "  Capture scenario  "
+      },
+      "session_after": {
+        "user_id": "alice"
+      },
+      "session_before": {
+        "user_id": "alice"
+      },
+      "workflow_id": "create_ticket"
+    },
+    {
+      "contract_id": "contract-retrieve-owned-ticket-start-session",
+      "expected_cookies": [
+        {
+          "http_only": true,
+          "name": "session",
+          "path": "/",
+          "same_site": null,
+          "secure": false,
+          "value_redacted": true
+        }
+      ],
+      "expected_database_delta": {
+        "added": [],
+        "removed": [],
+        "updated": []
+      },
+      "expected_response_headers": {
+        "Content-Type": "application/json",
+        "Vary": "Cookie"
+      },
+      "expected_response_json": {
+        "user_id": "alice"
+      },
+      "expected_status": 200,
+      "method": "POST",
+      "path": "/session",
+      "provenance_ids": [
+        "prov-trace-retrieve-owned-ticket-start-session"
+      ],
+      "request_json": {
+        "user_id": "alice"
+      },
+      "session_after": {
+        "user_id": "alice"
+      },
+      "session_before": {
+        "user_id": null
+      },
+      "workflow_id": "retrieve_owned_ticket"
+    },
+    {
+      "contract_id": "contract-retrieve-owned-ticket-get-owned-ticket",
+      "expected_cookies": [],
+      "expected_database_delta": {
+        "added": [],
+        "removed": [],
+        "updated": []
+      },
+      "expected_response_headers": {
+        "Content-Type": "application/json",
+        "Vary": "Cookie"
+      },
+      "expected_response_json": {
+        "description": "Fixture ticket for local tests.",
+        "id": 1,
+        "status": "open",
+        "subject": "Synthetic support request"
+      },
+      "expected_status": 200,
+      "method": "GET",
+      "path": "/tickets/1",
+      "provenance_ids": [
+        "prov-trace-retrieve-owned-ticket-get-owned-ticket"
+      ],
+      "request_json": null,
+      "session_after": {
+        "user_id": "alice"
+      },
+      "session_before": {
+        "user_id": "alice"
+      },
+      "workflow_id": "retrieve_owned_ticket"
+    },
+    {
+      "contract_id": "contract-valid-status-transitions-start-session",
+      "expected_cookies": [
+        {
+          "http_only": true,
+          "name": "session",
+          "path": "/",
+          "same_site": null,
+          "secure": false,
+          "value_redacted": true
+        }
+      ],
+      "expected_database_delta": {
+        "added": [],
+        "removed": [],
+        "updated": []
+      },
+      "expected_response_headers": {
+        "Content-Type": "application/json",
+        "Vary": "Cookie"
+      },
+      "expected_response_json": {
+        "user_id": "alice"
+      },
+      "expected_status": 200,
+      "method": "POST",
+      "path": "/session",
+      "provenance_ids": [
+        "prov-trace-valid-status-transitions-start-session"
+      ],
+      "request_json": {
+        "user_id": "alice"
+      },
+      "session_after": {
+        "user_id": "alice"
+      },
+      "session_before": {
+        "user_id": null
+      },
+      "workflow_id": "valid_status_transitions"
+    },
+    {
+      "contract_id": "contract-valid-status-transitions-move-to-in-progress",
+      "expected_cookies": [],
+      "expected_database_delta": {
+        "added": [],
+        "removed": [],
+        "updated": [
+          {
+            "after": {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "in_progress",
+              "subject": "Synthetic support request"
+            },
+            "before": {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "open",
+              "subject": "Synthetic support request"
+            },
+            "id": 1
+          }
+        ]
+      },
+      "expected_response_headers": {
+        "Content-Type": "application/json",
+        "Vary": "Cookie"
+      },
+      "expected_response_json": {
+        "description": "Fixture ticket for local tests.",
+        "id": 1,
+        "status": "in_progress",
+        "subject": "Synthetic support request"
+      },
+      "expected_status": 200,
+      "method": "PATCH",
+      "path": "/tickets/1/status",
+      "provenance_ids": [
+        "prov-trace-valid-status-transitions-move-to-in-progress"
+      ],
+      "request_json": {
+        "status": "in_progress"
+      },
+      "session_after": {
+        "user_id": "alice"
+      },
+      "session_before": {
+        "user_id": "alice"
+      },
+      "workflow_id": "valid_status_transitions"
+    },
+    {
+      "contract_id": "contract-valid-status-transitions-close-ticket",
+      "expected_cookies": [],
+      "expected_database_delta": {
+        "added": [],
+        "removed": [],
+        "updated": [
+          {
+            "after": {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "closed",
+              "subject": "Synthetic support request"
+            },
+            "before": {
+              "description": "Fixture ticket for local tests.",
+              "id": 1,
+              "owner_id": "alice",
+              "status": "in_progress",
+              "subject": "Synthetic support request"
+            },
+            "id": 1
+          }
+        ]
+      },
+      "expected_response_headers": {
+        "Content-Type": "application/json",
+        "Vary": "Cookie"
+      },
+      "expected_response_json": {
+        "description": "Fixture ticket for local tests.",
+        "id": 1,
+        "status": "closed",
+        "subject": "Synthetic support request"
+      },
+      "expected_status": 200,
+      "method": "PATCH",
+      "path": "/tickets/1/status",
+      "provenance_ids": [
+        "prov-trace-valid-status-transitions-close-ticket"
+      ],
+      "request_json": {
+        "status": "closed"
+      },
+      "session_after": {
+        "user_id": "alice"
+      },
+      "session_before": {
+        "user_id": "alice"
+      },
+      "workflow_id": "valid_status_transitions"
+    }
+  ],
+  "inferences": [],
+  "limitations": [
+    "Only Python syntax and literal Flask route decorators are inspected; application code is never executed.",
+    "Dynamic route registration, reflection, runtime dispatch, external services, and unvisited paths are not resolved.",
+    "Contracts in this record describe captured scenario steps; they are not a proof of equivalence for untested behavior.",
+    "Cookie values are intentionally omitted from trace and EER artifacts."
+  ],
+  "observed_facts": [
+    {
+      "confidence": "observed",
+      "fact_id": "fact-route-post-sessionstart-test-session",
+      "provenance_ids": [
+        "prov-source-src-legacylift-legacy-app-app-py-34-post-session-start-test-session"
+      ],
+      "statement": "AST analysis found a literal POST route /session mapped to start_test_session."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-route-post-ticketscreate-ticket",
+      "provenance_ids": [
+        "prov-source-src-legacylift-legacy-app-app-py-45-post-tickets-create-ticket"
+      ],
+      "statement": "AST analysis found a literal POST route /tickets mapped to create_ticket."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-route-get-tickets-int-ticket-id-get-ticket",
+      "provenance_ids": [
+        "prov-source-src-legacylift-legacy-app-app-py-80-get-tickets-int-ticket-id-get-ticket"
+      ],
+      "statement": "AST analysis found a literal GET route /tickets/<int:ticket_id> mapped to get_ticket."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-route-patch-tickets-int-ticket-id-statusupdate-ticket-status",
+      "provenance_ids": [
+        "prov-source-src-legacylift-legacy-app-app-py-104-patch-tickets-int-ticket-id-status-update-ticket-status"
+      ],
+      "statement": "AST analysis found a literal PATCH route /tickets/<int:ticket_id>/status mapped to update_ticket_status."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-branches-src-legacylift-legacy-app-app-pycreate-app",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-app-py-19-create-app"
+      ],
+      "statement": "AST analysis counted 1 control-flow constructs in create_app."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-session-ref-src-legacylift-legacy-app-app-pystart-test-session",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-app-py-34-start-test-session"
+      ],
+      "statement": "AST analysis found a session reference in start_test_session."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-branches-src-legacylift-legacy-app-app-pystart-test-session",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-app-py-34-start-test-session"
+      ],
+      "statement": "AST analysis counted 2 control-flow constructs in start_test_session."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-session-ref-src-legacylift-legacy-app-app-pycreate-ticket",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-app-py-45-create-ticket"
+      ],
+      "statement": "AST analysis found a session reference in create_ticket."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-db-ops-src-legacylift-legacy-app-app-pycreate-ticket",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-app-py-45-create-ticket"
+      ],
+      "statement": "AST analysis found database calls connection.commit, connection.execute, get_db in create_ticket."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-branches-src-legacylift-legacy-app-app-pycreate-ticket",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-app-py-45-create-ticket"
+      ],
+      "statement": "AST analysis counted 5 control-flow constructs in create_ticket."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-session-ref-src-legacylift-legacy-app-app-pyget-ticket",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-app-py-80-get-ticket"
+      ],
+      "statement": "AST analysis found a session reference in get_ticket."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-db-ops-src-legacylift-legacy-app-app-pyget-ticket",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-app-py-80-get-ticket"
+      ],
+      "statement": "AST analysis found database calls get_db, get_db().execute in get_ticket."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-branches-src-legacylift-legacy-app-app-pyget-ticket",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-app-py-80-get-ticket"
+      ],
+      "statement": "AST analysis counted 2 control-flow constructs in get_ticket."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-session-ref-src-legacylift-legacy-app-app-pyupdate-ticket-status",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-app-py-104-update-ticket-status"
+      ],
+      "statement": "AST analysis found a session reference in update_ticket_status."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-db-ops-src-legacylift-legacy-app-app-pyupdate-ticket-status",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-app-py-104-update-ticket-status"
+      ],
+      "statement": "AST analysis found database calls connection.commit, connection.execute, get_db in update_ticket_status."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-branches-src-legacylift-legacy-app-app-pyupdate-ticket-status",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-app-py-104-update-ticket-status"
+      ],
+      "statement": "AST analysis counted 5 control-flow constructs in update_ticket_status."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-db-ops-src-legacylift-legacy-app-db-pyconnect-database",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-db-py-26-connect-database"
+      ],
+      "statement": "AST analysis found database calls connection.execute, sqlite3.connect in connect_database."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-db-ops-src-legacylift-legacy-app-db-pyinitialize-database",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-db-py-34-initialize-database"
+      ],
+      "statement": "AST analysis found database calls connection.execute, connection.executemany in initialize_database."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-branches-src-legacylift-legacy-app-db-pyinitialize-database",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-db-py-34-initialize-database"
+      ],
+      "statement": "AST analysis counted 2 control-flow constructs in initialize_database."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-db-ops-src-legacylift-legacy-app-db-pyreset-database",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-db-py-55-reset-database"
+      ],
+      "statement": "AST analysis found database calls connection.execute, connection.executemany in reset_database."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-branches-src-legacylift-legacy-app-db-pyreset-database",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-db-py-55-reset-database"
+      ],
+      "statement": "AST analysis counted 1 control-flow constructs in reset_database."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-branches-src-legacylift-legacy-app-db-pyget-db",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-db-py-78-get-db"
+      ],
+      "statement": "AST analysis counted 1 control-flow constructs in get_db."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-branches-src-legacylift-legacy-app-db-pyclose-db",
+      "provenance_ids": [
+        "prov-source-function-src-legacylift-legacy-app-db-py-85-close-db"
+      ],
+      "statement": "AST analysis counted 1 control-flow constructs in close_db."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-runtime-create-ticket-start-session",
+      "provenance_ids": [
+        "prov-trace-create-ticket-start-session"
+      ],
+      "statement": "Captured POST /session returned HTTP 200 in scenario create_ticket."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-runtime-create-ticket-create-ticket",
+      "provenance_ids": [
+        "prov-trace-create-ticket-create-ticket"
+      ],
+      "statement": "Captured POST /tickets returned HTTP 201 in scenario create_ticket."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-runtime-retrieve-owned-ticket-start-session",
+      "provenance_ids": [
+        "prov-trace-retrieve-owned-ticket-start-session"
+      ],
+      "statement": "Captured POST /session returned HTTP 200 in scenario retrieve_owned_ticket."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-runtime-retrieve-owned-ticket-get-owned-ticket",
+      "provenance_ids": [
+        "prov-trace-retrieve-owned-ticket-get-owned-ticket"
+      ],
+      "statement": "Captured GET /tickets/1 returned HTTP 200 in scenario retrieve_owned_ticket."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-runtime-valid-status-transitions-start-session",
+      "provenance_ids": [
+        "prov-trace-valid-status-transitions-start-session"
+      ],
+      "statement": "Captured POST /session returned HTTP 200 in scenario valid_status_transitions."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-runtime-valid-status-transitions-move-to-in-progress",
+      "provenance_ids": [
+        "prov-trace-valid-status-transitions-move-to-in-progress"
+      ],
+      "statement": "Captured PATCH /tickets/1/status returned HTTP 200 in scenario valid_status_transitions."
+    },
+    {
+      "confidence": "observed",
+      "fact_id": "fact-runtime-valid-status-transitions-close-ticket",
+      "provenance_ids": [
+        "prov-trace-valid-status-transitions-close-ticket"
+      ],
+      "statement": "Captured PATCH /tickets/1/status returned HTTP 200 in scenario valid_status_transitions."
+    }
+  ],
+  "provenance": [
+    {
+      "artifact": "src/legacylift/legacy_app/app.py",
+      "kind": "source_ast",
+      "locator": "line 34: start_test_session",
+      "provenance_id": "prov-source-src-legacylift-legacy-app-app-py-34-post-session-start-test-session"
+    },
+    {
+      "artifact": "src/legacylift/legacy_app/app.py",
+      "kind": "source_ast",
+      "locator": "line 45: create_ticket",
+      "provenance_id": "prov-source-src-legacylift-legacy-app-app-py-45-post-tickets-create-ticket"
+    },
+    {
+      "artifact": "src/legacylift/legacy_app/app.py",
+      "kind": "source_ast",
+      "locator": "line 80: get_ticket",
+      "provenance_id": "prov-source-src-legacylift-legacy-app-app-py-80-get-tickets-int-ticket-id-get-ticket"
+    },
+    {
+      "artifact": "src/legacylift/legacy_app/app.py",
+      "kind": "source_ast",
+      "locator": "line 104: update_ticket_status",
+      "provenance_id": "prov-source-src-legacylift-legacy-app-app-py-104-patch-tickets-int-ticket-id-status-update-ticket-status"
+    },
+    {
+      "artifact": "src/legacylift/legacy_app/app.py",
+      "kind": "source_ast",
+      "locator": "lines 19-148: create_app",
+      "provenance_id": "prov-source-function-src-legacylift-legacy-app-app-py-19-create-app"
+    },
+    {
+      "artifact": "src/legacylift/legacy_app/app.py",
+      "kind": "source_ast",
+      "locator": "lines 34-42: start_test_session",
+      "provenance_id": "prov-source-function-src-legacylift-legacy-app-app-py-34-start-test-session"
+    },
+    {
+      "artifact": "src/legacylift/legacy_app/app.py",
+      "kind": "source_ast",
+      "locator": "lines 45-77: create_ticket",
+      "provenance_id": "prov-source-function-src-legacylift-legacy-app-app-py-45-create-ticket"
+    },
+    {
+      "artifact": "src/legacylift/legacy_app/app.py",
+      "kind": "source_ast",
+      "locator": "lines 80-101: get_ticket",
+      "provenance_id": "prov-source-function-src-legacylift-legacy-app-app-py-80-get-ticket"
+    },
+    {
+      "artifact": "src/legacylift/legacy_app/app.py",
+      "kind": "source_ast",
+      "locator": "lines 104-146: update_ticket_status",
+      "provenance_id": "prov-source-function-src-legacylift-legacy-app-app-py-104-update-ticket-status"
+    },
+    {
+      "artifact": "src/legacylift/legacy_app/db.py",
+      "kind": "source_ast",
+      "locator": "lines 26-31: connect_database",
+      "provenance_id": "prov-source-function-src-legacylift-legacy-app-db-py-26-connect-database"
+    },
+    {
+      "artifact": "src/legacylift/legacy_app/db.py",
+      "kind": "source_ast",
+      "locator": "lines 34-52: initialize_database",
+      "provenance_id": "prov-source-function-src-legacylift-legacy-app-db-py-34-initialize-database"
+    },
+    {
+      "artifact": "src/legacylift/legacy_app/db.py",
+      "kind": "source_ast",
+      "locator": "lines 55-75: reset_database",
+      "provenance_id": "prov-source-function-src-legacylift-legacy-app-db-py-55-reset-database"
+    },
+    {
+      "artifact": "src/legacylift/legacy_app/db.py",
+      "kind": "source_ast",
+      "locator": "lines 78-82: get_db",
+      "provenance_id": "prov-source-function-src-legacylift-legacy-app-db-py-78-get-db"
+    },
+    {
+      "artifact": "src/legacylift/legacy_app/db.py",
+      "kind": "source_ast",
+      "locator": "lines 85-89: close_db",
+      "provenance_id": "prov-source-function-src-legacylift-legacy-app-db-py-85-close-db"
+    },
+    {
+      "artifact": "artifacts/evaluation/guidance_trace.json",
+      "kind": "runtime_trace",
+      "locator": "scenario create_ticket, step start_session",
+      "provenance_id": "prov-trace-create-ticket-start-session"
+    },
+    {
+      "artifact": "artifacts/evaluation/guidance_trace.json",
+      "kind": "runtime_trace",
+      "locator": "scenario create_ticket, step create_ticket",
+      "provenance_id": "prov-trace-create-ticket-create-ticket"
+    },
+    {
+      "artifact": "artifacts/evaluation/guidance_trace.json",
+      "kind": "runtime_trace",
+      "locator": "scenario retrieve_owned_ticket, step start_session",
+      "provenance_id": "prov-trace-retrieve-owned-ticket-start-session"
+    },
+    {
+      "artifact": "artifacts/evaluation/guidance_trace.json",
+      "kind": "runtime_trace",
+      "locator": "scenario retrieve_owned_ticket, step get_owned_ticket",
+      "provenance_id": "prov-trace-retrieve-owned-ticket-get-owned-ticket"
+    },
+    {
+      "artifact": "artifacts/evaluation/guidance_trace.json",
+      "kind": "runtime_trace",
+      "locator": "scenario valid_status_transitions, step start_session",
+      "provenance_id": "prov-trace-valid-status-transitions-start-session"
+    },
+    {
+      "artifact": "artifacts/evaluation/guidance_trace.json",
+      "kind": "runtime_trace",
+      "locator": "scenario valid_status_transitions, step move_to_in_progress",
+      "provenance_id": "prov-trace-valid-status-transitions-move-to-in-progress"
+    },
+    {
+      "artifact": "artifacts/evaluation/guidance_trace.json",
+      "kind": "runtime_trace",
+      "locator": "scenario valid_status_transitions, step close_ticket",
+      "provenance_id": "prov-trace-valid-status-transitions-close-ticket"
+    },
+    {
+      "artifact": "src/legacylift/static_analysis/ast_analyzer.py",
+      "kind": "analysis_limit",
+      "locator": "ANALYSIS_LIMITATIONS",
+      "provenance_id": "prov-limit-static-analysis"
+    },
+    {
+      "artifact": "src/legacylift/runtime_capture/scenarios.py",
+      "kind": "analysis_limit",
+      "locator": "DEFAULT_SCENARIOS",
+      "provenance_id": "prov-limit-scenarios"
+    }
+  ],
+  "record_id": "legacylift-ticket-workflows-guidance-v1",
+  "schema_version": "1.0.0",
+  "scope": "Selected Flask/SQLite ticket workflows in the local synthetic reference app.",
+  "unknowns": [
+    {
+      "affected_scope": "legacy ticket workflow branches outside the captured scenarios",
+      "provenance_ids": [
+        "prov-limit-scenarios"
+      ],
+      "question": "What behavior occurs on paths absent from the checked-in scenarios?",
+      "reason": "Runtime traces only cover the finite scenarios that were executed.",
+      "unknown_id": "unknown-unobserved-paths"
+    },
+    {
+      "affected_scope": "dynamic dispatch, reflection, and route registration",
+      "provenance_ids": [
+        "prov-limit-static-analysis"
+      ],
+      "question": "Are there dynamically registered routes or runtime code paths not listed by AST analysis?",
+      "reason": "The analyzer recognizes literal Flask route decorators and does not execute application code.",
+      "unknown_id": "unknown-dynamic-python"
+    }
+  ],
+  "validation_cases": [
+    {
+      "contract_id": "contract-create-ticket-start-session",
+      "provenance_ids": [
+        "prov-trace-create-ticket-start-session"
+      ],
+      "purpose": "An owner creates a ticket with normalized text.",
+      "scenario_id": "create_ticket",
+      "step_id": "start_session",
+      "validation_id": "validation-create-ticket-start-session"
+    },
+    {
+      "contract_id": "contract-create-ticket-create-ticket",
+      "provenance_ids": [
+        "prov-trace-create-ticket-create-ticket"
+      ],
+      "purpose": "An owner creates a ticket with normalized text.",
+      "scenario_id": "create_ticket",
+      "step_id": "create_ticket",
+      "validation_id": "validation-create-ticket-create-ticket"
+    },
+    {
+      "contract_id": "contract-retrieve-owned-ticket-start-session",
+      "provenance_ids": [
+        "prov-trace-retrieve-owned-ticket-start-session"
+      ],
+      "purpose": "An owner retrieves the seeded synthetic ticket.",
+      "scenario_id": "retrieve_owned_ticket",
+      "step_id": "start_session",
+      "validation_id": "validation-retrieve-owned-ticket-start-session"
+    },
+    {
+      "contract_id": "contract-retrieve-owned-ticket-get-owned-ticket",
+      "provenance_ids": [
+        "prov-trace-retrieve-owned-ticket-get-owned-ticket"
+      ],
+      "purpose": "An owner retrieves the seeded synthetic ticket.",
+      "scenario_id": "retrieve_owned_ticket",
+      "step_id": "get_owned_ticket",
+      "validation_id": "validation-retrieve-owned-ticket-get-owned-ticket"
+    },
+    {
+      "contract_id": "contract-valid-status-transitions-start-session",
+      "provenance_ids": [
+        "prov-trace-valid-status-transitions-start-session"
+      ],
+      "purpose": "The owner advances a ticket through both allowed status transitions.",
+      "scenario_id": "valid_status_transitions",
+      "step_id": "start_session",
+      "validation_id": "validation-valid-status-transitions-start-session"
+    },
+    {
+      "contract_id": "contract-valid-status-transitions-move-to-in-progress",
+      "provenance_ids": [
+        "prov-trace-valid-status-transitions-move-to-in-progress"
+      ],
+      "purpose": "The owner advances a ticket through both allowed status transitions.",
+      "scenario_id": "valid_status_transitions",
+      "step_id": "move_to_in_progress",
+      "validation_id": "validation-valid-status-transitions-move-to-in-progress"
+    },
+    {
+      "contract_id": "contract-valid-status-transitions-close-ticket",
+      "provenance_ids": [
+        "prov-trace-valid-status-transitions-close-ticket"
+      ],
+      "purpose": "The owner advances a ticket through both allowed status transitions.",
+      "scenario_id": "valid_status_transitions",
+      "step_id": "close_ticket",
+      "validation_id": "validation-valid-status-transitions-close-ticket"
+    }
+  ]
+}
