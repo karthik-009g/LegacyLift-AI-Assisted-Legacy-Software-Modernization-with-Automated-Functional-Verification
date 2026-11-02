@@ -119,19 +119,45 @@ This will help me evaluate whether combining different evidence sources improves
 
 ---
 
+## Milestone 1: Deterministic Legacy Reference
+
+The first reference app uses Flask, SQLite, synthetic data, and a reset utility. Its selected stateful workflows are:
+
+- Create a ticket with subject and description validation.
+- Retrieve a ticket only when it belongs to the current session user.
+- Move a ticket through `open → in_progress → closed`; invalid jumps return a conflict.
+
+`POST /session` sets a synthetic identity for local scenarios. It is not production authentication. The seeded ticket belongs to `alice`. Seven baseline tests cover success, invalid input, ownership, status transitions, persisted database state, and reset behavior.
+
+## Setup and local checks
+
+Requires Python 3.11 or newer.
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -e ".[dev]"
+python -m pytest
+ruff check .
+ruff format --check .
+```
+
+Start the local reference app with:
+
+```powershell
+flask --app legacylift.legacy_app.app:create_app run --debug
+```
+
+The local SQLite database is stored under Flask's `instance` directory. Set `LEGACYLIFT_SECRET_KEY` when running outside a disposable local environment.
+
 ## Development Roadmap
 
-- [ ] Project architecture and repository setup
-- [ ] Legacy application selection and analysis
-- [ ] Static source-code analysis
+- [x] Python project bootstrap and deterministic Flask/SQLite reference workflows
 - [ ] Runtime behaviour capture
-- [ ] Engineering Evidence Record implementation
-- [ ] LLM-assisted reconstruction pipeline
-- [ ] FastAPI workflow reconstruction
-- [ ] Differential testing framework
-- [ ] Verification and reporting
-- [ ] Experimental evaluation
-- [ ] Documentation and results
+- [ ] Static source-code analysis and versioned Engineering Evidence Record
+- [ ] FastAPI reconstruction behind a provider-independent interface
+- [ ] Differential comparison of responses and state changes
+- [ ] Controlled evaluation and reproducible report
 
 ---
 
@@ -139,9 +165,9 @@ This will help me evaluate whether combining different evidence sources improves
 
 <kbd>Currently in development</kbd>
 
-I am developing LegacyLift incrementally, beginning with application analysis and evidence collection before moving toward AI-assisted reconstruction and automated verification.
+Milestones 0 and 1 are complete. The repository now contains the Python project setup and a deterministic Flask/SQLite ticket reference app with baseline tests. Runtime capture, AST analysis, the Engineering Evidence Record, FastAPI reconstruction, and differential verification are planned next.
 
-The focus is on building a reproducible engineering workflow where every reconstructed implementation can be evaluated against the observable behaviour of its original application.
+The project is being built incrementally so that each reconstructed implementation can be compared with observable behaviour from its reference workflow.
 
 ---
 
@@ -152,3 +178,4 @@ I am interested in building AI systems that solve practical software engineering
 With LegacyLift, I want to explore the intersection of **AI Engineering, Backend Development, Software Analysis, and Automated Testing**, while understanding the reliability challenges involved in applying LLMs to real-world engineering workflows.
 
 The goal is simple: make legacy software modernization more systematic, evidence-driven, and measurable.
+
