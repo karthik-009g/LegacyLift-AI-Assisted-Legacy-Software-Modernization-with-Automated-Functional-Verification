@@ -43,7 +43,7 @@ def _source_digest(source_root: Path) -> str:
         relative_path = path.relative_to(source_root).as_posix()
         digest.update(relative_path.encode("utf-8"))
         digest.update(b"\0")
-        digest.update(path.read_bytes())
+        digest.update(path.read_bytes().replace(b"\r\n", b"\n"))
         digest.update(b"\0")
     return digest.hexdigest()
 

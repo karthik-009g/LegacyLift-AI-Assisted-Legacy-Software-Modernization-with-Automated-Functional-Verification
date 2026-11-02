@@ -163,6 +163,16 @@ The guidance inputs and report are in [`artifacts/evaluation/`](artifacts/evalua
 python -c "from legacylift.evaluation import write_evaluation_artifacts; write_evaluation_artifacts('artifacts/evaluation')"
 ```
 
+## Milestone 7: Documentation and End-to-End Demo
+
+The architecture and evidence boundaries are described in [`docs/architecture.md`](docs/architecture.md); the split, metrics, current results, and limits are in [`docs/evaluation.md`](docs/evaluation.md). The single-command demo regenerates all artifacts, runs the differential and held-out checks, then prints a machine-readable summary:
+
+```powershell
+python -m legacylift demo
+```
+
+GitHub Actions runs the demo, full test suite, lint, formatting, dependency checks, and a generated-artifact freshness check on pushes and pull requests.
+
 ## Setup and local checks
 
 Requires Python 3.11 or newer.
@@ -170,11 +180,16 @@ Requires Python 3.11 or newer.
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install -e ".[dev]"
+python -m pip install -r requirements.lock
+python -m pip install --no-deps -e .
+python -m legacylift demo
 python -m pytest
 ruff check .
 ruff format --check .
+python -m pip check
 ```
+
+The lock file and `.python-version` pin the versions used to generate the committed reports. `pyproject.toml` retains bounded package requirements for normal installation.
 
 Start the local reference app with:
 
@@ -193,7 +208,7 @@ The local SQLite database is stored under Flask's `instance` directory. Set `LEG
 - [x] Differential comparison of responses and state changes
 - [x] Reproducible held-out baseline evaluation and evidence-context audit
 - [ ] Model-generated source-only/runtime-only/hybrid comparison
-- [ ] Final documentation and one-command demo
+- [x] Final documentation and one-command demo
 
 ---
 
@@ -201,7 +216,7 @@ The local SQLite database is stored under Flask's `instance` directory. Set `LEG
 
 <kbd>Currently in development</kbd>
 
-Milestones 0 through 5 and the initial held-out baseline evaluation are complete. The report confirms the manually implemented FastAPI baseline matches all current held-out cases and that runtime/hybrid evidence contexts contain guidance traces only. A model-generated comparison remains unrun, so the project makes no comparative performance claim. Final documentation and a one-command demo remain in progress.
+The end-to-end prototype and demo cover Milestones 0 through 7. The report confirms the manually implemented FastAPI baseline matches all current held-out cases and that runtime/hybrid evidence contexts contain guidance traces only. A model-generated comparison remains unrun, so the project makes no comparative performance claim.
 
 The project is being built incrementally so that each reconstructed implementation can be compared with observable behaviour from its reference workflow.
 
