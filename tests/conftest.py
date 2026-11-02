@@ -32,9 +32,12 @@ def client(app) -> FlaskClient:
 @pytest.fixture
 def stored_tickets(app):
     def read_all():
-        with sqlite3.connect(app.config["TEST_DATABASE_PATH"]) as connection:
+        connection = sqlite3.connect(app.config["TEST_DATABASE_PATH"])
+        try:
             return connection.execute(
                 "SELECT id, owner_id, subject, description, status FROM tickets ORDER BY id"
             ).fetchall()
+        finally:
+            connection.close()
 
     return read_all
