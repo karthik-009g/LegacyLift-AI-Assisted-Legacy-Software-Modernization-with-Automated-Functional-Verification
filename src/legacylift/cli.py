@@ -156,13 +156,16 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "passed" else 1
     if arguments.command == "propose":
-        result = run_proposal(
-            arguments.condition,
-            model=arguments.model,
-            timeout=arguments.timeout,
-            project_root=arguments.root,
-            output_path=arguments.output,
-        )
+        try:
+            result = run_proposal(
+                arguments.condition,
+                model=arguments.model,
+                timeout=arguments.timeout,
+                project_root=arguments.root,
+                output_path=arguments.output,
+            )
+        except (RuntimeError, ValueError) as error:
+            parser.error(str(error))
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
 

@@ -179,6 +179,19 @@ def test_groq_provider_requires_api_key(monkeypatch):
         GroqProvider.from_environment()
 
 
+def test_propose_cli_reports_missing_key_without_traceback(monkeypatch, capsys):
+    from legacylift import cli
+
+    monkeypatch.delenv("GROQ_API_KEY", raising=False)
+    with pytest.raises(SystemExit) as error:
+        cli.main(["propose", "--condition", "hybrid"])
+
+    captured = capsys.readouterr()
+    assert error.value.code == 2
+    assert "GROQ_API_KEY is not set" in captured.err
+    assert "Traceback" not in captured.err
+
+
 @pytest.mark.parametrize(
     ("status_code", "message"),
     [
