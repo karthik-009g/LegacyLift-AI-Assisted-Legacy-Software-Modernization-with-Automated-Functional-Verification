@@ -137,6 +137,20 @@ The capture runner replays fixed synthetic scenarios against a fresh SQLite fixt
 
 The AST pass reports literal Flask route decorators, function definitions, imports, branch counts, and session/database references without executing source files. Its report is [`artifacts/static/legacy_analysis.json`](artifacts/static/legacy_analysis.json). A strict Pydantic schema keeps observed facts, inferences, unknowns, captured contracts, validation cases, and provenance separate. The checked-in EER and its JSON Schema are under `artifacts/evidence/` and `artifacts/schemas/`.
 
+## Milestone 4: Reconstruction Baseline and Provider Boundary
+
+The project includes an independently implemented FastAPI ticket service with its own Pydantic request models and SQLite fixture. Its routes are covered by direct behavior tests against the Flask reference. The reconstruction interface accepts bounded, selectable source/runtime evidence (`source_only`, `runtime_only`, or `hybrid`) and uses a deterministic mock provider by default. No external model call or API key is needed for the local workflow, and the provider returns a reconstruction plan rather than executable code.
+
+## Milestone 5: Differential Verification
+
+The differential runner replays each fixed scenario against fresh Flask and FastAPI databases. It compares response status, selected headers, JSON, cookie attributes (with cookie values redacted), session transitions, database snapshots, and database deltas. Differences are retained by field in the report rather than normalized away. The checked-in result is [`artifacts/verification/differential_report.json`](artifacts/verification/differential_report.json).
+
+Regenerate it with:
+
+```powershell
+python -c "from legacylift.verification.runner import write_differential_report; write_differential_report('artifacts/verification/differential_report.json')"
+```
+
 ## Setup and local checks
 
 Requires Python 3.11 or newer.
@@ -163,8 +177,8 @@ The local SQLite database is stored under Flask's `instance` directory. Set `LEG
 - [x] Python project bootstrap and deterministic Flask/SQLite reference workflows
 - [x] Runtime behaviour capture with a versioned synthetic trace
 - [x] Static source-code analysis and versioned Engineering Evidence Record
-- [ ] FastAPI reconstruction behind a provider-independent interface
-- [ ] Differential comparison of responses and state changes
+- [x] FastAPI reconstruction baseline behind a provider-independent interface
+- [x] Differential comparison of responses and state changes
 - [ ] Controlled evaluation and reproducible report
 
 ---
@@ -173,7 +187,7 @@ The local SQLite database is stored under Flask's `instance` directory. Set `LEG
 
 <kbd>Currently in development</kbd>
 
-Milestones 0 through 3 are complete. The repository contains the Python project setup, deterministic Flask/SQLite reference workflows, repeatable runtime traces, a best-effort AST report, and a validated Engineering Evidence Record. FastAPI reconstruction, differential verification, and evaluation are planned next.
+Milestones 0 through 5 are complete. The repository contains the Python project setup, deterministic Flask/SQLite reference workflows, repeatable runtime traces, a best-effort AST report, a validated Engineering Evidence Record, an independently implemented FastAPI baseline, a provider boundary, and a reproducible differential report. The remaining work is a controlled evaluation, final documentation, and a one-command demo.
 
 The project is being built incrementally so that each reconstructed implementation can be compared with observable behaviour from its reference workflow.
 
