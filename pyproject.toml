@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=65", "wheel>=0.41"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "legacylift"
+version = "0.1.0"
+description = "Evidence-grounded modernization and functional verification for selected legacy workflows."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "Flask>=3.1,<4",
+    "fastapi>=0.134,<1",
+    "httpx>=0.28,<1",
+    "pydantic>=2,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3,<10",
+    "ruff>=0.11,<1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["legacylift*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.ruff.format]
+quote-style = "double"
