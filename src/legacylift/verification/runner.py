@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from collections.abc import Callable
 from copy import deepcopy
 from http.cookies import SimpleCookie
 from pathlib import Path
@@ -198,7 +199,10 @@ def _make_step_result(
 
 
 def _prepare_apps(
-    root: Path, scenario: Scenario, observations: list[dict[str, dict[str, str | None]]]
+    root: Path,
+    scenario: Scenario,
+    observations: list[dict[str, dict[str, str | None]]],
+    reconstructed_app_factory: Callable[[dict[str, Any]], Any],
 ):
     legacy_database = root / f"{scenario.scenario_id}-legacy.sqlite3"
     reconstructed_database = root / f"{scenario.scenario_id}-reconstructed.sqlite3"
@@ -209,7 +213,7 @@ def _prepare_apps(
             "DATABASE": str(legacy_database),
         }
     )
-    reconstructed_app = create_reconstructed_app(
+    reconstructed_app = reconstructed_app_factory(
         {
             "SECRET_KEY": "differential-test-secret",
             "DATABASE": reconstructed_database,
@@ -223,8 +227,11 @@ def _prepare_apps(
 
 def compare_scenarios(
     scenarios: tuple[Scenario, ...] = DEFAULT_SCENARIOS,
+    *,
+    reconstructed_app_factory: Callable[[dict[str, Any]], Any] = create_reconstructed_app,
+    reconstructed_application: str = RECONSTRUCTED_APPLICATION,
 ) -> dict[str, Any]:
-    """Replay scenarios independently and compare HTTP, session, and database behavior."""
+    """Replay scenarios against Flask and a supplied FastAPI app factory."""
     scenario_results = []
     with TemporaryDirectory(prefix="legacylift-differential-") as temporary_directory:
         root = Path(temporary_directory)
@@ -235,7 +242,7 @@ def compare_scenarios(
                 legacy_database,
                 reconstructed_app,
                 reconstructed_database,
-            ) = _prepare_apps(root, scenario, observations)
+            ) = _prepare_apps(root, scenario, observations, reconstructed_app_factory)
             step_results = []
             with (
                 legacy_app.test_client() as legacy_client,
@@ -264,7 +271,7 @@ def compare_scenarios(
     return {
         "differential_schema_version": DIFFERENTIAL_SCHEMA_VERSION,
         "legacy_application": LEGACY_APPLICATION,
-        "reconstructed_application": RECONSTRUCTED_APPLICATION,
+        "reconstructed_application": reconstructed_application,
         "summary": {
             "passed": passed_steps == len(steps),
             "scenario_count": len(scenario_results),

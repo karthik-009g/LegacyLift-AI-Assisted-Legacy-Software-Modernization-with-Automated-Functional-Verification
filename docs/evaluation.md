@@ -34,7 +34,13 @@ The report records the Python minor version and locked package versions so a pat
 
 ## What the result does not show
 
-No model-generated reconstruction has been run for source-only, runtime-only, or hybrid evidence. The deterministic mock provider does not produce code, and the Groq provider only saves proposals for review; it does not execute generated code. Therefore there is no measured condition-level functional fidelity and no evidence that combining evidence improves outcomes. Manual correction time, model cost, and repeated split variance are also unmeasured. A future model experiment must review and run a separate reconstruction per condition in a controlled environment, keep held-out traces out of runtime/hybrid context, and compare the resulting apps against the same held-out set. Free-tier limits are account-specific and may constrain the experiment.
+No model-generated reconstruction has been run for source-only, runtime-only, or hybrid evidence. The deterministic mock provider does not produce code, and the Groq provider only saves proposals for review; the separate Docker runner has not yet been used with model output. Therefore there is no measured condition-level functional fidelity and no evidence that combining evidence improves outcomes. Manual correction time, model cost, and repeated split variance are also unmeasured. A future model experiment must review and run a separate reconstruction per condition in a controlled environment, keep held-out traces out of runtime/hybrid context, and compare the resulting apps against the same held-out set. Free-tier limits are account-specific and may constrain the experiment.
+
+## Reviewed proposal runner
+
+`legacylift evaluate-proposals --human-reviewed` reads one proposal per condition from `artifacts/proposals/`, evaluates non-empty proposals, and writes `artifacts/proposals/model_generated_comparison.json`. The flag declares that a person inspected each candidate; it is not an automated code-safety check. Build the evaluation image with `docker build --file Dockerfile.evaluation --tag legacylift-evaluation:py311 .` before running the command.
+
+The runner disables container networking, uses a read-only root filesystem, drops Linux capabilities, runs as an unprivileged user, and applies CPU, memory, process-count, and timeout limits. It passes no host API key and mounts only the candidate source file. These controls reduce accidental access and side effects but are not a security boundary against deliberately hostile Python. The image includes LegacyLift's Python source, including held-out scenario definitions, so a proposal can inspect the local evaluation code; this is a limitation of the initial prototype. Review candidates before execution and treat results as descriptive. Model-declared unsupported claims are reported but not independently verified; unsupported behavior and human correction effort remain unmeasured.
 
 ## Example mismatch record
 

@@ -139,7 +139,7 @@ The AST pass reports literal Flask route decorators, function definitions, impor
 
 ## Milestone 4: Reconstruction Baseline and Provider Boundary
 
-The project includes an independently implemented FastAPI ticket service with its own Pydantic request models and SQLite fixture. Its routes are covered by differential tests against the Flask reference. The reconstruction interface accepts bounded, selectable source/runtime evidence (`source_only`, `runtime_only`, or `hybrid`). The deterministic mock remains the default. An optional Groq adapter can request a cloud model proposal; output is saved for human review and never executed by the project.
+The project includes an independently implemented FastAPI ticket service with its own Pydantic request models and SQLite fixture. Its routes are covered by differential tests against the Flask reference. The reconstruction interface accepts bounded, selectable source/runtime evidence (`source_only`, `runtime_only`, or `hybrid`). An optional Groq adapter requests a cloud model proposal; output is saved for review and is not executed automatically. An explicit evaluation command can run code that a person has reviewed inside a restricted Docker container.
 
 ## Milestone 5: Differential Verification
 
@@ -155,7 +155,7 @@ python -c "from legacylift.verification.runner import write_differential_report;
 
 The initial split uses `create_ticket`, `retrieve_owned_ticket`, and `valid_status_transitions` as guidance scenarios. `hide_other_users_ticket`, `reject_empty_subject`, and `reject_skipped_status` are held out from runtime evidence. The evaluation builds and stores a guidance-only trace and EER, audits the source-only/runtime-only/hybrid contexts for held-out runtime leakage, and measures the hand-built FastAPI baseline against the held-out cases.
 
-The baseline matched all 3 held-out scenarios and all 6 request steps. This measures the hand-built implementation only. The source-only, runtime-only, and hybrid model reconstruction comparison has **not been run**: there is no model-generated app for any condition, and the mock provider does not generate executable code. The report makes no claim that one evidence condition performs better.
+The baseline matched all 3 held-out scenarios and all 6 request steps. This measures the hand-built implementation only. The source-only, runtime-only, and hybrid model reconstruction comparison has **not been run**: there is no model-generated app for any condition, and the mock provider does not generate executable code. The report makes no claim that one evidence condition performs better. The optional reviewed-candidate runner is implemented; running it still requires three proposals and a person to inspect their code.
 
 The guidance inputs and report are in [`artifacts/evaluation/`](artifacts/evaluation/). Regenerate them with:
 
@@ -177,7 +177,16 @@ Remove-Item Env:GROQ_API_KEY
 Remove-Variable secureKey
 ```
 
-To prepare all three evidence-condition proposals, run `legacylift propose --condition source_only`, `runtime_only`, and `hybrid` separately while the key is set. Each command makes one external API request and writes its response under the ignored `artifacts/proposals/` directory. The normal `demo` command stays offline. The provider sends the selected EER evidence and, for source-only/hybrid, bounded source excerpts to Groq over HTTPS; use only source you are allowed to share. The API key is read from `GROQ_API_KEY` and is not written to proposal files. Review generated code before use; LegacyLift never executes it.
+To prepare all three evidence-condition proposals, run `legacylift propose --condition source_only`, `runtime_only`, and `hybrid` separately while the key is set. Each command makes one external API request and writes its response under the ignored `artifacts/proposals/` directory. The normal `demo` command stays offline. The provider sends the selected EER evidence and, for source-only/hybrid, bounded source excerpts to Groq over HTTPS; use only source you are allowed to share. The API key is read from `GROQ_API_KEY` and is not written to proposal files. The evaluation container does not receive this key.
+
+After generating all three proposals, inspect the `proposed_code` in each JSON file under `artifacts/proposals/`. Build the evaluator image once, then explicitly declare that you reviewed the code:
+
+```powershell
+docker build --file Dockerfile.evaluation --tag legacylift-evaluation:py311 .
+python -m legacylift evaluate-proposals --human-reviewed
+```
+
+This writes `artifacts/proposals/model_generated_comparison.json`. The container has no network, a read-only root filesystem, resource limits, and receives only the candidate file as a read-only mount. This is defense in depth, not a security boundary for hostile code: review each proposal carefully. The image includes LegacyLift source, including the fixed held-out scenario definitions, so the experiment does not prove resistance to an adversarial model inspecting the local evaluator. The report includes scenario/step match rates, response/session/database agreement, model-reported unsupported claims, and a hash of each candidate. Unsupported behaviors and manual correction time remain unmeasured. One run per condition on one synthetic split supports descriptive results only, not a general claim that one evidence condition is better.
 
 ## Milestone 7: Documentation and End-to-End Demo
 
@@ -223,7 +232,7 @@ The local SQLite database is stored under Flask's `instance` directory. Set `LEG
 - [x] FastAPI reconstruction baseline behind a provider-independent interface
 - [x] Differential comparison of responses and state changes
 - [x] Reproducible held-out baseline evaluation and evidence-context audit
-- [ ] Model-generated source-only/runtime-only/hybrid comparison
+- [ ] Run and record model-generated source-only/runtime-only/hybrid comparison
 - [x] Final documentation and one-command demo
 
 ---
@@ -232,7 +241,7 @@ The local SQLite database is stored under Flask's `instance` directory. Set `LEG
 
 <kbd>Currently in development</kbd>
 
-The end-to-end prototype and demo cover Milestones 0 through 7. The report confirms the manually implemented FastAPI baseline matches all current held-out cases and that runtime/hybrid evidence contexts contain guidance traces only. A Groq proposal path is available, but proposals have not yet been generated and evaluated across the three conditions; the project makes no comparative performance claim.
+The deterministic prototype, evaluation tooling, and demo are implemented. The report confirms the manually implemented FastAPI baseline matches all current held-out cases and that runtime/hybrid evidence contexts contain guidance traces only. A Groq proposal path and reviewed-candidate container are available, but proposals have not yet been generated and evaluated across the three conditions; the project makes no comparative performance claim.
 
 The project is being built incrementally so that each reconstructed implementation can be compared with observable behaviour from its reference workflow.
 

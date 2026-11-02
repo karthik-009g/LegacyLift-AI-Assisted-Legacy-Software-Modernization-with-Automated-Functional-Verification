@@ -1,0 +1,5 @@
+**
+!Dockerfile.evaluation
+!requirements.lock
+!src/
+!src/**

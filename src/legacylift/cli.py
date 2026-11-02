@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from legacylift.evaluation import write_evaluation_artifacts
+from legacylift.evaluation import run_reviewed_proposals, write_evaluation_artifacts
 from legacylift.evidence.builder import build_eer
 from legacylift.evidence.storage import load_eer, write_eer, write_eer_schema
 from legacylift.reconstruction import GroqProvider, build_reconstruction_request
@@ -150,6 +150,20 @@ def main(argv: list[str] | None = None) -> int:
     propose_parser.add_argument("--timeout", type=float, default=90.0)
     propose_parser.add_argument("--root", type=Path, default=None)
     propose_parser.add_argument("--output", type=Path, default=None)
+    evaluate_parser = subparsers.add_parser(
+        "evaluate-proposals",
+        help="evaluate reviewed Groq proposals in an isolated Docker container",
+    )
+    evaluate_parser.add_argument(
+        "--human-reviewed",
+        action="store_true",
+        required=True,
+        help="declare that every proposal's code was inspected before execution",
+    )
+    evaluate_parser.add_argument("--root", type=Path, default=None)
+    evaluate_parser.add_argument("--proposal-directory", type=Path, default=None)
+    evaluate_parser.add_argument("--output", type=Path, default=None)
+    evaluate_parser.add_argument("--timeout", type=float, default=180.0)
     arguments = parser.parse_args(argv)
     if arguments.command == "demo":
         result = run_demo(arguments.root)
@@ -168,6 +182,22 @@ def main(argv: list[str] | None = None) -> int:
             parser.error(str(error))
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
+    if arguments.command == "evaluate-proposals":
+        root = Path(arguments.root or Path(__file__).resolve().parents[2]).resolve()
+        try:
+            result = run_reviewed_proposals(
+                root,
+                human_reviewed=arguments.human_reviewed,
+                proposals_directory=(arguments.proposal_directory or Path("artifacts/proposals")),
+                output_path=(
+                    arguments.output or Path("artifacts/proposals/model_generated_comparison.json")
+                ),
+                timeout=arguments.timeout,
+            )
+        except (RuntimeError, ValueError) as error:
+            parser.error(str(error))
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "completed" else 1
 
     if arguments.command is None:
         parser.print_help()

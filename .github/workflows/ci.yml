@@ -20,10 +20,14 @@ jobs:
           python -m pip install --no-deps --editable .
       - name: Check dependency consistency
         run: python -m pip check
+      - name: Build reviewed-candidate evaluation image
+        run: docker build --file Dockerfile.evaluation --tag legacylift-evaluation:py311 .
       - name: Rebuild the demo artifacts
         run: python -m legacylift demo
       - name: Run tests
         run: python -m pytest -q
+        env:
+          LEGACYLIFT_DOCKER_SMOKE: "1"
       - name: Lint and format
         run: |
           ruff check .

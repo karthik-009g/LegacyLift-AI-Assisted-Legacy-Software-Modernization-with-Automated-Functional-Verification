@@ -11,6 +11,10 @@ flowchart LR
     D --> E[Evidence condition filter]
     E --> F[Provider protocol]
     F --> G[Deterministic mock proposal]
+    F --> K[Optional Groq proposal]
+    K --> L[Human review]
+    L --> M[Restricted candidate runner]
+    M --> I
     A --> H[FastAPI hand-built baseline]
     G -. no executable output .-> H
     A --> I[Differential verification]
@@ -18,7 +22,7 @@ flowchart LR
     I --> J[Held-out evaluation report]
 ```
 
-The mock provider is an offline boundary test. An optional Groq adapter can request a proposal from a cloud model and store it for review. The FastAPI baseline is hand-built and exists so the comparison and evidence pipeline can be exercised without credentials or network access. Model output is never executed by the demo.
+The mock provider is an offline boundary test. An optional Groq adapter can request a proposal from a cloud model and store it for review. The FastAPI baseline is hand-built and exists so the comparison and evidence pipeline can be exercised without credentials or network access. The demo never executes model output. A separate command can evaluate a candidate only after an explicit human-review declaration and runs it in a resource-limited, network-disabled Docker container; this is not a formal security boundary for hostile Python.
 
 ## Components
 
@@ -31,7 +35,7 @@ The mock provider is an offline boundary test. An optional Groq adapter can requ
 | Reconstruction boundary | `src/legacylift/reconstruction/` | Filters evidence by source/runtime/hybrid condition, bounds context, and includes deterministic mock and optional Groq providers. |
 | FastAPI baseline | `src/legacylift/reconstructed_app/` | Independently implements the selected workflow for local functional comparison. |
 | Verification | `src/legacylift/verification/` | Replays matching scenarios and reports per-field differences in HTTP and persisted state. |
-| Evaluation | `src/legacylift/evaluation/` | Builds guidance-only evidence, checks held-out runtime isolation, and measures the manual baseline. |
+| Evaluation | `src/legacylift/evaluation/` | Builds guidance-only evidence, checks held-out runtime isolation, measures the manual baseline, and evaluates explicitly reviewed model proposals. |
 | Demo CLI | `src/legacylift/cli.py` | Rebuilds all checked-in artifacts in pipeline order. |
 
 ## Evidence and trust boundaries
@@ -45,3 +49,4 @@ The mock provider is an offline boundary test. An optional Groq adapter can requ
 - The EER keeps observed facts, inferences, and unknowns distinct and links claims to source or runtime provenance.
 - The evaluation sends guidance traces to runtime/hybrid contexts only. Source-only and hybrid contexts include the complete source tree, which also contains implementations of held-out branches.
 - The current comparison measures a manually implemented FastAPI baseline. It does not compare model-generated applications.
+- The reviewed proposal container has no network, receives no host API key, mounts only the candidate code, and runs with a read-only root filesystem and resource limits. Its image still contains LegacyLift source, including held-out scenario definitions, so a candidate could inspect the local evaluation logic; report results as descriptive evidence, not an adversarially robust benchmark.

@@ -720,8 +720,8 @@
       "external_provider_calls": 0,
       "held_out_runtime_workflows_in_context": [],
       "omitted_evidence_count": 0,
-      "prompt_char_count": 11283,
-      "prompt_sha256": "322b40df337ba46278aa149081250354c63b5df6da8e80ee802c517a4ae19c14",
+      "prompt_char_count": 12091,
+      "prompt_sha256": "33d77579044ff17c9ee528f30d7f325493857cba76112e9de45786dfdfb7e698",
       "runtime_workflows": [],
       "selected_evidence_counts": {
         "facts": 23,
@@ -739,8 +739,8 @@
       "external_provider_calls": 0,
       "held_out_runtime_workflows_in_context": [],
       "omitted_evidence_count": 0,
-      "prompt_char_count": 11553,
-      "prompt_sha256": "b23b6dadc984f8038de58eb9f1fb086f4a20df9fdbb291f5e5b81ced47f7bdba",
+      "prompt_char_count": 12361,
+      "prompt_sha256": "4bda3542c23a0e0bfe5dc7b098a0ddbd09b47b3e091b76a15e9a3eaeeff16d41",
       "runtime_workflows": [
         "create_ticket",
         "retrieve_owned_ticket",
@@ -762,8 +762,8 @@
       "external_provider_calls": 0,
       "held_out_runtime_workflows_in_context": [],
       "omitted_evidence_count": 0,
-      "prompt_char_count": 22135,
-      "prompt_sha256": "58d0ec10e69c0d6bf27c245dc38f8b2348e667ef51141fc75431effb88b8447d",
+      "prompt_char_count": 22943,
+      "prompt_sha256": "9d8a717b1d3882fde77d977ce8c9bb96a6dd19a8a420a0e40e313c5c2c5e967c",
       "runtime_workflows": [
         "create_ticket",
         "retrieve_owned_ticket",
