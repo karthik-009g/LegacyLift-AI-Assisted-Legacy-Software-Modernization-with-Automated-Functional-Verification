@@ -28,6 +28,7 @@ htmlcov/
 *.sqlite
 *.sqlite3
 instance/
+artifacts/proposals/
 
 # Editors and operating systems
 .vscode/

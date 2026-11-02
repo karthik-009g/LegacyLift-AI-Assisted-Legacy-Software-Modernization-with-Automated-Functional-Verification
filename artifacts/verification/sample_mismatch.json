@@ -1,0 +1,124 @@
+{
+  "differential_schema_version": "1.0",
+  "legacy": {
+    "database_after": [
+      {
+        "description": "Fixture ticket for local tests.",
+        "id": 1,
+        "owner_id": "alice",
+        "status": "open",
+        "subject": "Synthetic support request"
+      }
+    ],
+    "database_before": [
+      {
+        "description": "Fixture ticket for local tests.",
+        "id": 1,
+        "owner_id": "alice",
+        "status": "open",
+        "subject": "Synthetic support request"
+      }
+    ],
+    "database_delta": {
+      "added": [],
+      "removed": [],
+      "updated": []
+    },
+    "response": {
+      "cookies": [
+        {
+          "http_only": true,
+          "name": "session",
+          "path": "/",
+          "same_site": null,
+          "secure": false,
+          "value_redacted": true
+        }
+      ],
+      "headers": {
+        "content-type": "application/json",
+        "vary": "Cookie"
+      },
+      "json": {
+        "user_id": "alice"
+      },
+      "status": 200
+    },
+    "session_after": {
+      "user_id": "alice"
+    },
+    "session_before": {
+      "user_id": null
+    }
+  },
+  "mismatches": [
+    {
+      "field": "response.status",
+      "legacy": 200,
+      "reconstructed": 418
+    }
+  ],
+  "note": "This is not an observed failure. The reconstructed status was changed in memory to demonstrate the mismatch report format.",
+  "passed": false,
+  "reconstructed": {
+    "database_after": [
+      {
+        "description": "Fixture ticket for local tests.",
+        "id": 1,
+        "owner_id": "alice",
+        "status": "open",
+        "subject": "Synthetic support request"
+      }
+    ],
+    "database_before": [
+      {
+        "description": "Fixture ticket for local tests.",
+        "id": 1,
+        "owner_id": "alice",
+        "status": "open",
+        "subject": "Synthetic support request"
+      }
+    ],
+    "database_delta": {
+      "added": [],
+      "removed": [],
+      "updated": []
+    },
+    "response": {
+      "cookies": [
+        {
+          "http_only": true,
+          "name": "session",
+          "path": "/",
+          "same_site": null,
+          "secure": false,
+          "value_redacted": true
+        }
+      ],
+      "headers": {
+        "content-type": "application/json",
+        "vary": "Cookie"
+      },
+      "json": {
+        "user_id": "alice"
+      },
+      "status": 418
+    },
+    "session_after": {
+      "user_id": "alice"
+    },
+    "session_before": {
+      "user_id": null
+    }
+  },
+  "report_kind": "synthetic_mutation_example",
+  "request": {
+    "json": {
+      "user_id": "alice"
+    },
+    "method": "POST",
+    "path": "/session"
+  },
+  "scenario_id": "create_ticket",
+  "step_id": "start_session"
+}

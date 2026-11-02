@@ -33,3 +33,8 @@ class ReconstructionProposal(BaseModel):
     proposed_code: str | None = None
     requires_human_review: bool = True
     omitted_evidence_ids: list[str] = Field(default_factory=list)
+    unsupported_claims: list[str] = Field(default_factory=list)
+    model: str | None = None
+    request_id: str | None = None
+    usage: dict[str, int] = Field(default_factory=dict)
+    prompt_sha256: str | None = None

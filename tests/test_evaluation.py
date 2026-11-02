@@ -38,8 +38,25 @@ def test_evaluation_isolates_guidance_evidence_and_reports_baseline_honestly():
     assert report["baseline_result"]["scope"] == "held-out scenarios only"
     assert report["baseline_result"]["scenario_match_rate"] == 1.0
     assert report["baseline_result"]["step_match_rate"] == 1.0
+    assert (
+        report["baseline_result"]["metrics"]["response_contract_agreement"]["agreement_rate"] == 1.0
+    )
+    assert (
+        report["baseline_result"]["metrics"]["session_transition_agreement"]["agreement_rate"]
+        == 1.0
+    )
+    assert report["baseline_result"]["metrics"]["database_state_agreement"]["agreement_rate"] == 1.0
+    assert (
+        report["baseline_result"]["metrics"]["unsupported_behavior_or_claim_count"]["status"]
+        == "not_measured"
+    )
     assert report["strategy_comparison"]["status"] == "not_run"
     assert report["strategy_comparison"]["comparative_claims_supported"] is False
+    assert report["methodology"]["reconstruction_context_limits"] == {
+        "max_source_chars": 2_000,
+        "max_contracts": 24,
+        "max_context_chars": 18_000,
+    }
 
     conditions = {item["condition"]: item for item in report["condition_audit"]}
     assert conditions["source_only"]["source_excerpt_char_count"] > 0

@@ -15,6 +15,9 @@ ALLOWED_PROVENANCE = {
     "runtime_only": {"runtime_trace"},
     "hybrid": {"source_ast", "runtime_trace"},
 }
+DEFAULT_MAX_SOURCE_CHARS = 2_000
+DEFAULT_MAX_CONTRACTS = 24
+DEFAULT_MAX_CONTEXT_CHARS = 18_000
 
 
 def _has_allowed_provenance(item, provenance_by_id, condition: EvidenceCondition) -> bool:
@@ -103,9 +106,9 @@ def build_reconstruction_request(
     condition: EvidenceCondition,
     *,
     source_root: str | Path,
-    max_source_chars: int = 6_000,
-    max_contracts: int = 24,
-    max_context_chars: int = 18_000,
+    max_source_chars: int = DEFAULT_MAX_SOURCE_CHARS,
+    max_contracts: int = DEFAULT_MAX_CONTRACTS,
+    max_context_chars: int = DEFAULT_MAX_CONTEXT_CHARS,
 ) -> ReconstructionRequest:
     """Select one evidence condition and cap source excerpt and contract count."""
     if max_source_chars < 0 or max_contracts < 0 or max_context_chars < 1_000:

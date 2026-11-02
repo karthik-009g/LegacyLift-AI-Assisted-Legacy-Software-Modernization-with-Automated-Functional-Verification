@@ -7,7 +7,9 @@ from pathlib import Path
 from legacylift.verification.runner import (
     compare_observations,
     compare_scenarios,
+    sample_mismatch_report,
     write_differential_report,
+    write_sample_mismatch_report,
 )
 
 
@@ -53,4 +55,17 @@ def test_checked_in_differential_report_matches_current_comparison(tmp_path):
         Path(__file__).parents[1] / "artifacts" / "verification" / "differential_report.json"
     )
 
+    assert generated.read_bytes() == checked_in.read_bytes()
+
+
+def test_sample_mismatch_report_is_labeled_and_reproducible(tmp_path):
+    report = sample_mismatch_report()
+    generated = write_sample_mismatch_report(tmp_path / "sample.json")
+    checked_in = Path(__file__).parents[1] / "artifacts" / "verification" / "sample_mismatch.json"
+
+    assert report["report_kind"] == "synthetic_mutation_example"
+    assert report["passed"] is False
+    assert report["mismatches"] == [
+        {"field": "response.status", "legacy": 200, "reconstructed": 418}
+    ]
     assert generated.read_bytes() == checked_in.read_bytes()

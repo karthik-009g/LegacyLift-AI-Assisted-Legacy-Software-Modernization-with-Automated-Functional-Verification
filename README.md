@@ -139,7 +139,7 @@ The AST pass reports literal Flask route decorators, function definitions, impor
 
 ## Milestone 4: Reconstruction Baseline and Provider Boundary
 
-The project includes an independently implemented FastAPI ticket service with its own Pydantic request models and SQLite fixture. Its routes are covered by direct behavior tests against the Flask reference. The reconstruction interface accepts bounded, selectable source/runtime evidence (`source_only`, `runtime_only`, or `hybrid`) and uses a deterministic mock provider by default. No external model call or API key is needed for the local workflow, and the provider returns a reconstruction plan rather than executable code.
+The project includes an independently implemented FastAPI ticket service with its own Pydantic request models and SQLite fixture. Its routes are covered by differential tests against the Flask reference. The reconstruction interface accepts bounded, selectable source/runtime evidence (`source_only`, `runtime_only`, or `hybrid`). The deterministic mock remains the default. An optional Groq adapter can request a cloud model proposal; output is saved for human review and never executed by the project.
 
 ## Milestone 5: Differential Verification
 
@@ -163,9 +163,25 @@ The guidance inputs and report are in [`artifacts/evaluation/`](artifacts/evalua
 python -c "from legacylift.evaluation import write_evaluation_artifacts; write_evaluation_artifacts('artifacts/evaluation')"
 ```
 
+## Optional Groq Cloud Model
+
+The optional provider uses the existing `httpx` dependency and Groq's OpenAI-compatible chat completions API. The default model, `openai/gpt-oss-20b`, supports strict JSON Schema output. Groq documents a Free tier with account-specific limits; keep the account on that tier and do not upgrade to Developer for this project. Groq says upgrading to Developer requires a payment method; see its [billing FAQ](https://console.groq.com/docs/billing-faqs). Limits and model availability can change.
+
+Create a Groq API key in the [Groq Console](https://console.groq.com/keys), then enter it as a secure PowerShell prompt for the current session:
+
+```powershell
+$secureKey = Read-Host "Groq API key" -AsSecureString
+$env:GROQ_API_KEY = [System.Net.NetworkCredential]::new("", $secureKey).Password
+python -m legacylift propose --condition hybrid
+Remove-Item Env:GROQ_API_KEY
+Remove-Variable secureKey
+```
+
+To prepare all three evidence-condition proposals, run `legacylift propose --condition source_only`, `runtime_only`, and `hybrid` separately while the key is set. Each command makes one external API request and writes its response under the ignored `artifacts/proposals/` directory. The normal `demo` command stays offline. The provider sends the selected EER evidence and, for source-only/hybrid, bounded source excerpts to Groq over HTTPS; use only source you are allowed to share. The API key is read from `GROQ_API_KEY` and is not written to proposal files. Review generated code before use; LegacyLift never executes it.
+
 ## Milestone 7: Documentation and End-to-End Demo
 
-The architecture and evidence boundaries are described in [`docs/architecture.md`](docs/architecture.md); the split, metrics, current results, and limits are in [`docs/evaluation.md`](docs/evaluation.md). The single-command demo regenerates all artifacts, runs the differential and held-out checks, then prints a machine-readable summary:
+The architecture and evidence boundaries are described in [`docs/architecture.md`](docs/architecture.md); the split, metrics, current results, and limits are in [`docs/evaluation.md`](docs/evaluation.md). A labeled, synthetic mismatch example is available at [`artifacts/verification/sample_mismatch.json`](artifacts/verification/sample_mismatch.json). The single-command demo regenerates all checked-in artifacts, runs the differential and held-out checks, then prints a machine-readable summary:
 
 ```powershell
 python -m legacylift demo
@@ -216,7 +232,7 @@ The local SQLite database is stored under Flask's `instance` directory. Set `LEG
 
 <kbd>Currently in development</kbd>
 
-The end-to-end prototype and demo cover Milestones 0 through 7. The report confirms the manually implemented FastAPI baseline matches all current held-out cases and that runtime/hybrid evidence contexts contain guidance traces only. A model-generated comparison remains unrun, so the project makes no comparative performance claim.
+The end-to-end prototype and demo cover Milestones 0 through 7. The report confirms the manually implemented FastAPI baseline matches all current held-out cases and that runtime/hybrid evidence contexts contain guidance traces only. A Groq proposal path is available, but proposals have not yet been generated and evaluated across the three conditions; the project makes no comparative performance claim.
 
 The project is being built incrementally so that each reconstructed implementation can be compared with observable behaviour from its reference workflow.
 

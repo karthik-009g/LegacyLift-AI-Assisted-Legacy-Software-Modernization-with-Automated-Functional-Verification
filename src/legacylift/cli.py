@@ -9,10 +9,20 @@ from typing import Any
 
 from legacylift.evaluation import write_evaluation_artifacts
 from legacylift.evidence.builder import build_eer
-from legacylift.evidence.storage import write_eer, write_eer_schema
+from legacylift.evidence.storage import load_eer, write_eer, write_eer_schema
+from legacylift.reconstruction import GroqProvider, build_reconstruction_request
+from legacylift.reconstruction.context import (
+    DEFAULT_MAX_CONTEXT_CHARS,
+    DEFAULT_MAX_CONTRACTS,
+    DEFAULT_MAX_SOURCE_CHARS,
+)
+from legacylift.reconstruction.models import EvidenceCondition
 from legacylift.runtime_capture.runner import write_trace_bundle
 from legacylift.static_analysis import analyze_paths, write_analysis_report
-from legacylift.verification.runner import write_differential_report
+from legacylift.verification.runner import (
+    write_differential_report,
+    write_sample_mismatch_report,
+)
 
 
 def run_demo(project_root: str | Path | None = None) -> dict[str, Any]:
@@ -40,6 +50,9 @@ def run_demo(project_root: str | Path | None = None) -> dict[str, Any]:
     differential_path = write_differential_report(
         artifact_root / "verification" / "differential_report.json"
     )
+    sample_mismatch_path = write_sample_mismatch_report(
+        artifact_root / "verification" / "sample_mismatch.json"
+    )
     evaluation_paths = write_evaluation_artifacts(artifact_root / "evaluation", root)
     differential = json.loads(differential_path.read_text(encoding="utf-8"))
     evaluation = json.loads(evaluation_paths["evaluation_report"].read_text(encoding="utf-8"))
@@ -63,9 +76,56 @@ def run_demo(project_root: str | Path | None = None) -> dict[str, Any]:
                 eer_path,
                 schema_path,
                 differential_path,
+                sample_mismatch_path,
                 *evaluation_paths.values(),
             )
         ],
+    }
+
+
+def run_proposal(
+    condition: EvidenceCondition,
+    *,
+    model: str = GroqProvider.DEFAULT_MODEL,
+    timeout: float = 90.0,
+    project_root: str | Path | None = None,
+    output_path: str | Path | None = None,
+) -> dict[str, Any]:
+    """Call Groq once and save its proposal without executing generated code."""
+    root = Path(project_root or Path(__file__).resolve().parents[2]).resolve()
+    guidance_eer = load_eer(root / "artifacts" / "evaluation" / "guidance_eer.json")
+    request = build_reconstruction_request(
+        guidance_eer,
+        condition,
+        source_root=root,
+        max_source_chars=DEFAULT_MAX_SOURCE_CHARS,
+        max_contracts=DEFAULT_MAX_CONTRACTS,
+        max_context_chars=DEFAULT_MAX_CONTEXT_CHARS,
+    )
+    proposal = GroqProvider.from_environment(model=model, timeout=timeout).propose(request)
+    destination = (
+        Path(output_path) if output_path else Path("artifacts" / "proposals" / f"{condition}.json")
+    )
+    if not destination.is_absolute():
+        destination = root / destination
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(
+        json.dumps(proposal.model_dump(mode="json"), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return {
+        "status": "proposal_saved",
+        "provider": proposal.provider,
+        "model": proposal.model,
+        "condition": proposal.condition,
+        "summary": proposal.summary,
+        "proposal_contains_code": proposal.proposed_code is not None,
+        "requires_human_review": proposal.requires_human_review,
+        "prompt_sha256": proposal.prompt_sha256,
+        "usage": proposal.usage,
+        "proposal_path": destination.relative_to(root).as_posix()
+        if destination.is_relative_to(root)
+        else str(destination),
     }
 
 
@@ -79,14 +139,38 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="project root (defaults to the installed LegacyLift checkout)",
     )
+    propose_parser = subparsers.add_parser(
+        "propose",
+        help="ask Groq for a cloud model proposal that is saved for human review",
+    )
+    propose_parser.add_argument(
+        "--condition", choices=("source_only", "runtime_only", "hybrid"), required=True
+    )
+    propose_parser.add_argument("--model", default=GroqProvider.DEFAULT_MODEL)
+    propose_parser.add_argument("--timeout", type=float, default=90.0)
+    propose_parser.add_argument("--root", type=Path, default=None)
+    propose_parser.add_argument("--output", type=Path, default=None)
     arguments = parser.parse_args(argv)
-    if arguments.command != "demo":
+    if arguments.command == "demo":
+        result = run_demo(arguments.root)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "passed" else 1
+    if arguments.command == "propose":
+        result = run_proposal(
+            arguments.condition,
+            model=arguments.model,
+            timeout=arguments.timeout,
+            project_root=arguments.root,
+            output_path=arguments.output,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command is None:
         parser.print_help()
         return 2
-
-    result = run_demo(arguments.root)
-    print(json.dumps(result, indent=2, sort_keys=True))
-    return 0 if result["status"] == "passed" else 1
+    parser.error(f"unknown command: {arguments.command}")
+    return 2
 
 
 if __name__ == "__main__":

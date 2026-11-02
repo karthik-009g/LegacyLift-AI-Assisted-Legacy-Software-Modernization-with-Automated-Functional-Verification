@@ -673,6 +673,37 @@
     },
     "failed_step_count": 0,
     "implementation": "hand_built_fastapi_baseline",
+    "metrics": {
+      "cookie_attribute_agreement": {
+        "agreement_rate": 1.0,
+        "compared_field_count": 6,
+        "matched_field_count": 6
+      },
+      "database_state_agreement": {
+        "agreement_rate": 1.0,
+        "compared_field_count": 18,
+        "matched_field_count": 18
+      },
+      "human_correction_effort": {
+        "reason": "No human correction session was timed or logged.",
+        "status": "not_measured"
+      },
+      "response_contract_agreement": {
+        "agreement_rate": 1.0,
+        "compared_field_count": 24,
+        "matched_field_count": 24
+      },
+      "session_transition_agreement": {
+        "agreement_rate": 1.0,
+        "compared_field_count": 12,
+        "matched_field_count": 12
+      },
+      "unsupported_behavior_or_claim_count": {
+        "count": null,
+        "reason": "No model-generated reconstruction or claims were evaluated.",
+        "status": "not_measured"
+      }
+    },
     "passed": true,
     "passed_step_count": 6,
     "scenario_count": 3,
@@ -689,8 +720,8 @@
       "external_provider_calls": 0,
       "held_out_runtime_workflows_in_context": [],
       "omitted_evidence_count": 0,
-      "prompt_char_count": 10990,
-      "prompt_sha256": "d0e629c70dc832d47267d1670f6708b1b2ee9be11c6d17404cdd3978b9792ddc",
+      "prompt_char_count": 11283,
+      "prompt_sha256": "322b40df337ba46278aa149081250354c63b5df6da8e80ee802c517a4ae19c14",
       "runtime_workflows": [],
       "selected_evidence_counts": {
         "facts": 23,
@@ -708,8 +739,8 @@
       "external_provider_calls": 0,
       "held_out_runtime_workflows_in_context": [],
       "omitted_evidence_count": 0,
-      "prompt_char_count": 11260,
-      "prompt_sha256": "f661004e1aece3761a185a608d7d020ba4fb167364b9963794de6f27f21287a6",
+      "prompt_char_count": 11553,
+      "prompt_sha256": "b23b6dadc984f8038de58eb9f1fb086f4a20df9fdbb291f5e5b81ced47f7bdba",
       "runtime_workflows": [
         "create_ticket",
         "retrieve_owned_ticket",
@@ -731,8 +762,8 @@
       "external_provider_calls": 0,
       "held_out_runtime_workflows_in_context": [],
       "omitted_evidence_count": 0,
-      "prompt_char_count": 21842,
-      "prompt_sha256": "6d98d6e8cbb27b20a1a6a44754951b41fdd10ef303aa345cfbad33763e5014db",
+      "prompt_char_count": 22135,
+      "prompt_sha256": "58d0ec10e69c0d6bf27c245dc38f8b2348e667ef51141fc75431effb88b8447d",
       "runtime_workflows": [
         "create_ticket",
         "retrieve_owned_ticket",
@@ -776,8 +807,16 @@
     "guidance_evidence": "Only runtime traces from the guidance split enter the guidance EER.",
     "hybrid_condition": "Hybrid receives source findings/excerpts and guidance traces.",
     "metrics": {
+      "database_state_agreement": "Exact match rate for database snapshots before/after and each delta.",
+      "response_contract_agreement": "Exact match rate for status, selected headers, cookie attributes, and JSON.",
       "scenario_match_rate": "Held-out scenarios with every compared step matching / held-out scenarios.",
+      "session_transition_agreement": "Exact match rate for session state before and after each request.",
       "step_match_rate": "Held-out steps with all compared fields matching / held-out steps."
+    },
+    "reconstruction_context_limits": {
+      "max_context_chars": 18000,
+      "max_contracts": 24,
+      "max_source_chars": 2000
     },
     "runtime_condition": "Runtime-only receives guidance traces and no source excerpt.",
     "source_condition": "Source-only uses static findings and source excerpts from the complete legacy application; source code includes held-out branch implementations."
@@ -801,8 +840,11 @@
       "runtime_only": "context_prepared_only",
       "source_only": "context_prepared_only"
     },
-    "reason": "The repository has a hand-built FastAPI baseline and an offline mock provider, but no model-generated reconstruction for any evidence condition.",
-    "status": "not_run"
+    "provider": "groq",
+    "provider_status": "groq_implemented_not_run",
+    "reason": "A Groq provider is implemented, but no model-generated reconstruction has yet been produced for any evidence condition.",
+    "status": "not_run",
+    "suggested_model": "openai/gpt-oss-20b"
   },
   "study": "initial_ticket_workflow_evidence_conditions"
 }

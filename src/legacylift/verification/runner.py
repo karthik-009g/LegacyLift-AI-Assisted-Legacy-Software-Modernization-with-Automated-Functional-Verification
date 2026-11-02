@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from copy import deepcopy
 from http.cookies import SimpleCookie
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -285,6 +286,43 @@ def write_differential_report(
     report = compare_scenarios(scenarios)
     destination.write_text(
         json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    return destination
+
+
+def sample_mismatch_report() -> dict[str, Any]:
+    """Create a labeled mismatch example by mutating one captured result in memory."""
+    scenario = DEFAULT_SCENARIOS[0]
+    report = compare_scenarios((scenario,))
+    baseline_step = report["scenarios"][0]["steps"][0]
+    legacy = baseline_step["legacy"]
+    reconstructed = deepcopy(baseline_step["reconstructed"])
+    reconstructed["response"]["status"] = 418
+    mismatches = compare_observations(legacy, reconstructed)
+    return {
+        "differential_schema_version": DIFFERENTIAL_SCHEMA_VERSION,
+        "report_kind": "synthetic_mutation_example",
+        "note": (
+            "This is not an observed failure. The reconstructed status was changed in memory "
+            "to demonstrate the mismatch report format."
+        ),
+        "scenario_id": scenario.scenario_id,
+        "step_id": baseline_step["step_id"],
+        "request": baseline_step["request"],
+        "passed": not mismatches,
+        "mismatches": mismatches,
+        "legacy": legacy,
+        "reconstructed": reconstructed,
+    }
+
+
+def write_sample_mismatch_report(output_path: str | Path) -> Path:
+    """Write the synthetic mismatch example used in the project documentation."""
+    destination = Path(output_path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(
+        json.dumps(sample_mismatch_report(), indent=2, sort_keys=True, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
     return destination

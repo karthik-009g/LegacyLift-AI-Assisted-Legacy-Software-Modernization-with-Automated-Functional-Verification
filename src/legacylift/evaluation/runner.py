@@ -13,6 +13,11 @@ from legacylift.evidence.builder import build_eer
 from legacylift.evidence.schema import EngineeringEvidenceRecord
 from legacylift.evidence.storage import write_eer
 from legacylift.reconstruction import build_reconstruction_request
+from legacylift.reconstruction.context import (
+    DEFAULT_MAX_CONTEXT_CHARS,
+    DEFAULT_MAX_CONTRACTS,
+    DEFAULT_MAX_SOURCE_CHARS,
+)
 from legacylift.reconstruction.models import EvidenceCondition
 from legacylift.reconstruction.prompts import build_reconstruction_prompt
 from legacylift.runtime_capture.runner import capture_scenarios
@@ -56,9 +61,9 @@ def _condition_audit(record: EngineeringEvidenceRecord, project_root: Path) -> l
             record,
             condition,
             source_root=project_root,
-            max_source_chars=2_000,
-            max_contracts=24,
-            max_context_chars=18_000,
+            max_source_chars=DEFAULT_MAX_SOURCE_CHARS,
+            max_contracts=DEFAULT_MAX_CONTRACTS,
+            max_context_chars=DEFAULT_MAX_CONTEXT_CHARS,
         )
         runtime_workflows = sorted({item["workflow_id"] for item in request.contracts})
         leaked_workflows = sorted(held_out_ids.intersection(runtime_workflows))
@@ -90,6 +95,22 @@ def _condition_audit(record: EngineeringEvidenceRecord, project_root: Path) -> l
             }
         )
     return results
+
+
+def _agreement_metric(
+    step_results: list[dict[str, Any]], fields: tuple[str, ...]
+) -> dict[str, Any]:
+    total = len(step_results) * len(fields)
+    matching = sum(
+        not any(mismatch["field"] == field for mismatch in step["mismatches"])
+        for step in step_results
+        for field in fields
+    )
+    return {
+        "matched_field_count": matching,
+        "compared_field_count": total,
+        "agreement_rate": matching / total if total else None,
+    }
 
 
 def _runtime_versions() -> dict[str, str]:
@@ -130,6 +151,36 @@ def run_evaluation(
     step_count = held_out_summary["step_count"]
     scenario_match_count = sum(scenario["passed"] for scenario in held_out_report["scenarios"])
     passed_step_count = held_out_summary["passed_step_count"]
+    held_out_steps = [
+        step for scenario in held_out_report["scenarios"] for step in scenario["steps"]
+    ]
+    metrics = {
+        "response_contract_agreement": _agreement_metric(
+            held_out_steps,
+            ("response.status", "response.headers", "response.cookies", "response.json"),
+        ),
+        "cookie_attribute_agreement": _agreement_metric(
+            held_out_steps,
+            ("response.cookies",),
+        ),
+        "session_transition_agreement": _agreement_metric(
+            held_out_steps,
+            ("session_before", "session_after"),
+        ),
+        "database_state_agreement": _agreement_metric(
+            held_out_steps,
+            ("database_before", "database_after", "database_delta"),
+        ),
+        "unsupported_behavior_or_claim_count": {
+            "status": "not_measured",
+            "count": None,
+            "reason": "No model-generated reconstruction or claims were evaluated.",
+        },
+        "human_correction_effort": {
+            "status": "not_measured",
+            "reason": "No human correction session was timed or logged.",
+        },
+    }
     context_audit = _condition_audit(record, root)
 
     report = {
@@ -159,19 +210,28 @@ def run_evaluation(
             "passed_step_count": passed_step_count,
             "step_match_rate": passed_step_count / step_count,
             "failed_step_count": held_out_summary["failed_step_count"],
+            "metrics": metrics,
             "differential_report": held_out_report,
         },
         "condition_audit": context_audit,
         "strategy_comparison": {
             "status": "not_run",
             "reason": (
-                "The repository has a hand-built FastAPI baseline and an offline mock provider, "
-                "but no model-generated reconstruction for any evidence condition."
+                "A Groq provider is implemented, but no model-generated reconstruction "
+                "has yet been produced for any evidence condition."
             ),
+            "provider_status": "groq_implemented_not_run",
+            "provider": "groq",
+            "suggested_model": "openai/gpt-oss-20b",
             "conditions": {condition: "context_prepared_only" for condition in CONDITIONS},
             "comparative_claims_supported": False,
         },
         "methodology": {
+            "reconstruction_context_limits": {
+                "max_source_chars": DEFAULT_MAX_SOURCE_CHARS,
+                "max_contracts": DEFAULT_MAX_CONTRACTS,
+                "max_context_chars": DEFAULT_MAX_CONTEXT_CHARS,
+            },
             "guidance_evidence": (
                 "Only runtime traces from the guidance split enter the guidance EER."
             ),
@@ -187,6 +247,15 @@ def run_evaluation(
                 ),
                 "step_match_rate": (
                     "Held-out steps with all compared fields matching / held-out steps."
+                ),
+                "response_contract_agreement": (
+                    "Exact match rate for status, selected headers, cookie attributes, and JSON."
+                ),
+                "session_transition_agreement": (
+                    "Exact match rate for session state before and after each request."
+                ),
+                "database_state_agreement": (
+                    "Exact match rate for database snapshots before/after and each delta."
                 ),
             },
         },
