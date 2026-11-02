@@ -133,6 +133,10 @@ The first reference app uses Flask, SQLite, synthetic data, and a reset utility.
 
 The capture runner replays fixed synthetic scenarios against a fresh SQLite fixture database and records each request, response, session transition, redacted cookie metadata, and ticket database snapshot/delta. The versioned sample trace is [`artifacts/traces/ticket_workflows.json`](artifacts/traces/ticket_workflows.json). Cookie values and local session secrets are not stored.
 
+## Milestone 3: Static Analysis and Evidence Record
+
+The AST pass reports literal Flask route decorators, function definitions, imports, branch counts, and session/database references without executing source files. Its report is [`artifacts/static/legacy_analysis.json`](artifacts/static/legacy_analysis.json). A strict Pydantic schema keeps observed facts, inferences, unknowns, captured contracts, validation cases, and provenance separate. The checked-in EER and its JSON Schema are under `artifacts/evidence/` and `artifacts/schemas/`.
+
 ## Setup and local checks
 
 Requires Python 3.11 or newer.
@@ -158,7 +162,7 @@ The local SQLite database is stored under Flask's `instance` directory. Set `LEG
 
 - [x] Python project bootstrap and deterministic Flask/SQLite reference workflows
 - [x] Runtime behaviour capture with a versioned synthetic trace
-- [ ] Static source-code analysis and versioned Engineering Evidence Record
+- [x] Static source-code analysis and versioned Engineering Evidence Record
 - [ ] FastAPI reconstruction behind a provider-independent interface
 - [ ] Differential comparison of responses and state changes
 - [ ] Controlled evaluation and reproducible report
@@ -169,7 +173,7 @@ The local SQLite database is stored under Flask's `instance` directory. Set `LEG
 
 <kbd>Currently in development</kbd>
 
-Milestones 0, 1, and 2 are complete. The repository contains the Python project setup, a deterministic Flask/SQLite ticket reference app with baseline tests, and a repeatable runtime trace. AST analysis, the Engineering Evidence Record, FastAPI reconstruction, and differential verification are planned next.
+Milestones 0 through 3 are complete. The repository contains the Python project setup, deterministic Flask/SQLite reference workflows, repeatable runtime traces, a best-effort AST report, and a validated Engineering Evidence Record. FastAPI reconstruction, differential verification, and evaluation are planned next.
 
 The project is being built incrementally so that each reconstructed implementation can be compared with observable behaviour from its reference workflow.
 

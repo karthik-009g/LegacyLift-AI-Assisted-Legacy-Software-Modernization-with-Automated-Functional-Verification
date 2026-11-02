@@ -1,0 +1,274 @@
+{
+  "functions": [
+    {
+      "branch_count": 1,
+      "calls": [
+        "Flask",
+        "Path",
+        "Path(app.config['DATABASE']).parent.mkdir",
+        "app.config.from_mapping",
+        "app.config.update",
+        "app.teardown_appcontext",
+        "initialize_database",
+        "os.environ.get",
+        "str"
+      ],
+      "database_operations": [],
+      "end_line": 148,
+      "line": 19,
+      "name": "create_app",
+      "session_references": [],
+      "source_file": "src/legacylift/legacy_app/app.py"
+    },
+    {
+      "branch_count": 2,
+      "calls": [
+        "_error",
+        "isinstance",
+        "jsonify",
+        "len",
+        "payload.get",
+        "request.get_json",
+        "session.clear",
+        "user_id.strip"
+      ],
+      "database_operations": [],
+      "end_line": 42,
+      "line": 34,
+      "name": "start_test_session",
+      "session_references": [
+        "session"
+      ],
+      "source_file": "src/legacylift/legacy_app/app.py"
+    },
+    {
+      "branch_count": 5,
+      "calls": [
+        "_error",
+        "connection.commit",
+        "connection.execute",
+        "connection.execute('SELECT id, subject, description, status FROM tickets WHERE id = ?', (cursor.lastrowid,)).fetchone",
+        "description.strip",
+        "dict",
+        "get_db",
+        "isinstance",
+        "jsonify",
+        "len",
+        "payload.get",
+        "request.get_json",
+        "session.get",
+        "subject.strip"
+      ],
+      "database_operations": [
+        "connection.commit",
+        "connection.execute",
+        "get_db"
+      ],
+      "end_line": 77,
+      "line": 45,
+      "name": "create_ticket",
+      "session_references": [
+        "session"
+      ],
+      "source_file": "src/legacylift/legacy_app/app.py"
+    },
+    {
+      "branch_count": 2,
+      "calls": [
+        "_error",
+        "dict",
+        "get_db",
+        "get_db().execute",
+        "get_db().execute('\\n            SELECT id, subject, description, status\\n            FROM tickets\\n            WHERE id = ? AND owner_id = ?\\n            ', (ticket_id, user_id)).fetchone",
+        "jsonify",
+        "session.get"
+      ],
+      "database_operations": [
+        "get_db",
+        "get_db().execute"
+      ],
+      "end_line": 101,
+      "line": 80,
+      "name": "get_ticket",
+      "session_references": [
+        "session"
+      ],
+      "source_file": "src/legacylift/legacy_app/app.py"
+    },
+    {
+      "branch_count": 5,
+      "calls": [
+        "ALLOWED_TRANSITIONS.get",
+        "_error",
+        "connection.commit",
+        "connection.execute",
+        "connection.execute('\\n            SELECT id, subject, description, status\\n            FROM tickets\\n            WHERE id = ? AND owner_id = ?\\n            ', (ticket_id, user_id)).fetchone",
+        "get_db",
+        "isinstance",
+        "jsonify",
+        "payload.get",
+        "request.get_json",
+        "session.get"
+      ],
+      "database_operations": [
+        "connection.commit",
+        "connection.execute",
+        "get_db"
+      ],
+      "end_line": 146,
+      "line": 104,
+      "name": "update_ticket_status",
+      "session_references": [
+        "session"
+      ],
+      "source_file": "src/legacylift/legacy_app/app.py"
+    },
+    {
+      "branch_count": 0,
+      "calls": [
+        "jsonify"
+      ],
+      "database_operations": [],
+      "end_line": 152,
+      "line": 151,
+      "name": "_error",
+      "session_references": [],
+      "source_file": "src/legacylift/legacy_app/app.py"
+    },
+    {
+      "branch_count": 0,
+      "calls": [
+        "connection.execute",
+        "sqlite3.connect",
+        "str"
+      ],
+      "database_operations": [
+        "connection.execute",
+        "sqlite3.connect"
+      ],
+      "end_line": 31,
+      "line": 26,
+      "name": "connect_database",
+      "session_references": [],
+      "source_file": "src/legacylift/legacy_app/db.py"
+    },
+    {
+      "branch_count": 2,
+      "calls": [
+        "Path",
+        "connect_database",
+        "connection.close",
+        "connection.execute",
+        "connection.execute('SELECT 1 FROM tickets LIMIT 1').fetchone",
+        "connection.executemany",
+        "connection.executescript",
+        "path.parent.mkdir"
+      ],
+      "database_operations": [
+        "connection.execute",
+        "connection.executemany"
+      ],
+      "end_line": 52,
+      "line": 34,
+      "name": "initialize_database",
+      "session_references": [],
+      "source_file": "src/legacylift/legacy_app/db.py"
+    },
+    {
+      "branch_count": 1,
+      "calls": [
+        "Path",
+        "connect_database",
+        "connection.close",
+        "connection.execute",
+        "connection.executemany",
+        "connection.executescript",
+        "path.parent.mkdir"
+      ],
+      "database_operations": [
+        "connection.execute",
+        "connection.executemany"
+      ],
+      "end_line": 75,
+      "line": 55,
+      "name": "reset_database",
+      "session_references": [],
+      "source_file": "src/legacylift/legacy_app/db.py"
+    },
+    {
+      "branch_count": 1,
+      "calls": [
+        "connect_database"
+      ],
+      "database_operations": [],
+      "end_line": 82,
+      "line": 78,
+      "name": "get_db",
+      "session_references": [],
+      "source_file": "src/legacylift/legacy_app/db.py"
+    },
+    {
+      "branch_count": 1,
+      "calls": [
+        "connection.close",
+        "g.pop"
+      ],
+      "database_operations": [],
+      "end_line": 89,
+      "line": 85,
+      "name": "close_db",
+      "session_references": [],
+      "source_file": "src/legacylift/legacy_app/db.py"
+    }
+  ],
+  "imports": [
+    ".app",
+    ".db",
+    "__future__",
+    "flask",
+    "os",
+    "pathlib",
+    "sqlite3",
+    "typing"
+  ],
+  "issues": [],
+  "limitations": [
+    "Only Python syntax and literal Flask route decorators are inspected; application code is never executed.",
+    "Dynamic route registration, reflection, runtime dispatch, external services, and unvisited paths are not resolved."
+  ],
+  "routes": [
+    {
+      "function": "start_test_session",
+      "line": 34,
+      "method": "POST",
+      "path": "/session",
+      "source_file": "src/legacylift/legacy_app/app.py"
+    },
+    {
+      "function": "create_ticket",
+      "line": 45,
+      "method": "POST",
+      "path": "/tickets",
+      "source_file": "src/legacylift/legacy_app/app.py"
+    },
+    {
+      "function": "get_ticket",
+      "line": 80,
+      "method": "GET",
+      "path": "/tickets/<int:ticket_id>",
+      "source_file": "src/legacylift/legacy_app/app.py"
+    },
+    {
+      "function": "update_ticket_status",
+      "line": 104,
+      "method": "PATCH",
+      "path": "/tickets/<int:ticket_id>/status",
+      "source_file": "src/legacylift/legacy_app/app.py"
+    }
+  ],
+  "source_files": [
+    "src/legacylift/legacy_app/__init__.py",
+    "src/legacylift/legacy_app/app.py",
+    "src/legacylift/legacy_app/db.py"
+  ]
+}

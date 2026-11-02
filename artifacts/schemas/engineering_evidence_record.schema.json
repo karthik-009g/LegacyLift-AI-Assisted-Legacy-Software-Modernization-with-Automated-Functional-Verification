@@ -1,0 +1,390 @@
+{
+  "$defs": {
+    "EvidenceFact": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "enum": [
+            "observed",
+            "derived"
+          ],
+          "title": "Confidence",
+          "type": "string"
+        },
+        "fact_id": {
+          "title": "Fact Id",
+          "type": "string"
+        },
+        "provenance_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Provenance Ids",
+          "type": "array"
+        },
+        "statement": {
+          "title": "Statement",
+          "type": "string"
+        }
+      },
+      "required": [
+        "fact_id",
+        "statement",
+        "confidence",
+        "provenance_ids"
+      ],
+      "title": "EvidenceFact",
+      "type": "object"
+    },
+    "EvidenceInference": {
+      "additionalProperties": false,
+      "properties": {
+        "inference_id": {
+          "title": "Inference Id",
+          "type": "string"
+        },
+        "provenance_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Provenance Ids",
+          "type": "array"
+        },
+        "rationale": {
+          "title": "Rationale",
+          "type": "string"
+        },
+        "statement": {
+          "title": "Statement",
+          "type": "string"
+        }
+      },
+      "required": [
+        "inference_id",
+        "statement",
+        "rationale",
+        "provenance_ids"
+      ],
+      "title": "EvidenceInference",
+      "type": "object"
+    },
+    "EvidenceUnknown": {
+      "additionalProperties": false,
+      "properties": {
+        "affected_scope": {
+          "title": "Affected Scope",
+          "type": "string"
+        },
+        "provenance_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Provenance Ids",
+          "type": "array"
+        },
+        "question": {
+          "title": "Question",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "unknown_id": {
+          "title": "Unknown Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "unknown_id",
+        "question",
+        "affected_scope",
+        "reason",
+        "provenance_ids"
+      ],
+      "title": "EvidenceUnknown",
+      "type": "object"
+    },
+    "ProvenanceRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact": {
+          "title": "Artifact",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "source_ast",
+            "runtime_trace",
+            "analysis_limit"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "locator": {
+          "title": "Locator",
+          "type": "string"
+        },
+        "provenance_id": {
+          "title": "Provenance Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provenance_id",
+        "kind",
+        "artifact",
+        "locator"
+      ],
+      "title": "ProvenanceRecord",
+      "type": "object"
+    },
+    "ValidationCase": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_id": {
+          "title": "Contract Id",
+          "type": "string"
+        },
+        "provenance_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Provenance Ids",
+          "type": "array"
+        },
+        "purpose": {
+          "title": "Purpose",
+          "type": "string"
+        },
+        "scenario_id": {
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "step_id": {
+          "title": "Step Id",
+          "type": "string"
+        },
+        "validation_id": {
+          "title": "Validation Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "validation_id",
+        "scenario_id",
+        "step_id",
+        "contract_id",
+        "purpose",
+        "provenance_ids"
+      ],
+      "title": "ValidationCase",
+      "type": "object"
+    },
+    "WorkflowContract": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_id": {
+          "title": "Contract Id",
+          "type": "string"
+        },
+        "expected_cookies": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Expected Cookies",
+          "type": "array"
+        },
+        "expected_database_delta": {
+          "additionalProperties": true,
+          "title": "Expected Database Delta",
+          "type": "object"
+        },
+        "expected_response_headers": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Expected Response Headers",
+          "type": "object"
+        },
+        "expected_response_json": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "items": {},
+              "type": "array"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Expected Response Json"
+        },
+        "expected_status": {
+          "maximum": 599,
+          "minimum": 100,
+          "title": "Expected Status",
+          "type": "integer"
+        },
+        "method": {
+          "title": "Method",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "provenance_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Provenance Ids",
+          "type": "array"
+        },
+        "request_json": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Request Json"
+        },
+        "session_after": {
+          "additionalProperties": true,
+          "title": "Session After",
+          "type": "object"
+        },
+        "session_before": {
+          "additionalProperties": true,
+          "title": "Session Before",
+          "type": "object"
+        },
+        "workflow_id": {
+          "title": "Workflow Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "contract_id",
+        "workflow_id",
+        "method",
+        "path",
+        "request_json",
+        "expected_status",
+        "expected_response_json",
+        "expected_response_headers",
+        "expected_cookies",
+        "session_before",
+        "session_after",
+        "expected_database_delta",
+        "provenance_ids"
+      ],
+      "title": "WorkflowContract",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contracts": {
+      "items": {
+        "$ref": "#/$defs/WorkflowContract"
+      },
+      "title": "Contracts",
+      "type": "array"
+    },
+    "inferences": {
+      "items": {
+        "$ref": "#/$defs/EvidenceInference"
+      },
+      "title": "Inferences",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "observed_facts": {
+      "items": {
+        "$ref": "#/$defs/EvidenceFact"
+      },
+      "title": "Observed Facts",
+      "type": "array"
+    },
+    "provenance": {
+      "items": {
+        "$ref": "#/$defs/ProvenanceRecord"
+      },
+      "title": "Provenance",
+      "type": "array"
+    },
+    "record_id": {
+      "title": "Record Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "title": "Scope",
+      "type": "string"
+    },
+    "unknowns": {
+      "items": {
+        "$ref": "#/$defs/EvidenceUnknown"
+      },
+      "title": "Unknowns",
+      "type": "array"
+    },
+    "validation_cases": {
+      "items": {
+        "$ref": "#/$defs/ValidationCase"
+      },
+      "title": "Validation Cases",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "record_id",
+    "scope",
+    "provenance",
+    "observed_facts",
+    "inferences",
+    "unknowns",
+    "contracts",
+    "validation_cases",
+    "limitations"
+  ],
+  "title": "EngineeringEvidenceRecord",
+  "type": "object"
+}
