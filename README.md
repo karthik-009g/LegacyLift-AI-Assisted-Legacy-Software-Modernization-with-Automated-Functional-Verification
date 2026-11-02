@@ -1,0 +1,2 @@
+# LegacyLift-AI-Assisted-Legacy-Software-Modernization-with-Automated-Functional-Verification
+LegacyLift proposes an AI-assisted framework for reconstructing and verifying selected workflows in legacy web applications. It analyses the application's source code using static analysis and collects runtime evidence, including HTTP requests and responses, cookies, session information, and database changes
