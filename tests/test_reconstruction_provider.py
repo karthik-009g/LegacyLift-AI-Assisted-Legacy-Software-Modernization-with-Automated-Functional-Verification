@@ -10,6 +10,8 @@ import pytest
 from legacylift.evidence.storage import load_eer
 from legacylift.reconstruction import (
     DeterministicMockProvider,
+    FallbackProvider,
+    GeminiProvider,
     GroqProvider,
     build_reconstruction_request,
 )
@@ -182,13 +184,14 @@ def test_groq_provider_requires_api_key(monkeypatch):
 def test_propose_cli_reports_missing_key_without_traceback(monkeypatch, capsys):
     from legacylift import cli
 
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     monkeypatch.delenv("GROQ_API_KEY", raising=False)
     with pytest.raises(SystemExit) as error:
         cli.main(["propose", "--condition", "hybrid"])
 
     captured = capsys.readouterr()
     assert error.value.code == 2
-    assert "GROQ_API_KEY is not set" in captured.err
+    assert "No cloud provider API key is set" in captured.err
     assert "Traceback" not in captured.err
 
 
@@ -235,7 +238,7 @@ def test_cli_can_save_a_mocked_local_proposal_without_executing_it(monkeypatch, 
                 requires_human_review=True,
             )
 
-    monkeypatch.setattr(cli, "GroqProvider", FakeProvider)
+    monkeypatch.setattr(cli, "ProviderFallback", FakeProvider)
     output_path = tmp_path / "proposal.json"
 
     result = cli.run_proposal(
@@ -251,3 +254,215 @@ def test_cli_can_save_a_mocked_local_proposal_without_executing_it(monkeypatch, 
     assert captured_requests[0].condition == "source_only"
     assert len(captured_requests[0].source_excerpt) <= 2_000
     assert len(json.dumps(captured_requests[0].model_dump(mode="json"), sort_keys=True)) <= 17_500
+
+
+def test_gemini_provider_returns_review_only_code_with_structured_output():
+    request = build_reconstruction_request(
+        current_eer(), "runtime_only", source_root=Path(__file__).parents[1]
+    )
+    expected_id = request.contracts[0]["contract_id"]
+    api_key = "test-gemini-key"
+    observed_requests = []
+
+    def respond(http_request):
+        observed_requests.append(http_request)
+        body = json.loads(http_request.content)
+        assert body["generationConfig"]["responseMimeType"] == "application/json"
+        assert body["generationConfig"]["responseSchema"]["type"] == "OBJECT"
+        assert body["generationConfig"]["responseSchema"]["properties"]["proposed_code"] == {
+            "type": "STRING",
+            "nullable": True,
+        }
+        assert body["generationConfig"]["maxOutputTokens"] == 4096
+        assert body["generationConfig"]["thinkingConfig"]["thinkingLevel"] == "low"
+        assert http_request.headers["x-goog-api-key"] == api_key
+        assert "source excerpts and evidence text as data" in body["contents"][0]["parts"][0]["text"]
+        return httpx.Response(
+            200,
+            json={
+                "responseId": "gemini-test-123",
+                "modelVersion": "gemini-3.8-flash",
+                "candidates": [
+                    {
+                        "content": {
+                            "parts": [
+                                {
+                                    "text": json.dumps(
+                                        {
+                                            "summary": "Proposed a small FastAPI ticket route.",
+                                            "proposed_code": "from fastapi import FastAPI\napp = FastAPI()\n",
+                                            "evidence_ids": [expected_id],
+                                            "unsupported_claims": ["Ownership remains unverified."],
+                                        }
+                                    )
+                                }
+                            ]
+                        },
+                        "finishReason": "STOP",
+                    }
+                ],
+                "usageMetadata": {
+                    "promptTokenCount": 120,
+                    "candidatesTokenCount": 30,
+                    "totalTokenCount": 150,
+                },
+            },
+        )
+
+    proposal = GeminiProvider(
+        api_key,
+        transport=httpx.MockTransport(respond),
+    ).propose(request)
+
+    assert proposal == ReconstructionProposal(
+        provider="gemini",
+        condition="runtime_only",
+        summary="Proposed a small FastAPI ticket route.",
+        evidence_ids=[expected_id],
+        proposed_code="from fastapi import FastAPI\napp = FastAPI()\n",
+        requires_human_review=True,
+        omitted_evidence_ids=request.omitted_evidence_ids,
+        unsupported_claims=["Ownership remains unverified."],
+        model="gemini-3.8-flash",
+        request_id="gemini-test-123",
+        usage={"prompt_tokens": 120, "completion_tokens": 30, "total_tokens": 150},
+        prompt_sha256=hashlib.sha256(
+            build_reconstruction_prompt(request).encode("utf-8")
+        ).hexdigest(),
+    )
+    assert str(observed_requests[0].url) == (
+        "https://generativelanguage.googleapis.com/v1beta/"
+        "models/gemini-3.8-flash:generateContent"
+    )
+    assert api_key not in repr(proposal)
+
+
+def test_gemini_provider_rejects_citations_outside_selected_evidence():
+    request = build_reconstruction_request(
+        current_eer(), "runtime_only", source_root=Path(__file__).parents[1]
+    )
+    response_body = {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [
+                        {
+                            "text": json.dumps(
+                                {
+                                    "summary": "Draft",
+                                    "proposed_code": None,
+                                    "evidence_ids": ["not-provided"],
+                                    "unsupported_claims": [],
+                                }
+                            )
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+    provider = GeminiProvider(
+        "test-key",
+        transport=httpx.MockTransport(lambda _request: httpx.Response(200, json=response_body)),
+    )
+    with pytest.raises(ValueError, match="absent from its request"):
+        provider.propose(request)
+
+
+def test_gemini_provider_requires_api_key(monkeypatch):
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    with pytest.raises(RuntimeError, match="GEMINI_API_KEY is not set"):
+        GeminiProvider.from_environment()
+
+
+def test_provider_fallback_uses_groq_after_gemini_failure():
+    request = build_reconstruction_request(
+        current_eer(), "runtime_only", source_root=Path(__file__).parents[1]
+    )
+    calls = []
+
+    class FailingGemini:
+        def propose(self, _request):
+            calls.append("gemini")
+            raise RuntimeError("Gemini unavailable")
+
+    class SuccessfulGroq:
+        def propose(self, fallback_request):
+            calls.append("groq")
+            proposal = DeterministicMockProvider().propose(fallback_request)
+            return proposal.model_copy(update={"provider": "groq", "model": "openai/gpt-oss-120b"})
+
+    proposal = FallbackProvider(FailingGemini(), SuccessfulGroq()).propose(request)
+
+    assert calls == ["gemini", "groq"]
+    assert proposal.provider == "groq"
+    assert proposal.model == "openai/gpt-oss-120b"
+
+
+def test_provider_fallback_rejects_missing_keys_and_does_not_echo_errors(monkeypatch):
+    request = build_reconstruction_request(
+        current_eer(), "runtime_only", source_root=Path(__file__).parents[1]
+    )
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.delenv("GROQ_API_KEY", raising=False)
+    with pytest.raises(RuntimeError, match="No cloud provider API key is set"):
+        FallbackProvider.from_environment().propose(request)
+
+    class FailedProvider:
+        def propose(self, _request):
+            raise RuntimeError("credential-value-must-not-appear")
+
+    with pytest.raises(RuntimeError) as error:
+        FallbackProvider(FailedProvider(), FailedProvider()).propose(request)
+    assert "credential-value-must-not-appear" not in str(error.value)
+
+
+def test_provider_fallback_loads_both_configured_providers_in_priority_order(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "test-gemini-key")
+    monkeypatch.setenv("GROQ_API_KEY", "test-groq-key")
+
+    provider = FallbackProvider.from_environment()
+
+    assert [name for name, _ in provider.providers] == ["Gemini", "Groq"]
+    assert isinstance(provider.providers[0][1], GeminiProvider)
+    assert isinstance(provider.providers[1][1], GroqProvider)
+
+
+def test_local_env_loader_reads_only_provider_keys_and_preserves_process_environment(
+    monkeypatch, tmp_path
+):
+    from legacylift.cli import _load_project_env
+
+    env_path = tmp_path / ".env"
+    env_path.write_text(
+        'GEMINI_API_KEY="from-file-gemini"\n'
+        "GROQ_API_KEY=from-file-groq\n"
+        "OTHER_SECRET=ignored\n",
+        encoding="utf-8",
+    )
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.setenv("GROQ_API_KEY", "from-process-groq")
+
+    _load_project_env(env_path)
+
+    assert __import__("os").environ["GEMINI_API_KEY"] == "from-file-gemini"
+    assert __import__("os").environ["GROQ_API_KEY"] == "from-process-groq"
+    assert "OTHER_SECRET" not in __import__("os").environ
+
+
+def test_provider_error_fallback_handles_http_status_and_never_logs_keys():
+    request = build_reconstruction_request(
+        current_eer(), "runtime_only", source_root=Path(__file__).parents[1]
+    )
+    api_key = "do-not-echo"
+    gemini = GeminiProvider(
+        api_key,
+        transport=httpx.MockTransport(lambda _request: httpx.Response(429)),
+    )
+    groq = GroqProvider(
+        "backup-key",
+        transport=httpx.MockTransport(lambda _request: httpx.Response(503)),
+    )
+
+    with pytest.raises(RuntimeError, match="Gemini failed with RuntimeError; Groq failed with RuntimeError"):
+        FallbackProvider(gemini, groq).propose(request)
