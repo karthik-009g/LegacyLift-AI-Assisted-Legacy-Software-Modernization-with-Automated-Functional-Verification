@@ -675,12 +675,12 @@
     "implementation": "hand_built_fastapi_baseline",
     "metrics": {
       "cookie_attribute_agreement": {
-        "agreement_rate": 1,
+        "agreement_rate": 1.0,
         "compared_field_count": 6,
         "matched_field_count": 6
       },
       "database_state_agreement": {
-        "agreement_rate": 1,
+        "agreement_rate": 1.0,
         "compared_field_count": 18,
         "matched_field_count": 18
       },
@@ -689,12 +689,12 @@
         "status": "not_measured"
       },
       "response_contract_agreement": {
-        "agreement_rate": 1,
+        "agreement_rate": 1.0,
         "compared_field_count": 24,
         "matched_field_count": 24
       },
       "session_transition_agreement": {
-        "agreement_rate": 1,
+        "agreement_rate": 1.0,
         "compared_field_count": 12,
         "matched_field_count": 12
       },
@@ -708,10 +708,10 @@
     "passed_step_count": 6,
     "scenario_count": 3,
     "scenario_match_count": 3,
-    "scenario_match_rate": 1,
+    "scenario_match_rate": 1.0,
     "scope": "held-out scenarios only",
     "step_count": 6,
-    "step_match_rate": 1
+    "step_match_rate": 1.0
   },
   "condition_audit": [
     {
