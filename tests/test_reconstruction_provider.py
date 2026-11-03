@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 
 import httpx
@@ -445,7 +446,7 @@ def test_local_env_loader_reads_only_provider_keys_and_preserves_process_environ
 
     _load_project_env(env_path)
 
-    assert __import__("os").environ["GEMINI_API_KEY"] == "from-file-gemini"
+    assert os.environ["GEMINI_API_KEY"] == "from-file-gemini"
     assert __import__("os").environ["GROQ_API_KEY"] == "from-process-groq"
     assert "OTHER_SECRET" not in __import__("os").environ
 
