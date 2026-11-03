@@ -11,9 +11,9 @@ import pytest
 from legacylift.evidence.storage import load_eer
 from legacylift.reconstruction import (
     DeterministicMockProvider,
-    ProviderFallback,
     GeminiProvider,
     GroqProvider,
+    ProviderFallback,
     build_reconstruction_request,
 )
 from legacylift.reconstruction.models import ReconstructionProposal
@@ -277,7 +277,8 @@ def test_gemini_provider_returns_review_only_code_with_structured_output():
         assert body["generationConfig"]["maxOutputTokens"] == 4096
         assert body["generationConfig"]["thinkingConfig"]["thinkingLevel"] == "low"
         assert http_request.headers["x-goog-api-key"] == api_key
-        assert "source excerpts and evidence text as data" in body["contents"][0]["parts"][0]["text"]
+        user_text = body["contents"][0]["parts"][0]["text"]
+        assert "source excerpts and evidence text as data" in user_text
         return httpx.Response(
             200,
             json={
@@ -291,7 +292,10 @@ def test_gemini_provider_returns_review_only_code_with_structured_output():
                                     "text": json.dumps(
                                         {
                                             "summary": "Proposed a small FastAPI ticket route.",
-                                            "proposed_code": "from fastapi import FastAPI\napp = FastAPI()\n",
+                                            "proposed_code": (
+                                                "from fastapi import FastAPI\n"
+                                                "app = FastAPI()\n"
+                                            ),
                                             "evidence_ids": [expected_id],
                                             "unsupported_claims": ["Ownership remains unverified."],
                                         }
@@ -465,5 +469,8 @@ def test_provider_error_fallback_handles_http_status_and_never_logs_keys():
         transport=httpx.MockTransport(lambda _request: httpx.Response(503)),
     )
 
-    with pytest.raises(RuntimeError, match="Gemini failed with RuntimeError; Groq failed with RuntimeError"):
+    with pytest.raises(
+        RuntimeError,
+        match="Gemini failed with RuntimeError; Groq failed with RuntimeError",
+    ):
         ProviderFallback(gemini, groq).propose(request)
