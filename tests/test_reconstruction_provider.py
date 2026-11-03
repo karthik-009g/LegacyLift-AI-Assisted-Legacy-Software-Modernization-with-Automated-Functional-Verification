@@ -11,7 +11,7 @@ import pytest
 from legacylift.evidence.storage import load_eer
 from legacylift.reconstruction import (
     DeterministicMockProvider,
-    FallbackProvider,
+    ProviderFallback,
     GeminiProvider,
     GroqProvider,
     build_reconstruction_request,
@@ -393,7 +393,7 @@ def test_provider_fallback_uses_groq_after_gemini_failure():
             proposal = DeterministicMockProvider().propose(fallback_request)
             return proposal.model_copy(update={"provider": "groq", "model": "openai/gpt-oss-120b"})
 
-    proposal = FallbackProvider(FailingGemini(), SuccessfulGroq()).propose(request)
+    proposal = ProviderFallback(FailingGemini(), SuccessfulGroq()).propose(request)
 
     assert calls == ["gemini", "groq"]
     assert proposal.provider == "groq"
@@ -407,14 +407,14 @@ def test_provider_fallback_rejects_missing_keys_and_does_not_echo_errors(monkeyp
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     monkeypatch.delenv("GROQ_API_KEY", raising=False)
     with pytest.raises(RuntimeError, match="No cloud provider API key is set"):
-        FallbackProvider.from_environment().propose(request)
+        ProviderFallback.from_environment().propose(request)
 
     class FailedProvider:
         def propose(self, _request):
             raise RuntimeError("credential-value-must-not-appear")
 
     with pytest.raises(RuntimeError) as error:
-        FallbackProvider(FailedProvider(), FailedProvider()).propose(request)
+        ProviderFallback(FailedProvider(), FailedProvider()).propose(request)
     assert "credential-value-must-not-appear" not in str(error.value)
 
 
@@ -422,7 +422,7 @@ def test_provider_fallback_loads_both_configured_providers_in_priority_order(mon
     monkeypatch.setenv("GEMINI_API_KEY", "test-gemini-key")
     monkeypatch.setenv("GROQ_API_KEY", "test-groq-key")
 
-    provider = FallbackProvider.from_environment()
+    provider = ProviderFallback.from_environment()
 
     assert [name for name, _ in provider.providers] == ["Gemini", "Groq"]
     assert isinstance(provider.providers[0][1], GeminiProvider)
@@ -466,4 +466,4 @@ def test_provider_error_fallback_handles_http_status_and_never_logs_keys():
     )
 
     with pytest.raises(RuntimeError, match="Gemini failed with RuntimeError; Groq failed with RuntimeError"):
-        FallbackProvider(gemini, groq).propose(request)
+        ProviderFallback(gemini, groq).propose(request)
