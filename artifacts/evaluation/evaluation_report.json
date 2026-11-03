@@ -675,12 +675,12 @@
     "implementation": "hand_built_fastapi_baseline",
     "metrics": {
       "cookie_attribute_agreement": {
-        "agreement_rate": 1.0,
+        "agreement_rate": 1,
         "compared_field_count": 6,
         "matched_field_count": 6
       },
       "database_state_agreement": {
-        "agreement_rate": 1.0,
+        "agreement_rate": 1,
         "compared_field_count": 18,
         "matched_field_count": 18
       },
@@ -689,12 +689,12 @@
         "status": "not_measured"
       },
       "response_contract_agreement": {
-        "agreement_rate": 1.0,
+        "agreement_rate": 1,
         "compared_field_count": 24,
         "matched_field_count": 24
       },
       "session_transition_agreement": {
-        "agreement_rate": 1.0,
+        "agreement_rate": 1,
         "compared_field_count": 12,
         "matched_field_count": 12
       },
@@ -708,10 +708,10 @@
     "passed_step_count": 6,
     "scenario_count": 3,
     "scenario_match_count": 3,
-    "scenario_match_rate": 1.0,
+    "scenario_match_rate": 1,
     "scope": "held-out scenarios only",
     "step_count": 6,
-    "step_match_rate": 1.0
+    "step_match_rate": 1
   },
   "condition_audit": [
     {
@@ -840,11 +840,12 @@
       "runtime_only": "context_prepared_only",
       "source_only": "context_prepared_only"
     },
-    "provider": "groq",
-    "provider_status": "groq_implemented_not_run",
-    "reason": "A Groq provider is implemented, but no model-generated reconstruction has yet been produced for any evidence condition.",
+    "provider": "gemini-primary-groq-fallback",
+    "provider_status": "gemini_primary_groq_fallback_implemented_not_run",
+    "reason": "Gemini primary and Groq fallback providers are implemented, but no model-generated reconstruction has yet been produced for any evidence condition.",
     "status": "not_run",
-    "suggested_model": "openai/gpt-oss-20b"
+    "suggested_model": "gemini-3.8-flash",
+    "fallback_model": "openai/gpt-oss-120b"
   },
   "study": "initial_ticket_workflow_evidence_conditions"
 }
