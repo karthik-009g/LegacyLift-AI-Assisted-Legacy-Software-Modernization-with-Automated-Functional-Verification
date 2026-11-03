@@ -42,6 +42,8 @@ No model-generated reconstruction has been run for source-only, runtime-only, or
 
 The runner disables container networking, uses a read-only root filesystem, drops Linux capabilities, runs as an unprivileged user, and applies CPU, memory, process-count, and timeout limits. It passes no host API key and mounts only the candidate source file. These controls reduce accidental access and side effects but are not a security boundary against deliberately hostile Python. The image includes LegacyLift's Python source, including held-out scenario definitions, so a proposal can inspect the local evaluation code; this is a limitation of the initial prototype. Review candidates before execution and treat results as descriptive. Model-declared unsupported claims are reported but not independently verified; unsupported behavior and human correction effort remain unmeasured.
 
+For machines without Docker, `.github/workflows/generate-groq-proposals.yml` and `.github/workflows/evaluate-reviewed-proposals.yml` provide a manual two-run path. The first workflow uses the repository secret `GROQ_API_KEY` and uploads the three proposals. Inspect the artifact before dispatching the second workflow with its run ID and the review confirmation enabled. The second workflow validates run provenance and runs the same restricted container evaluation. Since this repository is public, proposal artifacts are visible to repository readers and should contain only shareable source.
+
 ## Example mismatch record
 
 When a compared field differs, `artifacts/verification/differential_report.json` uses this shape (values shown here are illustrative):
