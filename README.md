@@ -139,7 +139,7 @@ The AST pass reports literal Flask route decorators, function definitions, impor
 
 ## Milestone 4: Reconstruction Baseline and Provider Boundary
 
-The project includes an independently implemented FastAPI ticket service with its own Pydantic request models and SQLite fixture. Its routes are covered by differential tests against the Flask reference. The reconstruction interface accepts bounded, selectable source/runtime evidence (`source_only`, `runtime_only`, or `hybrid`). An optional Groq adapter requests a cloud model proposal; output is saved for review and is not executed automatically. An explicit evaluation command can run code that a person has reviewed inside a restricted Docker container.
+The project includes an independently implemented FastAPI ticket service with its own Pydantic request models and SQLite fixture. Its routes are covered by differential tests against the Flask reference. The reconstruction interface accepts bounded, selectable source/runtime evidence (`source_only`, `runtime_only`, or `hybrid`). Gemini is the primary cloud proposal provider, with Groq as a configured backup; output is saved for review and is not executed automatically. An explicit evaluation command can run code that a person has reviewed inside a restricted Docker container.
 
 ## Milestone 5: Differential Verification
 
@@ -160,37 +160,45 @@ The baseline matched all 3 held-out scenarios and all 6 request steps. This meas
 The guidance inputs and report are in [`artifacts/evaluation/`](artifacts/evaluation/). Regenerate them with:
 
 ```powershell
-python -c "from legacylift.evaluation import write_evaluation_artifacts; write_evaluation_artifacts('artifacts/evaluation')"
+python -c "from legacylift.evaluation import write_evaluation_artifacts; write_evaluation_artifacts('artifa## Free Cloud Model Providers
+
+The proposal command tries **Gemini 3.8 Flash first** and falls back to **Groq GPT-OSS 120B** if Gemini fails. Both adapters use the existing `httpx` dependency, request structured JSON, validate evidence citations, and save model output for human review. The proposal records its actual provider, model, request ID when available, token usage, and prompt hash. A fallback is visible in that record.
+
+The provider choice prioritizes Gemini Flash for the primary coding task and uses Groq's larger GPT-OSS model as a backup. This is a practical default, not a measured quality ranking: model access, speed, and free-tier limits depend on the account, and the three-condition experiment has not yet been run. Check the current [Gemini pricing and rate limits](https://ai.google.dev/gemini-api/docs/pricing) and [Groq free-plan limits](https://console.groq.com/docs/rate-limits) before making requests. Do not enable paid billing for this project.
+
+Add **fresh, rotated keys** to the ignored local `.env` file in the repository root:
+
+```dotenv
+GEMINI_API_KEY=your_gemini_key
+GROQ_API_KEY=your_groq_key
 ```
 
-## Optional Groq Cloud Model
+The CLI reads only those two variables from `.env`; variables already set in the process take precedence. The file is ignored by Git. Do not commit it or paste API keys into chat, source files, or proposal artifacts.
 
-The optional provider uses the existing `httpx` dependency and Groq's OpenAI-compatible chat completions API. The default model, `openai/gpt-oss-20b`, supports strict JSON Schema output. Groq documents a Free tier with account-specific limits; keep the account on that tier and do not upgrade to Developer for this project. Groq says upgrading to Developer requires a payment method; see its [billing FAQ](https://console.groq.com/docs/billing-faqs). Limits and model availability can change.
-
-Create a Groq API key in the [Groq Console](https://console.groq.com/keys), then enter it as a secure PowerShell prompt for the current session:
+Generate one proposal for each evidence condition:
 
 ```powershell
-$secureKey = Read-Host "Groq API key" -AsSecureString
-$env:GROQ_API_KEY = [System.Net.NetworkCredential]::new("", $secureKey).Password
+python -m legacylift propose --condition source_only
+python -m legacylift propose --condition runtime_only
 python -m legacylift propose --condition hybrid
-Remove-Item Env:GROQ_API_KEY
-Remove-Variable secureKey
 ```
 
-To prepare all three evidence-condition proposals, run `legacylift propose --condition source_only`, `runtime_only`, and `hybrid` separately while the key is set. Each command makes one external API request and writes its response under the ignored `artifacts/proposals/` directory. The normal `demo` command stays offline. The provider sends the selected EER evidence and, for source-only/hybrid, bounded source excerpts to Groq over HTTPS; use only source you are allowed to share. The API key is read from `GROQ_API_KEY` and is not written to proposal files. The evaluation container does not receive this key.
+Each command makes one primary API request and may make one Groq fallback request if Gemini fails. The three requests send the selected EER evidence and, for source-only/hybrid, bounded source excerpts to the configured cloud provider over HTTPS. Send only source you are allowed to share. The normal `demo` command stays offline.
 
-After generating all three proposals, inspect the `proposed_code` in each JSON file under `artifacts/proposals/`. Build the evaluator image once, then explicitly declare that you reviewed the code:
+After generating all three proposals, inspect the `proposed_code` in each JSON file under the ignored `artifacts/proposals/` directory. Build the evaluator image once, then explicitly declare that you reviewed the code:
 
 ```powershell
 docker build --file Dockerfile.evaluation --tag legacylift-evaluation:py311 .
 python -m legacylift evaluate-proposals --human-reviewed
 ```
 
-This writes `artifacts/proposals/model_generated_comparison.json`. The container has no network, a read-only root filesystem, resource limits, and receives only the candidate file as a read-only mount. This is defense in depth, not a security boundary for hostile code: review each proposal carefully. The image includes LegacyLift source, including the fixed held-out scenario definitions, so the experiment does not prove resistance to an adversarial model inspecting the local evaluator. The report includes scenario/step match rates, response/session/database agreement, model-reported unsupported claims, and a hash of each candidate. Unsupported behaviors and manual correction time remain unmeasured. One run per condition on one synthetic split supports descriptive results only, not a general claim that one evidence condition is better.
+This writes `artifacts/proposals/model_generated_comparison.json`. The container has no network, a read-only root filesystem, resource limits, and receives only the candidate file as a read-only mount. This is defense in depth, not a security boundary for hostile code: review each proposal carefully. The image includes LegacyLift source, including the fixed held-out scenario definitions, so the experiment does not prove resistance to an adversarial model inspecting the local evaluator. The report includes scenario/step match rates, response/session/database agreement, the provider and model used for every proposal, model-reported unsupported claims, and a hash of each candidate. Unsupported behaviors and manual correction time remain unmeasured. One run per condition on one synthetic split supports descriptive results only, not a general claim that one evidence condition is better.
 
 ### Run through GitHub Actions
 
-If you do not have Docker locally, the repository has two manual workflows. Add `GROQ_API_KEY` under **Settings → Secrets and variables → Actions**. In the Actions tab, run **Generate Groq proposals** on `main` and confirm that the account is on Groq's free tier. Download its `groq-proposals` artifact, inspect all three `proposed_code` fields, then run **Evaluate reviewed Groq proposals** with that workflow run ID and `human_reviewed` enabled. Download the `model-generated-comparison` report artifact from the second run. Both workflows are manual; generation makes three Groq API requests. This repository is public, so workflow artifacts can be read by people who can access the repository; use only source you are allowed to share.
+If you do not have Docker locally, add both rotated keys as repository **Actions secrets** named `GEMINI_API_KEY` and `GROQ_API_KEY` under **Settings → Secrets and variables → Actions**. Keep both provider accounts on their free tiers. In the Actions tab, run **Generate AI proposals (Gemini primary, Groq fallback)** on `main` and confirm the free-tier checkbox. Generation makes three primary requests and can make up to three fallback requests. Download the `model-proposals` artifact and inspect all three `proposed_code` fields, then run **Evaluate reviewed model proposals** with that generation run ID and `human_reviewed` enabled. Download the `model-generated-comparison` report artifact from the second run. Both workflows are manual; artifacts can be read by people who can access this public repository, so use only source you are allowed to share.
+
+are allowed to share.
 
 ## Milestone 7: Documentation and End-to-End Demo
 
@@ -245,7 +253,7 @@ The local SQLite database is stored under Flask's `instance` directory. Set `LEG
 
 <kbd>Currently in development</kbd>
 
-The deterministic prototype, evaluation tooling, and demo are implemented. The report confirms the manually implemented FastAPI baseline matches all current held-out cases and that runtime/hybrid evidence contexts contain guidance traces only. A Groq proposal path and reviewed-candidate container are available, but proposals have not yet been generated and evaluated across the three conditions; the project makes no comparative performance claim.
+The deterministic prototype, evaluation tooling, and demo are implemented. The report confirms the manually implemented FastAPI baseline matches all current held-out cases and that runtime/hybrid evidence contexts contain guidance traces only. Gemini-first/Groq-fallback proposal generation and the reviewed-candidate container are available, but proposals have not yet been generated and evaluated across the three conditions; the project makes no comparative performance claim.
 
 The project is being built incrementally so that each reconstructed implementation can be compared with observable behaviour from its reference workflow.
 

@@ -1,10 +1,10 @@
-name: Generate Groq proposals
+name: Generate AI proposals (Gemini primary, Groq fallback)
 
 on:
   workflow_dispatch:
     inputs:
       confirm_free_tier:
-        description: I confirm this Groq account is on the free tier and approve three requests
+        description: I confirm both accounts are on their free tiers and approve three primary requests plus any fallbacks
         required: true
         default: false
         type: boolean
@@ -19,7 +19,7 @@ jobs:
       - name: Require free-tier confirmation
         if: ${{ inputs.confirm_free_tier != true }}
         run: |
-          echo "::error::Confirm the Groq account is on its free tier before generating proposals."
+          echo "::error::Confirm both provider accounts are on their free tiers before generating proposals."
           exit 1
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -33,6 +33,7 @@ jobs:
           python -m pip install --no-deps --editable .
       - name: Generate one proposal for each evidence condition
         env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
           set -euo pipefail
@@ -42,7 +43,7 @@ jobs:
       - name: Upload proposals for review
         uses: actions/upload-artifact@v4
         with:
-          name: groq-proposals
+          name: model-proposals
           path: artifacts/proposals/*.json
           if-no-files-found: error
           retention-days: 7

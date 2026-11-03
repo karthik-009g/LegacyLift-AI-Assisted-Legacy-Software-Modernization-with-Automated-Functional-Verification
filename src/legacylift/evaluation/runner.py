@@ -217,12 +217,13 @@ def run_evaluation(
         "strategy_comparison": {
             "status": "not_run",
             "reason": (
-                "A Groq provider is implemented, but no model-generated reconstruction "
-                "has yet been produced for any evidence condition."
+                "Gemini primary and Groq fallback providers are implemented, but no "
+                "model-generated reconstruction has yet been produced for any evidence condition."
             ),
-            "provider_status": "groq_implemented_not_run",
-            "provider": "groq",
-            "suggested_model": "openai/gpt-oss-20b",
+            "provider_status": "gemini_primary_groq_fallback_implemented_not_run",
+            "provider": "gemini-primary-groq-fallback",
+            "suggested_model": "gemini-3.8-flash",
+            "fallback_model": "openai/gpt-oss-120b",
             "conditions": {condition: "context_prepared_only" for condition in CONDITIONS},
             "comparative_claims_supported": False,
         },

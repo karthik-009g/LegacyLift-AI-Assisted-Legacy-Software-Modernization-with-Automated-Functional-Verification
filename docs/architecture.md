@@ -11,7 +11,7 @@ flowchart LR
     D --> E[Evidence condition filter]
     E --> F[Provider protocol]
     F --> G[Deterministic mock proposal]
-    F --> K[Optional Groq proposal]
+    F --> K[Gemini primary / Groq fallback proposal]
     K --> L[Human review]
     L --> M[Restricted candidate runner]
     M --> I
@@ -22,7 +22,7 @@ flowchart LR
     I --> J[Held-out evaluation report]
 ```
 
-The mock provider is an offline boundary test. An optional Groq adapter can request a proposal from a cloud model and store it for review. The FastAPI baseline is hand-built and exists so the comparison and evidence pipeline can be exercised without credentials or network access. The demo never executes model output. A separate command can evaluate a candidate only after an explicit human-review declaration and runs it in a resource-limited, network-disabled Docker container; this is not a formal security boundary for hostile Python.
+The mock provider is an offline boundary test. The cloud adapter tries Gemini first and Groq second, then stores the proposal for review. Both providers request structured output and validate evidence citations. The FastAPI baseline is hand-built and exists so the comparison and evidence pipeline can be exercised without credentials or network access. The demo never executes model output. A separate command can evaluate a candidate only after an explicit human-review declaration and runs it in a resource-limited, network-disabled Docker container; this is not a formal security boundary for hostile Python.
 
 ## Components
 
@@ -32,7 +32,7 @@ The mock provider is an offline boundary test. An optional Groq adapter can requ
 | Scenario capture | `src/legacylift/runtime_capture/` | Replays synthetic workflows against fresh SQLite fixtures and records HTTP, cookie, session, and database evidence. |
 | Static analysis | `src/legacylift/static_analysis/` | Reads Python syntax trees and reports supported literal route and code-structure findings without executing source. |
 | Evidence record | `src/legacylift/evidence/` | Validates facts, inferences, unknowns, contracts, validation cases, and provenance. |
-| Reconstruction boundary | `src/legacylift/reconstruction/` | Filters evidence by source/runtime/hybrid condition, bounds context, and includes deterministic mock and optional Groq providers. |
+| Reconstruction boundary | `src/legacylift/reconstruction/` | Filters evidence by source/runtime/hybrid condition, bounds context, and includes deterministic mock, Gemini primary, and Groq fallback providers. |
 | FastAPI baseline | `src/legacylift/reconstructed_app/` | Independently implements the selected workflow for local functional comparison. |
 | Verification | `src/legacylift/verification/` | Replays matching scenarios and reports per-field differences in HTTP and persisted state. |
 | Evaluation | `src/legacylift/evaluation/` | Builds guidance-only evidence, checks held-out runtime isolation, measures the manual baseline, and evaluates explicitly reviewed model proposals. |
@@ -41,8 +41,8 @@ The mock provider is an offline boundary test. An optional Groq adapter can requ
 ## Evidence and trust boundaries
 
 - Runtime scenarios use synthetic identities and fixtures. They do not represent production authentication or real customer data.
-- The optional Groq provider sends the selected evidence and any bounded source excerpt to Groq over HTTPS. Do not send source that you are not authorized to share.
-- `GROQ_API_KEY` is sent only as an authorization header; it is excluded from logs and proposal artifacts. The ordinary demo never reads the key or contacts Groq.
+- The configured cloud provider sends the selected evidence and any bounded source excerpt to Gemini first, then Groq only when Gemini fails. Do not send source that you are not authorized to share.
+- `GEMINI_API_KEY` and `GROQ_API_KEY` are sent only as API authentication headers; they are excluded from logs, proposal artifacts, and the evaluation container. The ordinary demo never reads the keys or contacts either provider.
 - Cookie values are never written into artifacts; only selected cookie attributes are compared.
 - Differential checks compare only `Content-Type`, `Vary`, and `Cache-Control` headers. Cookie signature values are excluded while attributes are compared. Synthetic ticket IDs are stable and compared exactly; no broad ID or response normalization is applied.
 - The AST pass is best-effort. Dynamic registration, reflection, external services, and unvisited runtime paths are not resolved.
