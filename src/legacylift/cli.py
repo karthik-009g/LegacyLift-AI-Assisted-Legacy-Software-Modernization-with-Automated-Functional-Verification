@@ -4,13 +4,18 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 from typing import Any
 
 from legacylift.evaluation import run_reviewed_proposals, write_evaluation_artifacts
 from legacylift.evidence.builder import build_eer
 from legacylift.evidence.storage import load_eer, write_eer, write_eer_schema
-from legacylift.reconstruction import GroqProvider, build_reconstruction_request
+from legacylift.reconstruction import (
+    GeminiProvider,
+    ProviderFallback,
+    build_reconstruction_request,
+)
 from legacylift.reconstruction.context import (
     DEFAULT_MAX_CONTEXT_CHARS,
     DEFAULT_MAX_CONTRACTS,
@@ -83,16 +88,40 @@ def run_demo(project_root: str | Path | None = None) -> dict[str, Any]:
     }
 
 
+def _load_project_env(path: Path) -> None:
+    """Load only the supported API keys from a local ignored .env file."""
+    try:
+        lines = path.read_text(encoding="utf-8-sig").splitlines()
+    except FileNotFoundError:
+        return
+
+    for line in lines:
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#") or "=" not in stripped:
+            continue
+        key, value = stripped.split("=", 1)
+        key = key.strip()
+        if key not in {"GEMINI_API_KEY", "GROQ_API_KEY"} or os.environ.get(key):
+            continue
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+            value = value[1:-1]
+        if value:
+            os.environ[key] = value
+
+
 def run_proposal(
     condition: EvidenceCondition,
     *,
-    model: str = GroqProvider.DEFAULT_MODEL,
+    gemini_model: str = ProviderFallback.DEFAULT_GEMINI_MODEL,
+    groq_model: str = ProviderFallback.DEFAULT_GROQ_MODEL,
     timeout: float = 90.0,
     project_root: str | Path | None = None,
     output_path: str | Path | None = None,
 ) -> dict[str, Any]:
-    """Call Groq once and save its proposal without executing generated code."""
+    """Call Gemini first, fall back to Groq, and save the review-only proposal."""
     root = Path(project_root or Path(__file__).resolve().parents[2]).resolve()
+    _load_project_env(root / ".env")
     guidance_eer = load_eer(root / "artifacts" / "evaluation" / "guidance_eer.json")
     request = build_reconstruction_request(
         guidance_eer,
@@ -102,7 +131,11 @@ def run_proposal(
         max_contracts=DEFAULT_MAX_CONTRACTS,
         max_context_chars=DEFAULT_MAX_CONTEXT_CHARS,
     )
-    proposal = GroqProvider.from_environment(model=model, timeout=timeout).propose(request)
+    proposal = ProviderFallback.from_environment(
+        gemini_model=gemini_model,
+        groq_model=groq_model,
+        timeout=timeout,
+    ).propose(request)
     destination = (
         Path(output_path) if output_path else Path("artifacts" / "proposals" / f"{condition}.json")
     )
@@ -141,18 +174,24 @@ def main(argv: list[str] | None = None) -> int:
     )
     propose_parser = subparsers.add_parser(
         "propose",
-        help="ask Groq for a cloud model proposal that is saved for human review",
+        help="ask Gemini first, use Groq as backup, and save the proposal for human review",
     )
     propose_parser.add_argument(
         "--condition", choices=("source_only", "runtime_only", "hybrid"), required=True
     )
-    propose_parser.add_argument("--model", default=GroqProvider.DEFAULT_MODEL)
+    propose_parser.add_argument("--gemini-model", default=GeminiProvider.DEFAULT_MODEL)
+    propose_parser.add_argument(
+        "--groq-model",
+        "--model",
+        dest="groq_model",
+        default=ProviderFallback.DEFAULT_GROQ_MODEL,
+    )
     propose_parser.add_argument("--timeout", type=float, default=90.0)
     propose_parser.add_argument("--root", type=Path, default=None)
     propose_parser.add_argument("--output", type=Path, default=None)
     evaluate_parser = subparsers.add_parser(
         "evaluate-proposals",
-        help="evaluate reviewed Groq proposals in an isolated Docker container",
+        help="evaluate reviewed model proposals in an isolated Docker container",
     )
     evaluate_parser.add_argument(
         "--human-reviewed",
@@ -173,7 +212,8 @@ def main(argv: list[str] | None = None) -> int:
         try:
             result = run_proposal(
                 arguments.condition,
-                model=arguments.model,
+                gemini_model=arguments.gemini_model,
+                groq_model=arguments.groq_model,
                 timeout=arguments.timeout,
                 project_root=arguments.root,
                 output_path=arguments.output,
