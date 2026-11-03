@@ -292,10 +292,7 @@ def test_gemini_provider_returns_review_only_code_with_structured_output():
                                     "text": json.dumps(
                                         {
                                             "summary": "Proposed a small FastAPI ticket route.",
-                                            "proposed_code": (
-                                                "from fastapi import FastAPI\n"
-                                                "app = FastAPI()\n"
-                                            ),
+                                            "proposed_code": "from fastapi import FastAPI\napp = FastAPI()\n",
                                             "evidence_ids": [expected_id],
                                             "unsupported_claims": ["Ownership remains unverified."],
                                         }
@@ -335,10 +332,7 @@ def test_gemini_provider_returns_review_only_code_with_structured_output():
             build_reconstruction_prompt(request).encode("utf-8")
         ).hexdigest(),
     )
-    assert str(observed_requests[0].url) == (
-        "https://generativelanguage.googleapis.com/v1beta/"
-        "models/gemini-3.8-flash:generateContent"
-    )
+    assert str(observed_requests[0].url) == "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"
     assert api_key not in repr(proposal)
 
 
@@ -440,9 +434,7 @@ def test_local_env_loader_reads_only_provider_keys_and_preserves_process_environ
 
     env_path = tmp_path / ".env"
     env_path.write_text(
-        'GEMINI_API_KEY="from-file-gemini"\n'
-        "GROQ_API_KEY=from-file-groq\n"
-        "OTHER_SECRET=ignored\n",
+        'GEMINI_API_KEY="from-file-gemini"\nGROQ_API_KEY=from-file-groq\nOTHER_SECRET=ignored\n',
         encoding="utf-8",
     )
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
