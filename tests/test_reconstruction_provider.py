@@ -332,7 +332,10 @@ def test_gemini_provider_returns_review_only_code_with_structured_output():
             build_reconstruction_prompt(request).encode("utf-8")
         ).hexdigest(),
     )
-    assert str(observed_requests[0].url) == "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"
+    assert (
+        str(observed_requests[0].url)
+        == "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"
+    )
     assert api_key not in repr(proposal)
 
 
