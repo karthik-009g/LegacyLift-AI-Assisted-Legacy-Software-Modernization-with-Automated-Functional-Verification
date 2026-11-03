@@ -840,12 +840,12 @@
       "runtime_only": "context_prepared_only",
       "source_only": "context_prepared_only"
     },
+    "fallback_model": "openai/gpt-oss-120b",
     "provider": "gemini-primary-groq-fallback",
     "provider_status": "gemini_primary_groq_fallback_implemented_not_run",
     "reason": "Gemini primary and Groq fallback providers are implemented, but no model-generated reconstruction has yet been produced for any evidence condition.",
     "status": "not_run",
-    "suggested_model": "gemini-3.8-flash",
-    "fallback_model": "openai/gpt-oss-120b"
+    "suggested_model": "gemini-3.8-flash"
   },
   "study": "initial_ticket_workflow_evidence_conditions"
 }
