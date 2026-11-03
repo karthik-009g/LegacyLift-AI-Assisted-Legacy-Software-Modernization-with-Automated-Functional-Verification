@@ -128,7 +128,7 @@ def test_groq_provider_returns_review_only_code_with_strict_json_schema():
         condition="runtime_only",
         summary="Proposed a small FastAPI ticket route.",
         evidence_ids=[expected_id],
-        proposed_code="from fastapi import FastAPI\napp = FastAPI()\n",
+        proposed_code=proposed_code,
         requires_human_review=True,
         omitted_evidence_ids=request.omitted_evidence_ids,
         unsupported_claims=["The model has not verified ownership."],
@@ -262,6 +262,7 @@ def test_gemini_provider_returns_review_only_code_with_structured_output():
         current_eer(), "runtime_only", source_root=Path(__file__).parents[1]
     )
     expected_id = request.contracts[0]["contract_id"]
+    proposed_code = "\n".join(("from fastapi import FastAPI", "app = FastAPI()", ""))
     api_key = "test-gemini-key"
     observed_requests = []
 
@@ -292,7 +293,7 @@ def test_gemini_provider_returns_review_only_code_with_structured_output():
                                     "text": json.dumps(
                                         {
                                             "summary": "Proposed a small FastAPI ticket route.",
-                                            "proposed_code": "from fastapi import FastAPI\napp = FastAPI()\n",
+                                            "proposed_code": proposed_code,
                                             "evidence_ids": [expected_id],
                                             "unsupported_claims": ["Ownership remains unverified."],
                                         }
