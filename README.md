@@ -190,7 +190,7 @@ This writes `artifacts/proposals/model_generated_comparison.json`. The container
 
 ### Run through GitHub Actions
 
-If you do not have Docker locally, the repository has two manual workflows. Add `GROQ_API_KEY` under **Settings → Secrets and variables → Actions**. In the Actions tab, run **Generate Groq proposals**. Download its `groq-proposals` artifact, inspect all three `proposed_code` fields, then run **Evaluate reviewed Groq proposals** with that workflow run ID and `human_reviewed` enabled. Download the `model-generated-comparison` report artifact from the second run. Both workflows are manual; generation makes three Groq API requests. This repository is public, so workflow artifacts can be read by people who can access the repository; use only source you are allowed to share.
+If you do not have Docker locally, the repository has two manual workflows. Add `GROQ_API_KEY` under **Settings → Secrets and variables → Actions**. In the Actions tab, run **Generate Groq proposals** on `main` and confirm that the account is on Groq's free tier. Download its `groq-proposals` artifact, inspect all three `proposed_code` fields, then run **Evaluate reviewed Groq proposals** with that workflow run ID and `human_reviewed` enabled. Download the `model-generated-comparison` report artifact from the second run. Both workflows are manual; generation makes three Groq API requests. This repository is public, so workflow artifacts can be read by people who can access the repository; use only source you are allowed to share.
 
 ## Milestone 7: Documentation and End-to-End Demo
 

@@ -2,6 +2,12 @@ name: Generate Groq proposals
 
 on:
   workflow_dispatch:
+    inputs:
+      confirm_free_tier:
+        description: I confirm this Groq account is on the free tier and approve three requests
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -10,6 +16,11 @@ jobs:
   proposals:
     runs-on: ubuntu-latest
     steps:
+      - name: Require free-tier confirmation
+        if: ${{ inputs.confirm_free_tier != true }}
+        run: |
+          echo "::error::Confirm the Groq account is on its free tier before generating proposals."
+          exit 1
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
