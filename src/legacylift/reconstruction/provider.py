@@ -498,6 +498,5 @@ class ProviderFallback:
                     break
 
         raise RuntimeError(
-            "; ".join(failures)
-            + ". Check configured API keys, model access, and free-tier limits."
+            "; ".join(failures) + ". Check configured API keys, model access, and free-tier limits."
         )
