@@ -1,10 +1,10 @@
-name: Evaluate reviewed Groq proposals
+name: Evaluate reviewed model proposals
 
 on:
   workflow_dispatch:
     inputs:
       proposal_run_id:
-        description: Run ID from a successful "Generate Groq proposals" workflow
+        description: Run ID from a successful "Generate AI proposals" workflow
         required: true
         type: string
       human_reviewed:
@@ -64,7 +64,7 @@ jobs:
             });
             const workflowPath = (run.path || "").split("@")[0];
             if (workflowPath !== ".github/workflows/generate-groq-proposals.yml") {
-              core.setFailed("The selected run did not generate Groq proposals");
+              core.setFailed("The selected run did not generate model proposals");
               return;
             }
             if (run.status !== "completed" || run.conclusion !== "success") {
@@ -84,7 +84,7 @@ jobs:
         if: ${{ inputs.human_reviewed == true }}
         uses: actions/download-artifact@v4
         with:
-          name: groq-proposals
+          name: model-proposals
           path: artifacts/proposals
           run-id: ${{ steps.source-run.outputs.run_id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -101,7 +101,7 @@ jobs:
           for condition in ("source_only", "runtime_only", "hybrid"):
               path = root / f"{condition}.json"
               proposal = ReconstructionProposal.model_validate_json(path.read_text(encoding="utf-8"))
-              if proposal.provider != "groq" or proposal.condition != condition:
+              if proposal.provider not in {"gemini", "groq"} or proposal.condition != condition:
                   raise SystemExit(f"Invalid provider or condition in {path.name}")
               if not proposal.proposed_code or not proposal.proposed_code.strip():
                   raise SystemExit(f"No code was generated in {path.name}")
