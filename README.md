@@ -1,261 +1,216 @@
 # LegacyLift
-### AI-Assisted Legacy Software Modernization with Automated Functional Verification
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Status-In%20Development-orange?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/FastAPI-Backend-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
-  <img src="https://img.shields.io/badge/AI-Assisted%20Engineering-purple?style=for-the-badge" />
+**Can an LLM rebuild a legacy workflow so that it behaves exactly like the original? I'm building the harness to measure that.**
+
+<p>
+  <img src="https://img.shields.io/badge/Status-In%20Development-orange?style=flat-square" />
+  <img src="https://img.shields.io/badge/Python-3.11%2B-blue?style=flat-square&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" />
+  <img src="https://img.shields.io/badge/Docker-isolated%20replay-2496ED?style=flat-square&logo=docker&logoColor=white" />
 </p>
 
-## About
+I'm building LegacyLift to test one question: **can bounded source and runtime evidence help an LLM reconstruct a legacy REST workflow whose externally observable behavior matches an independent reference?**
 
-I am building **LegacyLift** to explore how AI can assist in modernizing legacy web applications without compromising their existing functionality.
-
-Legacy applications often contain complex business logic distributed across source code, API endpoints, session handling, and database operations. Incomplete documentation and limited regression testing make understanding and reconstructing these systems particularly challenging.
-
-My approach is to combine static source-code analysis, runtime behaviour capture, and LLM-assisted reconstruction to understand how an existing application actually works.
-
-Rather than relying on AI-generated code alone, I use an evidence-driven reconstruction process followed by differential testing to compare the original and reconstructed implementations.
-
-The initial focus is on reconstructing selected legacy application workflows as modern FastAPI endpoints and evaluating their behavioural consistency.
+I don't trust "the generated code looks right." Legacy behavior lives in controllers, models, permissions, persistence, and framework conventions, so translating syntax doesn't prove equivalence. LegacyLift replays the same scenarios against the original and the reconstruction, and compares HTTP responses, headers, JSON, and database and audit state.
 
 ---
 
-## What I Am Building
+## Where it stands (21 November 2026)
 
-- **Legacy Application Analysis** – Understanding application structure, source-code dependencies, routes, and business logic.
-- **Runtime Behaviour Capture** – Collecting HTTP requests and responses, cookies, session information, and database changes.
-- **Engineering Evidence Record** – Organizing observed facts, inferred behaviour, API contracts, uncertainties, and validation requirements.
-- **AI-Assisted Reconstruction** – Using LLMs to reconstruct selected legacy workflows as FastAPI endpoints.
-- **Differential Testing** – Comparing original and reconstructed application behaviour across equivalent test scenarios.
-- **Evaluation Framework** – Measuring behavioural fidelity and comparing different evidence-based reconstruction approaches.
+I'm keeping this section blunt, because the results are mixed.
+
+| Result | Outcome |
+| --- | --- |
+| Frozen controlled study (27 trials, 3 workflows × 3 evidence conditions × 3 replicates) | **Complete. Zero guidance, held-out, or workflow passes.** 62/81 requests used, 309,362 reported tokens |
+| Exploratory Redmine issue-update trial (revised prompt, Groq GPT-OSS 120B, one request) | **Passed 6/6 guidance and 4/4 held-out** in independent Docker replay. **Human review still pending** |
+| Test suite | 382 passed, 0 skipped, with all Docker smoke gates enabled |
+| Comparator and reference-adapter mutation campaigns | 6/6 deliberate faults caught in each |
+
+**What I'm claiming:** the verification pipeline works, and one generated candidate has passed both independent gates.
+**What I'm not claiming:** that any evidence condition (source-only, runtime-only, hybrid) beats another. The positive trial used a revised prompt, response format, and reasoning setting, so it sits outside the frozen study and can't support a comparison.
 
 ---
 
-## How It Works
+## How it works
+
+```mermaid
+flowchart TD
+    Source[Pinned Ruby source] --> Evidence[Tree-sitter + Rails evidence index]
+    Reference[Isolated seeded Redmine] --> Freeze[Frozen HTTP + DB observations]
+    Freeze --> Guidance[Guidance observations]
+    Freeze --> Final[Sealed held-out observations]
+    Evidence --> Context[Condition-specific bounded context]
+    Guidance --> Context
+    Context --> Model[Hosted LLM with durable request cap]
+    Model --> Policy[Citations + static capability checks]
+    Policy --> Target[Isolated candidate app]
+    Target --> Replay[Guidance replay]
+    Replay --> Repair[Bounded guidance-only repair]
+    Repair --> Model
+    Replay --> Gate[Guidance pass gate]
+    Gate --> Verify[Separate final verification]
+    Final --> Verify
+    Verify --> Review[Exact-source human review + export]
+```
+
+**Design decisions I care about:**
+
+- **Held-out cases are never used for repair.** A candidate must pass guidance before a separate command opens final verification, and a held-out failure is final. An earlier create run passed 6/6 guidance but only 2/4 held-out, which shows that passing guidance doesn't mean the migration is done.
+- **Database and audit state are verified, not just status codes.** In Redmine, a disallowed New → Closed transition can return `204` while leaving the issue unchanged and still writing a journal note. Comparing only the HTTP code would miss both effects.
+- **Evidence is labeled honestly.** Source spans come from Ruby Tree-sitter. Rails convention and possible-call inferences are marked as inferences, never presented as observed traces. No embedding or vector-search claims.
+- **Strict isolation.** The legacy app and the candidate run in separate restricted containers. The host never imports candidate code, and expected results stay on the controller.
+- **A hard request budget.** A persistent SQLite ledger reserves every model call before it is sent. Each lineage gets at most three requests (one initial and two follow-ups), and changing a seed can't reset that. Interrupted calls are never silently resent.
+- **Human approval is bound to checksums.** Export unlocks only after a reviewer approves the exact source and verification report.
+
+---
+
+## What it migrates
+
+| | |
+| --- | --- |
+| **Reference** | Redmine 4.2.10 (pinned commit `9118c6dc…`), Ruby 2.7.8, Rails 5.2.8.1 |
+| **Replacement** | Python 3.14 + FastAPI + SQLAlchemy |
+| **Scope** | Selected issue creation, visibility-aware retrieval, and status updates, plus supporting writes checked through read-after-write |
+| **Contract** | 30 scenarios: 3 workflows × (6 guidance + 4 held-out) |
+
+This is a finite API slice. It is not a full Redmine rewrite, a plugin or UI migration, or a proof of universal equivalence.
+
+---
+
+## Tech stack
+
+| Layer | Tools |
+| --- | --- |
+| Controller and verifier | Python 3.11, FastAPI, Pydantic, SQLite |
+| Evidence | Ruby Tree-sitter, BM25 retrieval, exact source windows |
+| Isolation | Docker (non-root, no network, read-only root, dropped capabilities, resource limits) |
+| Models | Groq `gpt-oss-120b` (controlled study), Gemini as an optional fallback outside controlled trials |
+| Jobs (optional) | PostgreSQL, Valkey, RQ |
+| Workbench UI | React, TypeScript, Vite, Monaco, Playwright |
+| Quality | pytest, Ruff, `pip check`, mutation campaigns against the verifier |
+
+I build LegacyLift with Codex as my coding assistant. Model-generated candidates are kept strictly separate from hand-engineered baselines, and a baseline is never reported as a model success.
+
+## Repository layout
 
 ```text
-       Legacy Web Application
-                 |
-         +-------+-------+
-         |               |
-   Static Analysis   Runtime Capture
-         |               |
-         +-------+-------+
-                 |
-        Engineering Evidence
-              Record
-                 |
-          LLM-Assisted
-           Reconstruction
-                 |
-          FastAPI Endpoints
-                 |
-         Differential Testing
-                 |
-       Original vs Reconstructed
-                 |
-         Verification Results
+src/legacylift/
+  modernization/     v2 policy: evidence selection, generation, repair, frozen studies, call ledger
+  runtimes/          Docker lifecycle and isolated replay for Redmine and the Python target
+  workbench/         host API, persistent metadata, local/RQ job dispatch
+  legacy_app/ reconstructed_app/ runtime_capture/ static_analysis/
+  evidence/ reconstruction/ verification/ evaluation/    v1 prototype, kept as a regression harness
+web/                 React/TypeScript workbench with its own lockfile and browser tests
+tests/               behavior and integration tests, engineered fixtures
+artifacts/           public reports, audits, and screenshots
+docs/                architecture, operations, experiments, roadmap, developer guide
 ```
 
 ---
 
-## Stack I Work With
+## Evaluation design
 
-### Languages
-
-<p>
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/SQL-000000?style=for-the-badge&logo=postgresql&logoColor=white" />
-</p>
-
-### AI / LLM
-
-<p>
-  <img src="https://img.shields.io/badge/LLMs-AI%20Integration-8A2BE2?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Prompt%20Engineering-Evidence%20Grounded-black?style=for-the-badge" />
-</p>
-
-### Backend
-
-<p>
-  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
-  <img src="https://img.shields.io/badge/REST%20APIs-Backend-blue?style=for-the-badge" />
-</p>
-
-### Analysis & Verification
-
-<p>
-  <img src="https://img.shields.io/badge/Static%20Analysis-Code%20Inspection-3572A5?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Runtime%20Analysis-Behaviour%20Capture-orange?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Differential%20Testing-Functional%20Verification-green?style=for-the-badge" />
-</p>
+- **Plan** `5788dbc4…`: 3 workflows × 3 conditions (source-only, runtime-only, hybrid) × 3 replicates = 27 cells, randomized with a fixed seed, at most 81 requests.
+- **Fixed model setup:** Groq `openai/gpt-oss-120b`, medium reasoning, temperature 0. Fallback providers are disabled in controlled trials to avoid confounding.
+- **Tamper resistance:** the plan fingerprints 40 code and asset files, the fixed inputs, and every saved context before any request. Changing protocol code requires a new versioned plan.
+- **Resumable runner:** it uses an OS lock, stores durable per-trial state, and recomputes reports from real artifacts. Relabeling a saved summary can't manufacture a pass.
+- **Primary outcomes:** guidance-pass and full-workflow-pass counts per condition. **Secondary:** strict response, state, and audit mismatches, repair outcome, latency, tokens, and evidence provenance. Provider failures are kept separate from candidate defects.
 
 ---
 
-## Evaluation
+## What I learned from the failures
 
-I want to evaluate LegacyLift based on functional correctness rather than code generation alone.
-
-| Metric | Evaluation Focus |
-|---|---|
-| Behavioural Fidelity | Agreement between original and reconstructed workflows |
-| API Consistency | HTTP status codes, response structures, and values |
-| State Consistency | Preservation of workflow state transitions |
-| Database Consistency | Equivalence of resulting database changes |
-| Evidence Coverage | Contribution of source and runtime evidence |
-| Correction Effort | Manual effort required to resolve behavioural differences |
-
-### Experimental Comparison
-
-I also plan to compare three reconstruction strategies:
-
-- **Source-only:** Using static source-code evidence.
-- **Runtime-only:** Using observed application behaviour.
-- **Combined evidence:** Using both static and runtime evidence.
-
-This will help me evaluate whether combining different evidence sources improves reconstruction quality.
+- Generated drafts showed real SQLAlchemy misuse, wrong database URLs, missing server-filled fields, permission mistakes, and wrong headers. I recorded these as measured failures and didn't patch them by hand.
+- Guidance replay exposed two protocol bugs of mine: repair prompts omitted the database contract, and they lost the original request examples. I fixed both before the controlled plan.
+- Free-tier providers fail in practice, with quota errors, 503s, and timeouts. The ledger preserves all of them, so a missing output is never counted as a success or as free.
 
 ---
 
-## Milestone 1: Deterministic Legacy Reference
+## Measured implementation results
 
-The first reference app uses Flask, SQLite, synthetic data, and a reset utility. Its selected stateful workflows are:
+| Check | Result |
+| --- | --- |
+| Full workspace suite | 382 passed, 0 skipped (~124 s) |
+| Lint / format / deps | Ruff clean, 165 files formatted, `pip check` clean |
+| Fresh source-snapshot reproduction | 277 passed, 76 installed file hashes matched |
+| Reference reproduction | All 30 observations matched the original oracle hash |
+| Engineered baseline | 4/4 guidance cases matched, 7/7 source mutants caught (hand-engineered baseline, not model output) |
+| Container assessment | 16/16 measured isolation controls passed |
+| Python dependency audit | 48 version pairs checked, zero findings |
+| npm dependency audit | 5 high dev-only entries from one open advisory, none production |
+| Image advisory scan | Open triage: 51 advisory IDs on the target image |
 
-- Create a ticket with subject and description validation.
-- Retrieve a ticket only when it belongs to the current session user.
-- Move a ticket through `open → in_progress → closed`; invalid jumps return a conflict.
+The 277-test reproduction predates later prompt and isolation changes, so I don't apply it to newer source bytes.
 
-`POST /session` sets a synthetic identity for local scenarios. It is not production authentication. The seeded ticket belongs to `alice`. Seven baseline tests cover success, invalid input, ownership, status transitions, persisted database state, and reset behavior.
+---
 
-## Milestone 2: Runtime Capture
+## Limits and open work
 
-The capture runner replays fixed synthetic scenarios against a fresh SQLite fixture database and records each request, response, session transition, redacted cookie metadata, and ticket database snapshot/delta. The versioned sample trace is [`artifacts/traces/ticket_workflows.json`](artifacts/traces/ticket_workflows.json). Cookie values and local session secrets are not stored.
+**Limits:** results come from one repository, three replicates per condition, provider nondeterminism, and synthetic fixtures. Retrieval judgments are developer-authored (29 development judgments, not an independent benchmark). Nothing here generalizes to arbitrary repositories or languages. Matching a legacy response also doesn't prove its policy is desirable, so any intentional security deviation would need separate sign-off.
 
-## Milestone 3: Static Analysis and Evidence Record
+**Still open before I call this done:**
 
-The AST pass reports literal Flask route decorators, function definitions, imports, branch counts, and session/database references without executing source files. Its report is [`artifacts/static/legacy_analysis.json`](artifacts/static/legacy_analysis.json). A strict Pydantic schema keeps observed facts, inferences, unknowns, captured contracts, validation cases, and provenance separate. The checked-in EER and its JSON Schema are under `artifacts/evidence/` and `artifacts/schemas/`.
+- [ ] Complete the human source review and export of the passing issue-update candidate
+- [ ] Triage image advisories and resolve or formally accept the dev-dependency finding
+- [ ] Add independent retrieval validation
+- [ ] Reproduce the final bytes from a clean release checkout
+- [ ] Finish the case study, measured resume claims, and demo recording
 
-## Milestone 4: Reconstruction Baseline and Provider Boundary
+---
 
-The project includes an independently implemented FastAPI ticket service with its own Pydantic request models and SQLite fixture. Its routes are covered by differential tests against the Flask reference. The reconstruction interface accepts bounded, selectable source/runtime evidence (`source_only`, `runtime_only`, or `hybrid`). An optional Groq adapter requests a cloud model proposal; output is saved for review and is not executed automatically. An explicit evaluation command can run code that a person has reviewed inside a restricted Docker container.
+## Licensing
 
-## Milestone 5: Differential Verification
+Redmine is GPL. Exports keep Redmine's GPL notices and identify the derived logic and the migrated slice. I'm not implying permissive relicensing of derived code.
 
-The differential runner replays each fixed scenario against fresh Flask and FastAPI databases. It compares response status, selected headers, JSON, cookie attributes (with cookie values redacted), session transitions, database snapshots, and database deltas. Differences are retained by field in the report rather than normalized away. The checked-in result is [`artifacts/verification/differential_report.json`](artifacts/verification/differential_report.json).
+---
 
-Regenerate it with:
+## v2 commands
 
-```powershell
-python -c "from legacylift.verification.runner import write_differential_report; write_differential_report('artifacts/verification/differential_report.json')"
-```
+All commands run as `python -m legacylift …`. `--home .legacylift` is a v2 option and goes before the subcommand. Setup and optional services are covered in the operations guide.
 
-## Milestone 6: Held-Out Evaluation
+| Command | What it does |
+| --- | --- |
+| `v2 prepare` | Import the pinned Redmine source, analyze it, and capture reference observations |
+| `v2 seal-study` | Validate and seal the reference artifacts |
+| `v2 audit-prompts` / `v2 evaluate-retrieval` | No-model checks of prompt size and retrieval |
+| `v2 verify-mutations` / `verify-runtime-mutations` / `verify-candidate-mutations` | Fault-injection campaigns against the comparator, the reference adapter, and an engineered candidate |
+| `v2 migrate` | Real provider generation and repair, with scope, provider, and budget options |
+| `v2 finalize RUN_ID` | Held-out verification, only after guidance passes |
+| `v2 audit-calls RUN_ID` | Inspect a lineage's request accounting |
+| `v2 plan-study` / `audit-study` / `run-study` / `study-report` | Plan, check, run, and report the frozen controlled study |
+| `v2 serve` / `v2 worker` | Loopback API / host job worker |
 
-The initial split uses `create_ticket`, `retrieve_owned_ticket`, and `valid_status_transitions` as guidance scenarios. `hide_other_users_ticket`, `reject_empty_subject`, and `reject_skipped_status` are held out from runtime evidence. The evaluation builds and stores a guidance-only trace and EER, audits the source-only/runtime-only/hybrid contexts for held-out runtime leakage, and measures the hand-built FastAPI baseline against the held-out cases.
+I never force changed evidence into an old run or study manifest, and I never resend an uncertain request implicitly.
 
-The baseline matched all 3 held-out scenarios and all 6 request steps. This measures the hand-built implementation only. The source-only, runtime-only, and hybrid model reconstruction comparison has **not been run**: there is no model-generated app for any condition, and the mock provider does not generate executable code. The report makes no claim that one evidence condition performs better. The optional reviewed-candidate runner is implemented; running it still requires three proposals and a person to inspect their code.
+---
 
-The guidance inputs and report are in [`artifacts/evaluation/`](artifacts/evaluation/). Regenerate them with:
+## v1 prototype: Flask to FastAPI tickets
 
-```powershell
-python -c "from legacylift.evaluation import write_evaluation_artifacts; write_evaluation_artifacts('artifacts/evaluation')"
-```
-
-## Optional Groq Cloud Model
-
-The optional provider uses the existing `httpx` dependency and Groq's OpenAI-compatible chat completions API. The default model, `openai/gpt-oss-20b`, supports strict JSON Schema output. Groq documents a Free tier with account-specific limits; keep the account on that tier and do not upgrade to Developer for this project. Groq says upgrading to Developer requires a payment method; see its [billing FAQ](https://console.groq.com/docs/billing-faqs). Limits and model availability can change.
-
-Create a Groq API key in the [Groq Console](https://console.groq.com/keys), then enter it as a secure PowerShell prompt for the current session:
-
-```powershell
-$secureKey = Read-Host "Groq API key" -AsSecureString
-$env:GROQ_API_KEY = [System.Net.NetworkCredential]::new("", $secureKey).Password
-python -m legacylift propose --condition hybrid
-Remove-Item Env:GROQ_API_KEY
-Remove-Variable secureKey
-```
-
-To prepare all three evidence-condition proposals, run `legacylift propose --condition source_only`, `runtime_only`, and `hybrid` separately while the key is set. Each command makes one external API request and writes its response under the ignored `artifacts/proposals/` directory. The normal `demo` command stays offline. The provider sends the selected EER evidence and, for source-only/hybrid, bounded source excerpts to Groq over HTTPS; use only source you are allowed to share. The API key is read from `GROQ_API_KEY` and is not written to proposal files. The evaluation container does not receive this key.
-
-After generating all three proposals, inspect the `proposed_code` in each JSON file under `artifacts/proposals/`. Build the evaluator image once, then explicitly declare that you reviewed the code:
-
-```powershell
-docker build --file Dockerfile.evaluation --tag legacylift-evaluation:py311 .
-python -m legacylift evaluate-proposals --human-reviewed
-```
-
-This writes `artifacts/proposals/model_generated_comparison.json`. The container has no network, a read-only root filesystem, resource limits, and receives only the candidate file as a read-only mount. This is defense in depth, not a security boundary for hostile code: review each proposal carefully. The image includes LegacyLift source, including the fixed held-out scenario definitions, so the experiment does not prove resistance to an adversarial model inspecting the local evaluator. The report includes scenario/step match rates, response/session/database agreement, model-reported unsupported claims, and a hash of each candidate. Unsupported behaviors and manual correction time remain unmeasured. One run per condition on one synthetic split supports descriptive results only, not a general claim that one evidence condition is better.
-
-### Run through GitHub Actions
-
-If you do not have Docker locally, the repository has two manual workflows. Add `GROQ_API_KEY` under **Settings → Secrets and variables → Actions**. In the Actions tab, run **Generate Groq proposals** on `main` and confirm that the account is on Groq's free tier. Download its `groq-proposals` artifact, inspect all three `proposed_code` fields, then run **Evaluate reviewed Groq proposals** with that workflow run ID and `human_reviewed` enabled. Download the `model-generated-comparison` report artifact from the second run. Both workflows are manual; generation makes three Groq API requests. This repository is public, so workflow artifacts can be read by people who can access the repository; use only source you are allowed to share.
-
-## Milestone 7: Documentation and End-to-End Demo
-
-The architecture and evidence boundaries are described in [`docs/architecture.md`](docs/architecture.md); the split, metrics, current results, and limits are in [`docs/evaluation.md`](docs/evaluation.md). A labeled, synthetic mismatch example is available at [`artifacts/verification/sample_mismatch.json`](artifacts/verification/sample_mismatch.json). The single-command demo regenerates all checked-in artifacts, runs the differential and held-out checks, then prints a machine-readable summary:
-
-```powershell
-python -m legacylift demo
-```
-
-GitHub Actions runs the demo, full test suite, lint, formatting, dependency checks, and a generated-artifact freshness check on pushes and pull requests.
-
-## Setup and local checks
-
-Requires Python 3.11 or newer.
+The original prototype is a deterministic Flask/SQLite ticket app reconstructed as a FastAPI service, kept as a separate regression experiment. Its results don't establish Ruby-to-Python migration success.
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.lock
 python -m pip install --no-deps -e .
-python -m legacylift demo
+python -m legacylift demo     # regenerates artifacts, runs differential + held-out checks
 python -m pytest
-ruff check .
-ruff format --check .
-python -m pip check
 ```
 
-The lock file and `.python-version` pin the versions used to generate the committed reports. `pyproject.toml` retains bounded package requirements for normal installation.
-
-Start the local reference app with:
-
-```powershell
-flask --app legacylift.legacy_app.app:create_app run --debug
-```
-
-The local SQLite database is stored under Flask's `instance` directory. Set `LEGACYLIFT_SECRET_KEY` when running outside a disposable local environment.
-
-## Development Roadmap
-
-- [x] Python project bootstrap and deterministic Flask/SQLite reference workflows
-- [x] Runtime behaviour capture with a versioned synthetic trace
-- [x] Static source-code analysis and versioned Engineering Evidence Record
-- [x] FastAPI reconstruction baseline behind a provider-independent interface
-- [x] Differential comparison of responses and state changes
-- [x] Reproducible held-out baseline evaluation and evidence-context audit
-- [ ] Run and record model-generated source-only/runtime-only/hybrid comparison
-- [x] Final documentation and one-command demo
+Requires Python 3.11+. The lock file and `.python-version` pin the versions behind the committed reports. Optional Groq proposals and reviewed-candidate evaluation are described in [`docs/evaluation.md`](docs/evaluation.md). Use only source you're allowed to share, and never commit your API key.
 
 ---
 
-## Project Status
+## Docs
 
-<kbd>Currently in development</kbd>
-
-The deterministic prototype, evaluation tooling, and demo are implemented. The report confirms the manually implemented FastAPI baseline matches all current held-out cases and that runtime/hybrid evidence contexts contain guidance traces only. A Groq proposal path and reviewed-candidate container are available, but proposals have not yet been generated and evaluated across the three conditions; the project makes no comparative performance claim.
-
-The project is being built incrementally so that each reconstructed implementation can be compared with observable behaviour from its reference workflow.
+- [v2 technical report](docs/v2-technical-report.md) – full implementation and evaluation report
+- [Update-candidate review packet](docs/v2-update-candidate-review.md) – the exact source and checksums awaiting approval
+- [`docs/architecture.md`](docs/architecture.md) and [`docs/evaluation.md`](docs/evaluation.md) – v1 architecture, metrics, and limits
+- [Developer guide](docs/DEVELOPER_GUIDE.md) – file-by-file reference, lifecycle, isolation boundaries, and local artifact map
+- [`RESUME.md`](RESUME.md) – exact current state and next steps
 
 ---
 
-## Motivation
+## Why I'm building this
 
-I am interested in building AI systems that solve practical software engineering problems rather than limiting AI applications to text generation or API wrappers.
-
-With LegacyLift, I want to explore the intersection of **AI Engineering, Backend Development, Software Analysis, and Automated Testing**, while understanding the reliability challenges involved in applying LLMs to real-world engineering workflows.
-
-The goal is simple: make legacy software modernization more systematic, evidence-driven, and measurable.
-
+I want to work on AI systems that solve real engineering problems and are measured honestly, instead of text generation or API wrappers. LegacyLift sits where AI engineering, backend development, program analysis, and automated testing meet, and it's also a case study in what it takes to trust LLM output.
