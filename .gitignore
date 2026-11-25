@@ -29,6 +29,12 @@ htmlcov/
 *.sqlite3
 instance/
 artifacts/proposals/
+.sandbox-tmp/
+.legacylift/
+node_modules/
+*.tsbuildinfo
+web/playwright-report/
+web/test-results/
 
 # Editors and operating systems
 .vscode/

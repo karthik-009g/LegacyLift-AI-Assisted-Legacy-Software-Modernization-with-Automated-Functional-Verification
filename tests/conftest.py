@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import copy
+import json
 import sqlite3
 
 import pytest
@@ -41,3 +43,40 @@ def stored_tickets(app):
             connection.close()
 
     return read_all
+
+
+@pytest.fixture
+def frozen_reference_inputs(tmp_path):
+    """Complete synthetic contract observations; no real application or model execution."""
+    from legacylift.modernization.contracts import canonical_hash, contract_manifest, scenarios
+
+    directory = tmp_path / "study"
+    directory.mkdir()
+    cases = []
+    for specification in scenarios():
+        case = copy.deepcopy(specification)
+        case["steps"] = [
+            {
+                "request": request,
+                "response": {"status": 200, "headers": {}, "json": {}, "body_bytes": 2},
+                "database_before": {},
+                "database_after": {},
+            }
+            for request in case["requests"]
+        ]
+        cases.append(case)
+    oracle = {
+        "contract": contract_manifest(),
+        "oracle_sha256": canonical_hash(cases),
+        "scenarios": cases,
+    }
+    (directory / "oracle.json").write_text(json.dumps(oracle), encoding="utf-8")
+    (directory / "guidance.json").write_text(
+        json.dumps({**oracle, "scenarios": [c for c in cases if c["split"] == "guidance"]}),
+        encoding="utf-8",
+    )
+    (directory / "fixture.sqlite3").write_bytes(b"synthetic database")
+    (directory / "actors.private.json").write_text(
+        '{"actor":"private-actor-marker"}', encoding="utf-8"
+    )
+    return tmp_path

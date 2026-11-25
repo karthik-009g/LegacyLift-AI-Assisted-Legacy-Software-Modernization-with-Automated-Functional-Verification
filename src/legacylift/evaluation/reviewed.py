@@ -11,17 +11,51 @@ import uuid
 from pathlib import Path
 from typing import Any
 
+from legacylift.evidence.storage import load_eer
+from legacylift.reconstruction.context import (
+    DEFAULT_MAX_CONTEXT_CHARS,
+    DEFAULT_MAX_CONTRACTS,
+    DEFAULT_MAX_SOURCE_CHARS,
+    build_reconstruction_request,
+)
 from legacylift.reconstruction.models import EvidenceCondition, ReconstructionProposal
+from legacylift.reconstruction.prompts import build_reconstruction_prompt
+from legacylift.runtime_capture.scenarios import DEFAULT_SCENARIOS
+
+from .plan import split_scenarios
 
 CONDITIONS: tuple[EvidenceCondition, ...] = ("source_only", "runtime_only", "hybrid")
 EVALUATION_IMAGE = "legacylift-evaluation:py311"
 DEFAULT_PROPOSALS = Path("artifacts/proposals")
 DEFAULT_REPORT = DEFAULT_PROPOSALS / "model_generated_comparison.json"
-EVALUATION_SCHEMA_VERSION = "1.0"
+EVALUATION_SCHEMA_VERSION = "1.2"
+
+
+class CandidateExecutionError(RuntimeError):
+    """A reviewed candidate failed inside the evaluator, rather than Docker being unavailable."""
+
+    def __init__(self, error_type: str, detail: str) -> None:
+        self.error_type = error_type
+        super().__init__(f"candidate evaluation failed: {error_type}: {detail[:500]}")
 
 
 def _sha256(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
+
+
+def _expected_prompt_sha256(project_root: Path, condition: EvidenceCondition) -> str:
+    evidence_path = project_root / "artifacts" / "evaluation" / "guidance_eer.json"
+    record = load_eer(evidence_path)
+    request = build_reconstruction_request(
+        record,
+        condition,
+        source_root=project_root,
+        max_source_chars=DEFAULT_MAX_SOURCE_CHARS,
+        max_contracts=DEFAULT_MAX_CONTRACTS,
+        max_context_chars=DEFAULT_MAX_CONTEXT_CHARS,
+    )
+    prompt = build_reconstruction_prompt(request)
+    return _sha256(prompt.encode("utf-8"))
 
 
 def run_candidate_in_container(
@@ -89,15 +123,25 @@ def run_candidate_in_container(
                     )
                 except (FileNotFoundError, subprocess.TimeoutExpired):
                     pass
-            raise RuntimeError(f"candidate exceeded the {timeout:g}-second time limit") from error
+            raise RuntimeError(
+                f"container command exceeded the {timeout:g}-second time limit; "
+                "candidate execution state is unresolved"
+            ) from error
 
+    try:
+        report = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        report = None
+    if isinstance(report, dict) and report.get("status") == "execution_failed":
+        raise CandidateExecutionError(
+            str(report.get("error_type", "unknown error")),
+            str(report.get("error", "no details")),
+        )
     if result.returncode:
         detail = result.stderr.strip()[-1000:] or result.stdout.strip()[-1000:]
         raise RuntimeError(f"candidate container failed ({result.returncode}): {detail}")
-    try:
-        report = json.loads(result.stdout)
-    except json.JSONDecodeError as error:
-        raise RuntimeError("candidate container did not return a JSON report") from error
+    if not isinstance(report, dict):
+        raise RuntimeError("candidate container did not return a JSON report object")
     if report.get("status") != "evaluated":
         raise RuntimeError(
             f"candidate evaluation failed: {report.get('error_type', 'unknown error')}: "
@@ -109,15 +153,20 @@ def run_candidate_in_container(
 def run_reviewed_proposals(
     project_root: str | Path,
     *,
-    human_reviewed: bool,
+    human_reviewed: bool = False,
+    agent_reviewed: bool = False,
     proposals_directory: str | Path = DEFAULT_PROPOSALS,
     output_path: str | Path = DEFAULT_REPORT,
     image: str = EVALUATION_IMAGE,
     timeout: float = 180.0,
 ) -> dict[str, Any]:
-    """Evaluate each proposal only after an explicit caller review declaration."""
-    if not human_reviewed:
-        raise ValueError("pass --human-reviewed only after inspecting each proposal's code")
+    """Evaluate current-prompt proposals after declaring who reviewed their source."""
+    if human_reviewed == agent_reviewed:
+        raise ValueError(
+            "pass exactly one of --human-reviewed or --agent-reviewed after inspecting "
+            "each proposal's code"
+        )
+    reviewer = "human" if human_reviewed else "agent"
     root = Path(project_root).resolve()
     proposal_root = Path(proposals_directory)
     if not proposal_root.is_absolute():
@@ -155,6 +204,54 @@ def run_reviewed_proposals(
             continue
 
         code_digest = _sha256(code.encode("utf-8"))
+        proposal_metadata = {
+            "provider": proposal.provider,
+            "provider_attempts": proposal.provider_attempts,
+            "candidate_origin": "agent_repaired_model_output"
+            if proposal.derivation
+            else "raw_model_output",
+            "derivation": proposal.derivation.model_dump(mode="json")
+            if proposal.derivation
+            else None,
+            "model": proposal.model,
+            "request_id": proposal.request_id,
+            "prompt_sha256": proposal.prompt_sha256,
+            "candidate_sha256": code_digest,
+            "usage": proposal.usage,
+        }
+        if not proposal.prompt_sha256:
+            results[condition] = {
+                **proposal_metadata,
+                "status": "prompt_hash_missing",
+            }
+            continue
+        try:
+            expected_prompt_digest = _expected_prompt_sha256(root, condition)
+        except (OSError, ValueError) as error:
+            results[condition] = {
+                **proposal_metadata,
+                "status": "prompt_context_unavailable",
+                "error": str(error)[:500],
+            }
+            continue
+        if proposal.prompt_sha256 != expected_prompt_digest:
+            results[condition] = {
+                **proposal_metadata,
+                "status": "stale_prompt",
+                "expected_prompt_sha256": expected_prompt_digest,
+            }
+            continue
+
+        sandbox = {
+            "runtime": "docker",
+            "image": image,
+            "network": "disabled",
+            "root_filesystem": "read_only",
+            "host_api_key_passed": False,
+            "human_review_declared": human_reviewed,
+            "agent_review_declared": agent_reviewed,
+            "reviewer": reviewer,
+        }
         try:
             evaluated = run_candidate_in_container(
                 code,
@@ -162,26 +259,23 @@ def run_reviewed_proposals(
                 image=image,
                 timeout=timeout,
             )
-        except (RuntimeError, ValueError) as error:
+        except (OSError, RuntimeError, ValueError) as error:
             results[condition] = {
+                **proposal_metadata,
                 "status": "evaluation_failed",
-                "provider": proposal.provider,
-                "model": proposal.model,
-                "request_id": proposal.request_id,
-                "prompt_sha256": proposal.prompt_sha256,
-                "candidate_sha256": code_digest,
-                "usage": proposal.usage,
+                "expected_prompt_sha256": expected_prompt_digest,
+                "sandbox": sandbox,
+                "failure_category": "candidate"
+                if isinstance(error, CandidateExecutionError)
+                else "infrastructure_or_runner",
                 "error": str(error)[:1000],
             }
             continue
+        sandbox_details = evaluated.pop("sandbox", {})
         results[condition] = {
             **evaluated,
-            "provider": proposal.provider,
-            "model": proposal.model,
-            "request_id": proposal.request_id,
-            "prompt_sha256": proposal.prompt_sha256,
-            "candidate_sha256": code_digest,
-            "usage": proposal.usage,
+            **proposal_metadata,
+            "expected_prompt_sha256": expected_prompt_digest,
             "unsupported_behavior_or_claim_count": {
                 "status": "partially_measured",
                 "reported_unsupported_claim_count": len(proposal.unsupported_claims),
@@ -193,18 +287,55 @@ def run_reviewed_proposals(
                 ),
             },
             "sandbox": {
-                "image": image,
-                "network": "disabled",
-                "root_filesystem": "read_only",
-                "host_api_key_passed": False,
-                "human_review_declared": True,
+                **sandbox_details,
+                **sandbox,
             },
         }
 
     completed = all(results[condition].get("status") == "evaluated" for condition in CONDITIONS)
+    terminal = all(
+        result.get("status") == "evaluated" or result.get("failure_category") == "candidate"
+        for result in results.values()
+    )
+    _, held_out = split_scenarios(DEFAULT_SCENARIOS)
+    experiment_metrics = {}
+    for condition, result in results.items():
+        evaluated = result.get("status") == "evaluated"
+        candidate_failed = result.get("failure_category") == "candidate"
+        experiment_metrics[condition] = {
+            "planned_scenario_count": len(held_out),
+            "planned_step_count": sum(len(scenario.steps) for scenario in held_out),
+            "candidate_execution_succeeded": True
+            if evaluated
+            else False
+            if candidate_failed
+            else None,
+            "functional_metrics_available": evaluated,
+            "operational_scenario_pass_rate": result.get("scenario_match_rate")
+            if evaluated
+            else 0.0
+            if candidate_failed
+            else None,
+            "operational_step_pass_rate": result.get("step_match_rate")
+            if evaluated
+            else 0.0
+            if candidate_failed
+            else None,
+        }
     report = {
         "evaluation_schema_version": EVALUATION_SCHEMA_VERSION,
-        "status": "completed" if completed else "incomplete",
+        "status": "completed"
+        if completed
+        else ("completed_with_candidate_failures" if terminal else "incomplete"),
+        "functional_evaluation_complete": completed,
+        "experiment_metrics": experiment_metrics,
+        "operational_metric_definition": (
+            "A candidate that fails inside the evaluator receives zero operational passes over "
+            "the planned held-out cases; this is not a measured field-agreement score. "
+            "Infrastructure failures remain unavailable and keep the experiment incomplete."
+        ),
+        "runtime": "docker",
+        "reviewer": reviewer,
         "study": "initial_ticket_workflow_evidence_conditions",
         "scope": "held-out scenarios only",
         "conditions": results,

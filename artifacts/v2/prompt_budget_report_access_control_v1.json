@@ -1,0 +1,625 @@
+{
+  "held_out_read": false,
+  "limit_scope": "UTF-8 user prompt including instructions and context; provider wrappers are additional",
+  "model_requests": 0,
+  "prompt_limit_bytes": 16000,
+  "scope": "guidance-only request construction; no provider or candidate execution",
+  "source_packing_version": "diverse-line-windows-1",
+  "status": "passed",
+  "variant_count": 12,
+  "variants": [
+    {
+      "condition": "source_only",
+      "prompt_bytes": 15873,
+      "prompt_sha256": "d8f45cd441f73acbebe9c3a5ae11100abcfc2542d8ba3ffce0027e6b0a50418e",
+      "runtime_selection": null,
+      "serialized_source_bytes": 5404,
+      "source_count": 6,
+      "source_selection": {
+        "serialized_source_byte_budget": 5885,
+        "unrepresented_roles": [
+          "read:lookup",
+          "read:authorization",
+          "read:visibility",
+          "create:validation",
+          "create:persistence",
+          "update:authorization",
+          "update:transition",
+          "update:audit"
+        ],
+        "version": "diverse-line-windows-1"
+      },
+      "source_spans": [
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:89:127",
+          "excerpt_end_line": 118,
+          "selection_category": "entrypoint",
+          "start_line": 102,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:136:172",
+          "excerpt_end_line": 170,
+          "selection_category": "entrypoint",
+          "start_line": 149,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:183:228",
+          "excerpt_end_line": 228,
+          "selection_category": "entrypoint",
+          "start_line": 204,
+          "truncated": true
+        },
+        {
+          "evidence_id": "template:app/views/issues/show.api.rsb",
+          "excerpt_end_line": 29,
+          "selection_category": "serialization",
+          "start_line": 11,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/application_controller.rb:107:153",
+          "excerpt_end_line": 137,
+          "selection_category": "identity",
+          "start_line": 122,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:549:614",
+          "excerpt_end_line": 604,
+          "selection_category": "assignment",
+          "start_line": 587,
+          "truncated": true
+        }
+      ],
+      "workflow": "read"
+    },
+    {
+      "condition": "runtime_only",
+      "prompt_bytes": 13388,
+      "prompt_sha256": "398fefa73fa4376b8e5a1a0a8c29d9f5e2cf619f2f6a3253af5994060bf731a0",
+      "runtime_selection": {
+        "available_guidance_cases": 6,
+        "changed_row_semantics": "Updated rows contain id and changed projected fields. Inserted rows contain all projected values.",
+        "included_guidance_cases": 6,
+        "omitted_case_ids": [],
+        "version": "redmine-issues-delta-3"
+      },
+      "serialized_source_bytes": 2,
+      "source_count": 0,
+      "source_selection": null,
+      "source_spans": [],
+      "workflow": "read"
+    },
+    {
+      "condition": "hybrid",
+      "prompt_bytes": 15994,
+      "prompt_sha256": "68a52a2fc1e0ead3bf78b6aa949538fafe07ed2a83b845d69dee1ae05f9498b1",
+      "runtime_selection": {
+        "available_guidance_cases": 6,
+        "changed_row_semantics": "Updated rows contain id and changed projected fields. Inserted rows contain all projected values.",
+        "included_guidance_cases": 6,
+        "omitted_case_ids": [],
+        "version": "redmine-issues-delta-3"
+      },
+      "serialized_source_bytes": 1126,
+      "source_count": 4,
+      "source_selection": {
+        "serialized_source_byte_budget": 1291,
+        "unrepresented_roles": [
+          "read:identity",
+          "read:lookup",
+          "read:authorization",
+          "read:visibility",
+          "create:identity",
+          "create:assignment",
+          "create:validation",
+          "create:persistence",
+          "update:identity",
+          "update:authorization",
+          "update:transition",
+          "update:audit",
+          "update:assignment"
+        ],
+        "version": "diverse-line-windows-1"
+      },
+      "source_spans": [
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:89:127",
+          "excerpt_end_line": 106,
+          "selection_category": "entrypoint",
+          "start_line": 106,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:136:172",
+          "excerpt_end_line": 164,
+          "selection_category": "entrypoint",
+          "start_line": 163,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:183:228",
+          "excerpt_end_line": 198,
+          "selection_category": "entrypoint",
+          "start_line": 195,
+          "truncated": true
+        },
+        {
+          "evidence_id": "template:app/views/issues/show.api.rsb",
+          "excerpt_end_line": 29,
+          "selection_category": "serialization",
+          "start_line": 27,
+          "truncated": true
+        }
+      ],
+      "workflow": "read"
+    },
+    {
+      "condition": "source_only",
+      "prompt_bytes": 14552,
+      "prompt_sha256": "062cffcfc13dfe7c9b89d02e1ada4e925efdab61091ba98647c37fe65438014e",
+      "runtime_selection": null,
+      "serialized_source_bytes": 4912,
+      "source_count": 6,
+      "source_selection": {
+        "serialized_source_byte_budget": 6520,
+        "unrepresented_roles": [],
+        "version": "diverse-line-windows-1"
+      },
+      "source_spans": [
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:136:172",
+          "excerpt_end_line": 170,
+          "selection_category": "entrypoint",
+          "start_line": 149,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/application_controller.rb:107:153",
+          "excerpt_end_line": 137,
+          "selection_category": "identity",
+          "start_line": 122,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:549:614",
+          "excerpt_end_line": 604,
+          "selection_category": "assignment",
+          "start_line": 587,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/models/issue.rb:836:842",
+          "excerpt_end_line": 842,
+          "selection_category": "validation",
+          "start_line": 836,
+          "truncated": false
+        },
+        {
+          "evidence_id": "template:app/views/issues/show.api.rsb",
+          "excerpt_end_line": 29,
+          "selection_category": "serialization",
+          "start_line": 11,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:617:648",
+          "excerpt_end_line": 632,
+          "selection_category": "persistence",
+          "start_line": 617,
+          "truncated": true
+        }
+      ],
+      "workflow": "create"
+    },
+    {
+      "condition": "runtime_only",
+      "prompt_bytes": 12087,
+      "prompt_sha256": "eace87da219a84fc2e31970134544423ddcf3f14f1f0011a0f8c19edc5b5fb1b",
+      "runtime_selection": {
+        "available_guidance_cases": 6,
+        "changed_row_semantics": "Updated rows contain id and changed projected fields. Inserted rows contain all projected values.",
+        "included_guidance_cases": 6,
+        "omitted_case_ids": [],
+        "version": "redmine-issues-delta-3"
+      },
+      "serialized_source_bytes": 2,
+      "source_count": 0,
+      "source_selection": null,
+      "source_spans": [],
+      "workflow": "create"
+    },
+    {
+      "condition": "hybrid",
+      "prompt_bytes": 15435,
+      "prompt_sha256": "7f858f64ebb42c577c542266ee7c0f2de086076e02ef8d1197df9933eb7a7b0c",
+      "runtime_selection": {
+        "available_guidance_cases": 6,
+        "changed_row_semantics": "Updated rows contain id and changed projected fields. Inserted rows contain all projected values.",
+        "included_guidance_cases": 6,
+        "omitted_case_ids": [],
+        "version": "redmine-issues-delta-3"
+      },
+      "serialized_source_bytes": 1892,
+      "source_count": 6,
+      "source_selection": {
+        "serialized_source_byte_budget": 1952,
+        "unrepresented_roles": [],
+        "version": "diverse-line-windows-1"
+      },
+      "source_spans": [
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:136:172",
+          "excerpt_end_line": 167,
+          "selection_category": "entrypoint",
+          "start_line": 164,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/application_controller.rb:107:153",
+          "excerpt_end_line": 128,
+          "selection_category": "identity",
+          "start_line": 126,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:549:614",
+          "excerpt_end_line": 590,
+          "selection_category": "assignment",
+          "start_line": 588,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/models/issue.rb:836:842",
+          "excerpt_end_line": 839,
+          "selection_category": "validation",
+          "start_line": 838,
+          "truncated": true
+        },
+        {
+          "evidence_id": "template:app/views/issues/show.api.rsb",
+          "excerpt_end_line": 3,
+          "selection_category": "serialization",
+          "start_line": 2,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:617:648",
+          "excerpt_end_line": 639,
+          "selection_category": "persistence",
+          "start_line": 636,
+          "truncated": true
+        }
+      ],
+      "workflow": "create"
+    },
+    {
+      "condition": "source_only",
+      "prompt_bytes": 14663,
+      "prompt_sha256": "871673d2fc962345fd834b2624cb76f9d1295d98eb202563aaadc211a4657d67",
+      "runtime_selection": null,
+      "serialized_source_bytes": 4714,
+      "source_count": 6,
+      "source_selection": {
+        "serialized_source_byte_budget": 6367,
+        "unrepresented_roles": [],
+        "version": "diverse-line-windows-1"
+      },
+      "source_spans": [
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:183:228",
+          "excerpt_end_line": 228,
+          "selection_category": "entrypoint",
+          "start_line": 204,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/application_controller.rb:107:153",
+          "excerpt_end_line": 137,
+          "selection_category": "identity",
+          "start_line": 122,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/application_controller.rb:302:317",
+          "excerpt_end_line": 317,
+          "selection_category": "authorization",
+          "start_line": 302,
+          "truncated": false
+        },
+        {
+          "evidence_id": "ruby:app/models/issue.rb:1049:1090",
+          "excerpt_end_line": 1088,
+          "selection_category": "transition",
+          "start_line": 1068,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/models/issue.rb:863:865",
+          "excerpt_end_line": 865,
+          "selection_category": "audit",
+          "start_line": 863,
+          "truncated": false
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:519:545",
+          "excerpt_end_line": 534,
+          "selection_category": "assignment",
+          "start_line": 519,
+          "truncated": true
+        }
+      ],
+      "workflow": "update"
+    },
+    {
+      "condition": "runtime_only",
+      "prompt_bytes": 11633,
+      "prompt_sha256": "5cbff4b8a696bd0a50b69e54fb424cb0e7d0cb92b081eab1005ca8421ad422a5",
+      "runtime_selection": {
+        "available_guidance_cases": 6,
+        "changed_row_semantics": "Updated rows contain id and changed projected fields. Inserted rows contain all projected values.",
+        "included_guidance_cases": 6,
+        "omitted_case_ids": [],
+        "version": "redmine-issues-delta-3"
+      },
+      "serialized_source_bytes": 2,
+      "source_count": 0,
+      "source_selection": null,
+      "source_spans": [],
+      "workflow": "update"
+    },
+    {
+      "condition": "hybrid",
+      "prompt_bytes": 15596,
+      "prompt_sha256": "1caaddeaaba490507502b808fa958185ce3669c23e9d501913bd33749c8444e2",
+      "runtime_selection": {
+        "available_guidance_cases": 6,
+        "changed_row_semantics": "Updated rows contain id and changed projected fields. Inserted rows contain all projected values.",
+        "included_guidance_cases": 6,
+        "omitted_case_ids": [],
+        "version": "redmine-issues-delta-3"
+      },
+      "serialized_source_bytes": 2194,
+      "source_count": 6,
+      "source_selection": {
+        "serialized_source_byte_budget": 2257,
+        "unrepresented_roles": [],
+        "version": "diverse-line-windows-1"
+      },
+      "source_spans": [
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:183:228",
+          "excerpt_end_line": 228,
+          "selection_category": "entrypoint",
+          "start_line": 222,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/application_controller.rb:107:153",
+          "excerpt_end_line": 129,
+          "selection_category": "identity",
+          "start_line": 126,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/application_controller.rb:302:317",
+          "excerpt_end_line": 306,
+          "selection_category": "authorization",
+          "start_line": 303,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/models/issue.rb:1049:1090",
+          "excerpt_end_line": 1072,
+          "selection_category": "transition",
+          "start_line": 1068,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/models/issue.rb:863:865",
+          "excerpt_end_line": 865,
+          "selection_category": "audit",
+          "start_line": 863,
+          "truncated": false
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:519:545",
+          "excerpt_end_line": 544,
+          "selection_category": "assignment",
+          "start_line": 541,
+          "truncated": true
+        }
+      ],
+      "workflow": "update"
+    },
+    {
+      "condition": "source_only",
+      "prompt_bytes": 15916,
+      "prompt_sha256": "db6bac899f86b70410e9d5680c17844028dcf305c82c7041589454a36103cd9d",
+      "runtime_selection": null,
+      "serialized_source_bytes": 5448,
+      "source_count": 9,
+      "source_selection": {
+        "serialized_source_byte_budget": 5886,
+        "unrepresented_roles": [
+          "read:visibility",
+          "create:persistence",
+          "update:transition",
+          "update:audit"
+        ],
+        "version": "diverse-line-windows-1"
+      },
+      "source_spans": [
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:89:127",
+          "excerpt_end_line": 114,
+          "selection_category": "entrypoint",
+          "start_line": 106,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:136:172",
+          "excerpt_end_line": 169,
+          "selection_category": "entrypoint",
+          "start_line": 154,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:183:228",
+          "excerpt_end_line": 198,
+          "selection_category": "entrypoint",
+          "start_line": 187,
+          "truncated": true
+        },
+        {
+          "evidence_id": "template:app/views/issues/show.api.rsb",
+          "excerpt_end_line": 6,
+          "selection_category": "serialization",
+          "start_line": 1,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/application_controller.rb:107:153",
+          "excerpt_end_line": 134,
+          "selection_category": "identity",
+          "start_line": 126,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:549:614",
+          "excerpt_end_line": 599,
+          "selection_category": "assignment",
+          "start_line": 590,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/application_controller.rb:302:317",
+          "excerpt_end_line": 309,
+          "selection_category": "authorization",
+          "start_line": 302,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/application_controller.rb:378:387",
+          "excerpt_end_line": 387,
+          "selection_category": "lookup",
+          "start_line": 378,
+          "truncated": false
+        },
+        {
+          "evidence_id": "ruby:app/models/issue.rb:836:842",
+          "excerpt_end_line": 842,
+          "selection_category": "validation",
+          "start_line": 836,
+          "truncated": false
+        }
+      ],
+      "workflow": "all"
+    },
+    {
+      "condition": "runtime_only",
+      "prompt_bytes": 14385,
+      "prompt_sha256": "573b34a295ef85492a545ef1415e5e3960845aaba94c62b4b3b3a76fc9dbfc63",
+      "runtime_selection": {
+        "available_guidance_cases": 18,
+        "changed_row_semantics": "Updated rows contain id and changed projected fields. Inserted rows contain all projected values.",
+        "included_guidance_cases": 10,
+        "omitted_case_ids": [
+          "create.outsider",
+          "create.anonymous",
+          "create.long_subject",
+          "create.unknown_project",
+          "read.journals_empty",
+          "read.after_create",
+          "update.close",
+          "update.missing"
+        ],
+        "version": "redmine-issues-delta-3"
+      },
+      "serialized_source_bytes": 2,
+      "source_count": 0,
+      "source_selection": null,
+      "source_spans": [],
+      "workflow": "all"
+    },
+    {
+      "condition": "hybrid",
+      "prompt_bytes": 15966,
+      "prompt_sha256": "247689e0b270bb027a4fe6c0bb3d6079f14bd5ec8d57aca76da94eae29997c58",
+      "runtime_selection": {
+        "available_guidance_cases": 18,
+        "changed_row_semantics": "Updated rows contain id and changed projected fields. Inserted rows contain all projected values.",
+        "included_guidance_cases": 7,
+        "omitted_case_ids": [
+          "create.basic",
+          "create.long_subject",
+          "create.unknown_project",
+          "read.anonymous",
+          "read.missing",
+          "read.journals_empty",
+          "read.after_create",
+          "update.close",
+          "update.outsider",
+          "update.anonymous",
+          "update.missing"
+        ],
+        "version": "redmine-issues-delta-3"
+      },
+      "serialized_source_bytes": 1078,
+      "source_count": 4,
+      "source_selection": {
+        "serialized_source_byte_budget": 1078,
+        "unrepresented_roles": [
+          "read:serialization",
+          "read:identity",
+          "read:lookup",
+          "read:authorization",
+          "read:visibility",
+          "create:identity",
+          "create:assignment",
+          "create:validation",
+          "create:serialization",
+          "create:persistence",
+          "update:identity",
+          "update:authorization",
+          "update:transition",
+          "update:assignment"
+        ],
+        "version": "diverse-line-windows-1"
+      },
+      "source_spans": [
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:89:127",
+          "excerpt_end_line": 106,
+          "selection_category": "entrypoint",
+          "start_line": 106,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:136:172",
+          "excerpt_end_line": 164,
+          "selection_category": "entrypoint",
+          "start_line": 163,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/controllers/issues_controller.rb:183:228",
+          "excerpt_end_line": 198,
+          "selection_category": "entrypoint",
+          "start_line": 195,
+          "truncated": true
+        },
+        {
+          "evidence_id": "ruby:app/models/issue.rb:863:865",
+          "excerpt_end_line": 863,
+          "selection_category": "audit",
+          "start_line": 863,
+          "truncated": true
+        }
+      ],
+      "workflow": "all"
+    }
+  ]
+}

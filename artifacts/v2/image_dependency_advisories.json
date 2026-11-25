@@ -1,0 +1,53 @@
+{
+  "checked_at_utc": "2026-11-18T15:34:24.091406+00:00",
+  "tool": "Docker Scout local one-off CVE analysis",
+  "source_documentation": "https://docs.docker.com/scout/explore/analysis/",
+  "images": [
+    {
+      "role": "target",
+      "indexed_packages": 161,
+      "vulnerable_packages": 17,
+      "reported_vulnerabilities": 51,
+      "severity_counts": {
+        "LOW": 28,
+        "MEDIUM": 9,
+        "HIGH": 14
+      },
+      "rules_with_reported_fix": 12,
+      "raw_report": ".legacylift\\security\\20261118\\target-image-advisories.sarif.json",
+      "raw_sha256": "b38e3c27f34b6af30012fb2f2a04c49012eef03e975a49ebdc3db19042a48aee",
+      "tool_version": "1.27.0",
+      "matched_result_rows": 51,
+      "image_reference": "legacylift-target-base:afae956d324f60e0bfa6",
+      "image_id": "sha256:e98ac3b6930f430750670a2d95d4eb17a98f43b614abd6050fc3605835b746b7"
+    },
+    {
+      "role": "reference",
+      "indexed_packages": 488,
+      "vulnerable_packages": 43,
+      "reported_vulnerabilities": 329,
+      "severity_counts": {
+        "UNSPECIFIED": 11,
+        "LOW": 36,
+        "MEDIUM": 146,
+        "HIGH": 119,
+        "CRITICAL": 17
+      },
+      "rules_with_reported_fix": 318,
+      "raw_report": ".legacylift\\security\\20261118\\reference-image-advisories.sarif.json",
+      "raw_sha256": "99f9ca77990cf1709ef58399c1ccc5b66fa9e69b5e999dffa60097940c2f8a3b",
+      "tool_version": "1.27.0",
+      "matched_result_rows": 332,
+      "image_reference": "legacylift-reference:83944096d5f0ef121430",
+      "image_id": "sha256:d7ed575501c87d601634192ea91443ee731321ab75cdc9dfe07d7ac402f01b32"
+    }
+  ],
+  "certified_secure": false,
+  "limitations": [
+    "Package/advisory matches require applicability triage; no exploitability is established.",
+    "Frozen study images were not rebuilt or updated by this assessment.",
+    "Reference intentionally preserves historical dependencies for behavioral measurement.",
+    "Target findings, including fixable advisories, remain open before release.",
+    "Advisory aliases and package result rows can overlap; rule counts are not unique exploitable flaw counts."
+  ]
+}

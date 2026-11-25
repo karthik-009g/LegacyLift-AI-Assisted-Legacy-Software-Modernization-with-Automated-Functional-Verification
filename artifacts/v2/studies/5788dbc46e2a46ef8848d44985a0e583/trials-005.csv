@@ -1,0 +1,6 @@
+run_id,workflow,condition,replicate,status,failure_category,guidance_passed_count,guidance_scenario_count,held_out_evaluated,held_out_passed_count,held_out_scenario_count,workflow_passed,requests_consumed,reported_tokens,requests_without_token_usage
+a11da6bc27db434d83e230b1db9b782f,update,hybrid,2,compatibility_failed,,5,6,False,,,False,3,22020,0
+8942ec8a5d7148a8ac0318bf78f58810,create,source_only,3,candidate_boot_failed,,0,0,False,,,False,3,17515,0
+d4be989bb01d42a09c835f9a053bc390,read,runtime_only,2,provider_failed,provider_failed,0,0,False,,,False,2,4242,1
+c733d3e9d4854ba6a58c0281b319bd8a,update,hybrid,3,static_review_blocked,,0,0,False,,,False,3,19783,0
+47cd7dd900b248fd925c5dc468642de3,create,hybrid,2,provider_failed,provider_failed,,,False,,,False,1,0,1

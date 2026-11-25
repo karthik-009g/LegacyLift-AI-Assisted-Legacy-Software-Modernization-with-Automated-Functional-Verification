@@ -1,0 +1,1414 @@
+{
+  "held_out_read": false,
+  "index_sha256": "202ae6c48bd2d7e11b5ee3bfed808506f0d3d85b6aeb55e2112ecd05e7313422",
+  "judgments_sha256": "4219e47baae081bf926ff08b84217e283abf550f397d7664b948cb977a47f49e",
+  "judgments_version": "redmine-source-relevance-dev-1",
+  "limitations": [
+    "Judgments were authored after the existing anchors; this is development-set evidence.",
+    "Unjudged source symbols are treated as irrelevant; labels are not exhaustive.",
+    "Document recall does not prove the retained excerpt contains the required semantics.",
+    "BM25 ablation and workflow ranking share the same parser, corpus and query strings.",
+    "Static call edges are possible name matches; no runtime call coverage is measured.",
+    "Retrieval scores do not establish generated-code compatibility or security."
+  ],
+  "method_count": 3494,
+  "model_requests": 0,
+  "parse_error_files": [
+    "lib/generators/redmine_plugin_model/templates/migration.rb",
+    "lib/plugins/open_id_authentication/generators/open_id_authentication_tables/templates/migration.rb",
+    "lib/plugins/open_id_authentication/generators/upgrade_open_id_authentication_tables/templates/migration.rb"
+  ],
+  "retriever_sha256": "0590d463ca84c7098df22d02e9fcdf659541cd1af068c2b66085e1f40ee35313",
+  "runtime_execution": false,
+  "scope": "three-query development diagnostic; no independent retrieval test set",
+  "source_budget_scope": "Standalone serialized source ceilings; actual generation first reserves complete instructions/runtime/schema metadata and may retain fewer excerpts.",
+  "source_commit": "9118c6dcb4ffe203f7029eb89523cd8a56b85cde",
+  "source_file_count": 344,
+  "source_integrity_baseline": "existing_local_cache; original archive not retained",
+  "source_packer_sha256": "09b42718115df26b28b63636c03596f93370e258f1b7b8ff495c762bcf1538de",
+  "source_packing_version": "diverse-line-windows-1",
+  "source_tree_sha256": "d8a8478f5b5a75a2c7b2187bc525a74e21313d07cbb79fc802d7f64a1e97ee6c",
+  "status": "measured",
+  "strategies": {
+    "bm25": {
+      "create": {
+        "at_k": {
+          "16": {
+            "k": 16,
+            "labeled_precision": 0.125,
+            "labeled_recall": 0.222222,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/models/issue.rb:1935:1943",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:748:812",
+              "ruby:app/models/issue.rb:836:842",
+              "template:app/views/issues/show.api.rsb"
+            ],
+            "ndcg": 0.198901,
+            "reciprocal_rank": 0.25,
+            "relevant_found": 2,
+            "relevant_total": 9
+          },
+          "32": {
+            "k": 32,
+            "labeled_precision": 0.125,
+            "labeled_recall": 0.444444,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/models/issue.rb:1935:1943",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:748:812",
+              "template:app/views/issues/show.api.rsb"
+            ],
+            "ndcg": 0.238593,
+            "reciprocal_rank": 0.25,
+            "relevant_found": 4,
+            "relevant_total": 9
+          },
+          "8": {
+            "k": 8,
+            "labeled_precision": 0.125,
+            "labeled_recall": 0.111111,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/issues_controller.rb:549:614",
+              "ruby:app/models/issue.rb:1935:1943",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:748:812",
+              "ruby:app/models/issue.rb:836:842",
+              "template:app/views/issues/show.api.rsb"
+            ],
+            "ndcg": 0.12745,
+            "reciprocal_rank": 0.25,
+            "relevant_found": 1,
+            "relevant_total": 9
+          }
+        },
+        "generation_source_budget": {
+          "hybrid": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:136:172",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/issues_controller.rb:519:545",
+              "ruby:app/models/issue.rb:836:842",
+              "template:app/views/issues/show.api.rsb",
+              "ruby:app/controllers/issues_controller.rb:617:648"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.444444,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:549:614",
+              "ruby:app/models/issue.rb:1935:1943",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:748:812"
+            ],
+            "prefix_baseline_document_recall": 0.0,
+            "serialized_source_bytes": 3690,
+            "text_characters": 2396,
+            "truncated_excerpt_count": 5
+          },
+          "source_only": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:136:172",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/issues_controller.rb:519:545",
+              "ruby:app/models/issue.rb:836:842",
+              "template:app/views/issues/show.api.rsb",
+              "ruby:app/controllers/issues_controller.rb:617:648"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.444444,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:549:614",
+              "ruby:app/models/issue.rb:1935:1943",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:748:812"
+            ],
+            "prefix_baseline_document_recall": 0.111111,
+            "serialized_source_bytes": 4881,
+            "text_characters": 3550,
+            "truncated_excerpt_count": 5
+          }
+        },
+        "top_8": [
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:617:648",
+            "grade": 0,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 44.531,
+            "symbol": "save_issue_with_child_records"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issue_statuses_controller.rb:40:49",
+            "grade": 0,
+            "path": "app/controllers/issue_statuses_controller.rb",
+            "retrieval_score": 33.6807,
+            "symbol": "create"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:519:545",
+            "grade": 0,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 32.692,
+            "symbol": "update_issue_from_params"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:136:172",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 31.0602,
+            "symbol": "create"
+          },
+          {
+            "evidence_id": "ruby:app/models/mail_handler.rb:225:261",
+            "grade": 0,
+            "path": "app/models/mail_handler.rb",
+            "retrieval_score": 29.7928,
+            "symbol": "receive_issue_reply"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issue_categories_controller.rb:43:51",
+            "grade": 0,
+            "path": "app/controllers/issue_categories_controller.rb",
+            "retrieval_score": 29.7194,
+            "symbol": "new"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:1723:1792",
+            "grade": 0,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 29.672,
+            "symbol": "after_create_from_copy"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:183:228",
+            "grade": 0,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 28.4943,
+            "symbol": "update"
+          }
+        ]
+      },
+      "read": {
+        "at_k": {
+          "16": {
+            "k": 16,
+            "labeled_precision": 0.125,
+            "labeled_recall": 0.25,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:126:158",
+              "ruby:app/models/issue.rb:161:183",
+              "ruby:app/models/issue.rb:906:922",
+              "template:app/views/issues/show.api.rsb"
+            ],
+            "ndcg": 0.376645,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 2,
+            "relevant_total": 8
+          },
+          "32": {
+            "k": 32,
+            "labeled_precision": 0.09375,
+            "labeled_recall": 0.375,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:126:158",
+              "ruby:app/models/issue.rb:161:183",
+              "ruby:app/models/issue.rb:906:922"
+            ],
+            "ndcg": 0.441831,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 3,
+            "relevant_total": 8
+          },
+          "8": {
+            "k": 8,
+            "labeled_precision": 0.25,
+            "labeled_recall": 0.25,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:126:158",
+              "ruby:app/models/issue.rb:161:183",
+              "ruby:app/models/issue.rb:906:922",
+              "template:app/views/issues/show.api.rsb"
+            ],
+            "ndcg": 0.376645,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 2,
+            "relevant_total": 8
+          }
+        },
+        "generation_source_budget": {
+          "hybrid": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:89:127",
+              "template:app/views/issues/show.api.rsb",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:378:387",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:1224:1242"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.625,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:126:158",
+              "ruby:app/models/issue.rb:161:183",
+              "ruby:app/models/issue.rb:906:922"
+            ],
+            "prefix_baseline_document_recall": 0.125,
+            "serialized_source_bytes": 3721,
+            "text_characters": 2431,
+            "truncated_excerpt_count": 5
+          },
+          "source_only": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:89:127",
+              "template:app/views/issues/show.api.rsb",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:378:387",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:1224:1242"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.625,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:126:158",
+              "ruby:app/models/issue.rb:161:183",
+              "ruby:app/models/issue.rb:906:922"
+            ],
+            "prefix_baseline_document_recall": 0.125,
+            "serialized_source_bytes": 4927,
+            "text_characters": 3593,
+            "truncated_excerpt_count": 4
+          }
+        },
+        "top_8": [
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:89:127",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 35.2113,
+            "symbol": "show"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/users_controller.rb:74:101",
+            "grade": 0,
+            "path": "app/controllers/users_controller.rb",
+            "retrieval_score": 33.4559,
+            "symbol": "show"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:1224:1242",
+            "grade": 0,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 32.2653,
+            "symbol": "load_visible_relations"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/repositories_controller.rb:250:259",
+            "grade": 0,
+            "path": "app/controllers/repositories_controller.rb",
+            "retrieval_score": 31.5288,
+            "symbol": "remove_related_issue"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:1255:1271",
+            "grade": 0,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 30.5804,
+            "symbol": "load_visible_last_updated_by"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:1274:1291",
+            "grade": 0,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 30.414,
+            "symbol": "load_visible_last_notes"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/repositories_controller.rb:230:246",
+            "grade": 0,
+            "path": "app/controllers/repositories_controller.rb",
+            "retrieval_score": 30.0777,
+            "symbol": "add_related_issue"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/application_controller.rb:378:387",
+            "grade": 3,
+            "path": "app/controllers/application_controller.rb",
+            "retrieval_score": 29.9741,
+            "symbol": "find_issue"
+          }
+        ]
+      },
+      "update": {
+        "at_k": {
+          "16": {
+            "k": 16,
+            "labeled_precision": 0.1875,
+            "labeled_recall": 0.25,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:1049:1090",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:863:865",
+              "ruby:app/models/issue_status.rb:57:59",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "ndcg": 0.422225,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 3,
+            "relevant_total": 12
+          },
+          "32": {
+            "k": 32,
+            "labeled_precision": 0.15625,
+            "labeled_recall": 0.416667,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:863:865",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "ndcg": 0.490797,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 5,
+            "relevant_total": 12
+          },
+          "8": {
+            "k": 8,
+            "labeled_precision": 0.375,
+            "labeled_recall": 0.25,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:1049:1090",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:863:865",
+              "ruby:app/models/issue_status.rb:57:59",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "ndcg": 0.510383,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 3,
+            "relevant_total": 12
+          }
+        },
+        "generation_source_budget": {
+          "hybrid": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:183:228",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:1049:1090",
+              "ruby:app/controllers/journals_controller.rb:90:100",
+              "ruby:app/controllers/issues_controller.rb:519:545"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.416667,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:617:648",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:863:865",
+              "ruby:app/models/issue_status.rb:57:59",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "prefix_baseline_document_recall": 0.166667,
+            "serialized_source_bytes": 3893,
+            "text_characters": 2581,
+            "truncated_excerpt_count": 5
+          },
+          "source_only": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:183:228",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:1049:1090",
+              "ruby:app/controllers/journals_controller.rb:90:100",
+              "ruby:app/controllers/issues_controller.rb:519:545"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.416667,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:617:648",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:863:865",
+              "ruby:app/models/issue_status.rb:57:59",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "prefix_baseline_document_recall": 0.25,
+            "serialized_source_bytes": 5040,
+            "text_characters": 3687,
+            "truncated_excerpt_count": 4
+          }
+        },
+        "top_8": [
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:617:648",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 46.4703,
+            "symbol": "save_issue_with_child_records"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:519:545",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 45.6319,
+            "symbol": "update_issue_from_params"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issue_statuses_controller.rb:55:72",
+            "grade": 0,
+            "path": "app/controllers/issue_statuses_controller.rb",
+            "retrieval_score": 42.2344,
+            "symbol": "update"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issue_statuses_controller.rb:40:49",
+            "grade": 0,
+            "path": "app/controllers/issue_statuses_controller.rb",
+            "retrieval_score": 40.0444,
+            "symbol": "create"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:183:228",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 37.1765,
+            "symbol": "update"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:333:414",
+            "grade": 0,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 36.0926,
+            "symbol": "bulk_update"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:549:614",
+            "grade": 0,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 35.5355,
+            "symbol": "build_new_issue_from_params"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/journals_controller.rb:90:100",
+            "grade": 0,
+            "path": "app/controllers/journals_controller.rb",
+            "retrieval_score": 34.5613,
+            "symbol": "update"
+          }
+        ]
+      }
+    },
+    "dependency": {
+      "create": {
+        "at_k": {
+          "16": {
+            "k": 16,
+            "labeled_precision": 0.5,
+            "labeled_recall": 0.888889,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:1935:1943"
+            ],
+            "ndcg": 0.828449,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 8,
+            "relevant_total": 9
+          },
+          "32": {
+            "k": 32,
+            "labeled_precision": 0.25,
+            "labeled_recall": 0.888889,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:1935:1943"
+            ],
+            "ndcg": 0.828449,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 8,
+            "relevant_total": 9
+          },
+          "8": {
+            "k": 8,
+            "labeled_precision": 0.625,
+            "labeled_recall": 0.555556,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/models/issue.rb:1935:1943",
+              "ruby:app/models/issue.rb:1995:1999",
+              "template:app/views/issues/show.api.rsb"
+            ],
+            "ndcg": 0.658175,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 5,
+            "relevant_total": 9
+          }
+        },
+        "generation_source_budget": {
+          "hybrid": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:136:172",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/issues_controller.rb:549:614",
+              "ruby:app/models/issue.rb:836:842",
+              "template:app/views/issues/show.api.rsb",
+              "ruby:app/controllers/issues_controller.rb:617:648"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.555556,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:1935:1943",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:748:812"
+            ],
+            "prefix_baseline_document_recall": 0.111111,
+            "serialized_source_bytes": 3699,
+            "text_characters": 2405,
+            "truncated_excerpt_count": 5
+          },
+          "source_only": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:136:172",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/issues_controller.rb:549:614",
+              "ruby:app/models/issue.rb:836:842",
+              "template:app/views/issues/show.api.rsb",
+              "ruby:app/controllers/issues_controller.rb:617:648"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.555556,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:1935:1943",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:748:812"
+            ],
+            "prefix_baseline_document_recall": 0.444444,
+            "serialized_source_bytes": 4912,
+            "text_characters": 3579,
+            "truncated_excerpt_count": 5
+          }
+        },
+        "top_8": [
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:136:172",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 131.0602,
+            "symbol": "create"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:617:648",
+            "grade": 0,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 130.531,
+            "symbol": "save_issue_with_child_records"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:549:614",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 122.3519,
+            "symbol": "build_new_issue_from_params"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:836:842",
+            "grade": 2,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 94.3267,
+            "symbol": "validate_permissions"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:550:628",
+            "grade": 3,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 93.0164,
+            "symbol": "safe_attributes="
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:748:812",
+            "grade": 2,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 90.4,
+            "symbol": "validate_issue"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:863:865",
+            "grade": 0,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 82.9775,
+            "symbol": "init_journal"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/application_controller.rb:302:317",
+            "grade": 0,
+            "path": "app/controllers/application_controller.rb",
+            "retrieval_score": 65.5635,
+            "symbol": "authorize"
+          }
+        ]
+      },
+      "read": {
+        "at_k": {
+          "16": {
+            "k": 16,
+            "labeled_precision": 0.5,
+            "labeled_recall": 1.0,
+            "missing_evidence_ids": [],
+            "ndcg": 0.970881,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 8,
+            "relevant_total": 8
+          },
+          "32": {
+            "k": 32,
+            "labeled_precision": 0.25,
+            "labeled_recall": 1.0,
+            "missing_evidence_ids": [],
+            "ndcg": 0.970881,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 8,
+            "relevant_total": 8
+          },
+          "8": {
+            "k": 8,
+            "labeled_precision": 0.875,
+            "labeled_recall": 0.875,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:906:922"
+            ],
+            "ndcg": 0.959828,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 7,
+            "relevant_total": 8
+          }
+        },
+        "generation_source_budget": {
+          "hybrid": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:89:127",
+              "template:app/views/issues/show.api.rsb",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:378:387",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:126:158"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.75,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:161:183",
+              "ruby:app/models/issue.rb:906:922"
+            ],
+            "prefix_baseline_document_recall": 0.25,
+            "serialized_source_bytes": 3715,
+            "text_characters": 2423,
+            "truncated_excerpt_count": 5
+          },
+          "source_only": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:89:127",
+              "template:app/views/issues/show.api.rsb",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:378:387",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:126:158"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.75,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:161:183",
+              "ruby:app/models/issue.rb:906:922"
+            ],
+            "prefix_baseline_document_recall": 0.75,
+            "serialized_source_bytes": 4911,
+            "text_characters": 3571,
+            "truncated_excerpt_count": 4
+          }
+        },
+        "top_8": [
+          {
+            "evidence_id": "template:app/views/issues/show.api.rsb",
+            "grade": 3,
+            "path": "app/views/issues/show.api.rsb",
+            "retrieval_score": 139.4822,
+            "symbol": "show.api.rsb"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:89:127",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 135.2113,
+            "symbol": "show"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:126:158",
+            "grade": 2,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 118.7409,
+            "symbol": "visible_condition"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/application_controller.rb:378:387",
+            "grade": 3,
+            "path": "app/controllers/application_controller.rb",
+            "retrieval_score": 113.9741,
+            "symbol": "find_issue"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:161:183",
+            "grade": 3,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 101.5447,
+            "symbol": "visible?"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/application_controller.rb:302:317",
+            "grade": 3,
+            "path": "app/controllers/application_controller.rb",
+            "retrieval_score": 82.8236,
+            "symbol": "authorize"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/application_controller.rb:107:153",
+            "grade": 3,
+            "path": "app/controllers/application_controller.rb",
+            "retrieval_score": 80.7986,
+            "symbol": "find_current_user"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:1224:1242",
+            "grade": 0,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 70.2653,
+            "symbol": "load_visible_relations"
+          }
+        ]
+      },
+      "update": {
+        "at_k": {
+          "16": {
+            "k": 16,
+            "labeled_precision": 0.5625,
+            "labeled_recall": 0.75,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "ndcg": 0.838656,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 9,
+            "relevant_total": 12
+          },
+          "32": {
+            "k": 32,
+            "labeled_precision": 0.3125,
+            "labeled_recall": 0.833333,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/models/journal.rb:202:214"
+            ],
+            "ndcg": 0.88558,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 10,
+            "relevant_total": 12
+          },
+          "8": {
+            "k": 8,
+            "labeled_precision": 0.875,
+            "labeled_recall": 0.583333,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "ndcg": 0.870089,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 7,
+            "relevant_total": 12
+          }
+        },
+        "generation_source_budget": {
+          "hybrid": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:183:228",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:1049:1090",
+              "ruby:app/models/issue.rb:863:865",
+              "ruby:app/controllers/issues_controller.rb:519:545"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.5,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:617:648",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue_status.rb:57:59",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "prefix_baseline_document_recall": 0.166667,
+            "serialized_source_bytes": 3576,
+            "text_characters": 2286,
+            "truncated_excerpt_count": 5
+          },
+          "source_only": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:183:228",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:1049:1090",
+              "ruby:app/models/issue.rb:863:865",
+              "ruby:app/controllers/issues_controller.rb:519:545"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.5,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:617:648",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue_status.rb:57:59",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "prefix_baseline_document_recall": 0.416667,
+            "serialized_source_bytes": 4714,
+            "text_characters": 3384,
+            "truncated_excerpt_count": 4
+          }
+        },
+        "top_8": [
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:519:545",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 141.6319,
+            "symbol": "update_issue_from_params"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:183:228",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 137.1765,
+            "symbol": "update"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:617:648",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 132.4703,
+            "symbol": "save_issue_with_child_records"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:1049:1090",
+            "grade": 3,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 128.3963,
+            "symbol": "new_statuses_allowed_to"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:550:628",
+            "grade": 3,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 105.1678,
+            "symbol": "safe_attributes="
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:863:865",
+            "grade": 3,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 90.9775,
+            "symbol": "init_journal"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:836:842",
+            "grade": 0,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 89.2603,
+            "symbol": "validate_permissions"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue_status.rb:57:59",
+            "grade": 2,
+            "path": "app/models/issue_status.rb",
+            "retrieval_score": 87.4503,
+            "symbol": "new_statuses_allowed_to"
+          }
+        ]
+      }
+    },
+    "workflow": {
+      "create": {
+        "at_k": {
+          "16": {
+            "k": 16,
+            "labeled_precision": 0.4375,
+            "labeled_recall": 0.777778,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:1935:1943",
+              "template:app/views/issues/show.api.rsb"
+            ],
+            "ndcg": 0.751037,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 7,
+            "relevant_total": 9
+          },
+          "32": {
+            "k": 32,
+            "labeled_precision": 0.21875,
+            "labeled_recall": 0.777778,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:1935:1943",
+              "template:app/views/issues/show.api.rsb"
+            ],
+            "ndcg": 0.751037,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 7,
+            "relevant_total": 9
+          },
+          "8": {
+            "k": 8,
+            "labeled_precision": 0.75,
+            "labeled_recall": 0.666667,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/models/issue.rb:1935:1943",
+              "template:app/views/issues/show.api.rsb"
+            ],
+            "ndcg": 0.671511,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 6,
+            "relevant_total": 9
+          }
+        },
+        "generation_source_budget": {
+          "hybrid": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:136:172",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/issues_controller.rb:549:614",
+              "ruby:app/models/issue.rb:836:842",
+              "template:app/views/issues/show.api.rsb",
+              "ruby:app/controllers/issues_controller.rb:617:648"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.555556,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:1935:1943",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:748:812"
+            ],
+            "prefix_baseline_document_recall": 0.111111,
+            "serialized_source_bytes": 3699,
+            "text_characters": 2405,
+            "truncated_excerpt_count": 5
+          },
+          "source_only": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:136:172",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/issues_controller.rb:549:614",
+              "ruby:app/models/issue.rb:836:842",
+              "template:app/views/issues/show.api.rsb",
+              "ruby:app/controllers/issues_controller.rb:617:648"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.555556,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:1935:1943",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue.rb:748:812"
+            ],
+            "prefix_baseline_document_recall": 0.444444,
+            "serialized_source_bytes": 4912,
+            "text_characters": 3579,
+            "truncated_excerpt_count": 5
+          }
+        },
+        "top_8": [
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:136:172",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 131.0602,
+            "symbol": "create"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:617:648",
+            "grade": 0,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 130.531,
+            "symbol": "save_issue_with_child_records"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:549:614",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 122.3519,
+            "symbol": "build_new_issue_from_params"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:836:842",
+            "grade": 2,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 94.3267,
+            "symbol": "validate_permissions"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:550:628",
+            "grade": 3,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 93.0164,
+            "symbol": "safe_attributes="
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:748:812",
+            "grade": 2,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 90.4,
+            "symbol": "validate_issue"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/application_controller.rb:302:317",
+            "grade": 0,
+            "path": "app/controllers/application_controller.rb",
+            "retrieval_score": 65.5635,
+            "symbol": "authorize"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:1995:1999",
+            "grade": 1,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 63.8402,
+            "symbol": "create_journal"
+          }
+        ]
+      },
+      "read": {
+        "at_k": {
+          "16": {
+            "k": 16,
+            "labeled_precision": 0.4375,
+            "labeled_recall": 0.875,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:906:922"
+            ],
+            "ndcg": 0.97834,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 7,
+            "relevant_total": 8
+          },
+          "32": {
+            "k": 32,
+            "labeled_precision": 0.21875,
+            "labeled_recall": 0.875,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:906:922"
+            ],
+            "ndcg": 0.97834,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 7,
+            "relevant_total": 8
+          },
+          "8": {
+            "k": 8,
+            "labeled_precision": 0.875,
+            "labeled_recall": 0.875,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:906:922"
+            ],
+            "ndcg": 0.97834,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 7,
+            "relevant_total": 8
+          }
+        },
+        "generation_source_budget": {
+          "hybrid": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:89:127",
+              "template:app/views/issues/show.api.rsb",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:378:387",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:161:183"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.75,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:126:158",
+              "ruby:app/models/issue.rb:906:922"
+            ],
+            "prefix_baseline_document_recall": 0.25,
+            "serialized_source_bytes": 3750,
+            "text_characters": 2459,
+            "truncated_excerpt_count": 5
+          },
+          "source_only": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:89:127",
+              "template:app/views/issues/show.api.rsb",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:378:387",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:161:183"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.75,
+            "missing_evidence_ids": [
+              "ruby:app/models/issue.rb:126:158",
+              "ruby:app/models/issue.rb:906:922"
+            ],
+            "prefix_baseline_document_recall": 0.75,
+            "serialized_source_bytes": 4952,
+            "text_characters": 3614,
+            "truncated_excerpt_count": 4
+          }
+        },
+        "top_8": [
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:89:127",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 135.2113,
+            "symbol": "show"
+          },
+          {
+            "evidence_id": "template:app/views/issues/show.api.rsb",
+            "grade": 3,
+            "path": "app/views/issues/show.api.rsb",
+            "retrieval_score": 115.4822,
+            "symbol": "show.api.rsb"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/application_controller.rb:378:387",
+            "grade": 3,
+            "path": "app/controllers/application_controller.rb",
+            "retrieval_score": 113.9741,
+            "symbol": "find_issue"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:161:183",
+            "grade": 3,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 101.5447,
+            "symbol": "visible?"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:126:158",
+            "grade": 2,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 94.7409,
+            "symbol": "visible_condition"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/application_controller.rb:302:317",
+            "grade": 3,
+            "path": "app/controllers/application_controller.rb",
+            "retrieval_score": 82.8236,
+            "symbol": "authorize"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/application_controller.rb:107:153",
+            "grade": 3,
+            "path": "app/controllers/application_controller.rb",
+            "retrieval_score": 80.7986,
+            "symbol": "find_current_user"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:1224:1242",
+            "grade": 0,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 70.2653,
+            "symbol": "load_visible_relations"
+          }
+        ]
+      },
+      "update": {
+        "at_k": {
+          "16": {
+            "k": 16,
+            "labeled_precision": 0.5625,
+            "labeled_recall": 0.75,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "ndcg": 0.828713,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 9,
+            "relevant_total": 12
+          },
+          "32": {
+            "k": 32,
+            "labeled_precision": 0.28125,
+            "labeled_recall": 0.75,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "ndcg": 0.828713,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 9,
+            "relevant_total": 12
+          },
+          "8": {
+            "k": 8,
+            "labeled_precision": 0.75,
+            "labeled_recall": 0.5,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:863:865",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "ndcg": 0.781926,
+            "reciprocal_rank": 1.0,
+            "relevant_found": 6,
+            "relevant_total": 12
+          }
+        },
+        "generation_source_budget": {
+          "hybrid": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:183:228",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:1049:1090",
+              "ruby:app/models/issue.rb:863:865",
+              "ruby:app/controllers/issues_controller.rb:519:545"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.5,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:617:648",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue_status.rb:57:59",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "prefix_baseline_document_recall": 0.166667,
+            "serialized_source_bytes": 3576,
+            "text_characters": 2286,
+            "truncated_excerpt_count": 5
+          },
+          "source_only": {
+            "evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:183:228",
+              "ruby:app/controllers/application_controller.rb:107:153",
+              "ruby:app/controllers/application_controller.rb:302:317",
+              "ruby:app/models/issue.rb:1049:1090",
+              "ruby:app/models/issue.rb:863:865",
+              "ruby:app/controllers/issues_controller.rb:519:545"
+            ],
+            "excerpt_count": 6,
+            "labeled_document_recall": 0.5,
+            "missing_evidence_ids": [
+              "ruby:app/controllers/issues_controller.rb:617:648",
+              "ruby:app/models/issue.rb:1995:1999",
+              "ruby:app/models/issue.rb:550:628",
+              "ruby:app/models/issue_status.rb:57:59",
+              "ruby:app/models/journal.rb:202:214",
+              "ruby:app/models/journal.rb:97:101"
+            ],
+            "prefix_baseline_document_recall": 0.416667,
+            "serialized_source_bytes": 4714,
+            "text_characters": 3384,
+            "truncated_excerpt_count": 4
+          }
+        },
+        "top_8": [
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:519:545",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 141.6319,
+            "symbol": "update_issue_from_params"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:183:228",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 137.1765,
+            "symbol": "update"
+          },
+          {
+            "evidence_id": "ruby:app/controllers/issues_controller.rb:617:648",
+            "grade": 3,
+            "path": "app/controllers/issues_controller.rb",
+            "retrieval_score": 132.4703,
+            "symbol": "save_issue_with_child_records"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:550:628",
+            "grade": 3,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 105.1678,
+            "symbol": "safe_attributes="
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:1049:1090",
+            "grade": 3,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 104.3963,
+            "symbol": "new_statuses_allowed_to"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:836:842",
+            "grade": 0,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 89.2603,
+            "symbol": "validate_permissions"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue_status.rb:57:59",
+            "grade": 2,
+            "path": "app/models/issue_status.rb",
+            "retrieval_score": 87.4503,
+            "symbol": "new_statuses_allowed_to"
+          },
+          {
+            "evidence_id": "ruby:app/models/issue.rb:748:812",
+            "grade": 0,
+            "path": "app/models/issue.rb",
+            "retrieval_score": 85.0065,
+            "symbol": "validate_issue"
+          }
+        ]
+      }
+    }
+  }
+}

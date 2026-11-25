@@ -1,0 +1,41 @@
+{
+  "condition_counts": {
+    "hybrid": {
+      "planned": 9,
+      "recorded": 0,
+      "workflow_passed": 0
+    },
+    "runtime_only": {
+      "planned": 9,
+      "recorded": 0,
+      "workflow_passed": 0
+    },
+    "source_only": {
+      "planned": 9,
+      "recorded": 0,
+      "workflow_passed": 0
+    }
+  },
+  "guidance_passing_trials": 0,
+  "held_out_evaluated_trials": 0,
+  "in_progress": null,
+  "limitations": [
+    "Incomplete studies do not establish evidence-condition superiority.",
+    "Reported token usage excludes unknown usage from failed or interrupted requests.",
+    "Local checksums are consistency checks under trusted-controller ownership.",
+    "Compatibility is separate from security assessment and human source approval."
+  ],
+  "maximum_http_requests": 81,
+  "next_run_id": "aba7ff639d064df094789508bf7be802",
+  "outcome_counts": {},
+  "planned_trials": 27,
+  "recorded_trials": 0,
+  "records": [],
+  "reported_tokens": 0,
+  "requests_consumed": 0,
+  "requests_without_token_usage": 0,
+  "security_verdict": "not_assessed",
+  "state": "incomplete",
+  "study_id": "f41fb6255b9b4f6e891e3047bbdeb58d",
+  "workflow_passing_trials": 0
+}

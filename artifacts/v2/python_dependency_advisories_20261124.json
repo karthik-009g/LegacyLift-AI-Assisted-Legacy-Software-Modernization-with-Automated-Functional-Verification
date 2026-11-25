@@ -1,0 +1,377 @@
+{
+  "checked_at_utc": "2026-11-24T11:46:10.785940+00:00",
+  "source": "PyPI release JSON vulnerabilities array",
+  "source_documentation": "https://docs.pypi.org/api/json/",
+  "status": "no_known_advisories",
+  "certified_secure": false,
+  "lock_sha256": {
+    "requirements.lock": "584a83ea936143fc918a476ea9b492d891b2479a063c3585ee987c7540e66e6c",
+    "requirements-build.lock": "c0c108577d8ccb7fd7a3955d043c53dee2451343c68d8cc5c3441cb4717e83ca",
+    "src/legacylift/runtimes/assets/target-requirements.lock": "7ce7116f166e2300fbe1dddce0e27d9f798aca65b30fdcc9a1dd1197209c3841"
+  },
+  "requested_package_versions": 48,
+  "checked_package_versions": 48,
+  "checked": [
+    {
+      "name": "alembic",
+      "version": "1.20.1",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "annotated-doc",
+      "version": "0.0.5",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.8.0",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "anyio",
+      "version": "4.16.0",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "blinker",
+      "version": "1.9.0",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "certifi",
+      "version": "2026.10.23",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "click",
+      "version": "8.5.0",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "croniter",
+      "version": "7.0.0",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "fastapi",
+      "version": "0.162.0",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "flask",
+      "version": "3.1.3",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "greenlet",
+      "version": "3.5.6",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.9",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "idna",
+      "version": "3.20",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.1",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "itsdangerous",
+      "version": "2.2.0",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "jinja2",
+      "version": "3.1.6",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "mako",
+      "version": "1.4.3",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "markupsafe",
+      "version": "3.0.4",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "numpy",
+      "version": "2.4.6",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "opentelemetry-api",
+      "version": "1.45.2",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "packaging",
+      "version": "26.3",
+      "locks": [
+        "requirements.lock",
+        "requirements-build.lock"
+      ]
+    },
+    {
+      "name": "pluggy",
+      "version": "1.7.0",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "psycopg",
+      "version": "3.3.9",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "psycopg-binary",
+      "version": "3.3.9",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "pydantic",
+      "version": "2.14.2",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.50.2",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "pygments",
+      "version": "2.21.0",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "pytest",
+      "version": "9.2.0",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "python-dateutil",
+      "version": "4.0.0",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "python-multipart",
+      "version": "0.0.34",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "rank-bm25",
+      "version": "0.2.2",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "redis",
+      "version": "7.4.1",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "rq",
+      "version": "2.12.0",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "ruff",
+      "version": "0.17.3",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "setuptools",
+      "version": "84.2.1",
+      "locks": [
+        "requirements-build.lock"
+      ]
+    },
+    {
+      "name": "sqlalchemy",
+      "version": "2.0.57",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "starlette",
+      "version": "1.10.0",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "tree-sitter",
+      "version": "0.26.1",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "tree-sitter-ruby",
+      "version": "0.23.1",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.4",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "tzdata",
+      "version": "2026.6",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.54.0",
+      "locks": [
+        "requirements.lock",
+        "src/legacylift/runtimes/assets/target-requirements.lock"
+      ]
+    },
+    {
+      "name": "werkzeug",
+      "version": "3.1.9",
+      "locks": [
+        "requirements.lock"
+      ]
+    },
+    {
+      "name": "wheel",
+      "version": "0.48.0",
+      "locks": [
+        "requirements-build.lock"
+      ]
+    }
+  ],
+  "findings": [],
+  "errors": [],
+  "limitations": [
+    "Known published Python advisories only; absence is not proof of safety.",
+    "Queries all pins, including development and platform-specific dependencies.",
+    "Does not inspect source, installed bytes, OS packages or malicious packages.",
+    "No dependency resolution, installation, account credentials or model request."
+  ]
+}

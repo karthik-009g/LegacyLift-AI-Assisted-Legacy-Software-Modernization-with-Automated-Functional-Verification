@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "policy_version": "2.4-capability-references",
+  "policy_sha256": "54f68736f63717c5a83a8737246b9b9afa8f21a75a7effaa5d0b462da37964e1",
+  "status": "specimens_matched_expectations",
+  "candidate_execution": false,
+  "provider_requests": 0,
+  "held_out_read": false,
+  "certified_secure": false,
+  "specimen_count": 8,
+  "prohibited_specimens": 7,
+  "static_misses": 0,
+  "ordinary_app_false_positives": 0,
+  "cases": [
+    {
+      "specimen": "ordinary_app",
+      "source": "from fastapi import FastAPI\napp = FastAPI()\ndef value():\n    return {'ready': True}\n",
+      "source_utf8_sha256": "097543a0da50177066daeaebf94139d23709de405b7a2674925298318cb1a128",
+      "exercises_prohibited_capability": false,
+      "policy_status": "static_review_passed",
+      "rules": [],
+      "static_miss": false,
+      "ordinary_app_blocked": false
+    },
+    {
+      "specimen": "direct_process_import",
+      "source": "from fastapi import FastAPI\napp = FastAPI()\nimport subprocess\n",
+      "source_utf8_sha256": "bfb70fffbe3e8cd758bcc1fb546ff578a41ab1c937dfb186f210aac5d72d2f16",
+      "exercises_prohibited_capability": true,
+      "policy_status": "blocked",
+      "rules": [
+        "prohibited_capability"
+      ],
+      "static_miss": false,
+      "ordinary_app_blocked": false
+    },
+    {
+      "specimen": "direct_shell_call",
+      "source": "from fastapi import FastAPI\napp = FastAPI()\nimport os\nos.system('true')\n",
+      "source_utf8_sha256": "d3ea2e7a6175da5ca9aee18f19386357bdc14aee7a6b5e136f58a13b90bd2f00",
+      "exercises_prohibited_capability": true,
+      "policy_status": "blocked",
+      "rules": [
+        "prohibited_call"
+      ],
+      "static_miss": false,
+      "ordinary_app_blocked": false
+    },
+    {
+      "specimen": "direct_eval",
+      "source": "from fastapi import FastAPI\napp = FastAPI()\neval('1 + 1')\n",
+      "source_utf8_sha256": "1d130e91b1372e54d23afe9a309e04ba5db23c71467f01133f5affa4ec3c20e1",
+      "exercises_prohibited_capability": true,
+      "policy_status": "blocked",
+      "rules": [
+        "prohibited_call"
+      ],
+      "static_miss": false,
+      "ordinary_app_blocked": false
+    },
+    {
+      "specimen": "direct_dynamic_import",
+      "source": "from fastapi import FastAPI\napp = FastAPI()\n__import__('subprocess')\n",
+      "source_utf8_sha256": "28281601d64b75bb5c9c8a5450cad8d3c61dfcb39208747d9c7af5acb90b209e",
+      "exercises_prohibited_capability": true,
+      "policy_status": "blocked",
+      "rules": [
+        "prohibited_call"
+      ],
+      "static_miss": false,
+      "ordinary_app_blocked": false
+    },
+    {
+      "specimen": "eval_alias",
+      "source": "from fastapi import FastAPI\napp = FastAPI()\nrunner = eval\nrunner('1 + 1')\n",
+      "source_utf8_sha256": "de64eb7d9da98fa2f6e33dfdb846b8521137c3ea081310d56a0e0eeb0b986d06",
+      "exercises_prohibited_capability": true,
+      "policy_status": "blocked",
+      "rules": [
+        "prohibited_capability_reference"
+      ],
+      "static_miss": false,
+      "ordinary_app_blocked": false
+    },
+    {
+      "specimen": "import_alias",
+      "source": "from fastapi import FastAPI\napp = FastAPI()\nloader = __import__\nloader('subprocess')\n",
+      "source_utf8_sha256": "6af48d77942220f02505d924b41b6e3528ebce6b603afae99746db982392aca5",
+      "exercises_prohibited_capability": true,
+      "policy_status": "blocked",
+      "rules": [
+        "prohibited_capability_reference"
+      ],
+      "static_miss": false,
+      "ordinary_app_blocked": false
+    },
+    {
+      "specimen": "reflected_shell_call",
+      "source": "from fastapi import FastAPI\napp = FastAPI()\nimport os\ngetattr(os, 'system')('true')\n",
+      "source_utf8_sha256": "bed9d4512ba71cc86419bbab008a744a36fc1f27095b7560e8ffff02665ab1f8",
+      "exercises_prohibited_capability": true,
+      "policy_status": "blocked",
+      "rules": [
+        "prohibited_capability_reference"
+      ],
+      "static_miss": false,
+      "ordinary_app_blocked": false
+    }
+  ],
+  "limitations": [
+    "Curated syntactic specimens, not an exhaustive adversarial benchmark.",
+    "No candidate code executed. A static miss does not prove a container escape or successful command/network operation.",
+    "Aliases and reflection demonstrate why the AST policy is not a sandbox. Restricted runtime execution remains a separate boundary."
+  ]
+}

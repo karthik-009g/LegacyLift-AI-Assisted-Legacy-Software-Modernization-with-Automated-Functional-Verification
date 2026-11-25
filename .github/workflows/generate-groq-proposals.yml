@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       confirm_free_tier:
-        description: I confirm this Groq account is on the free tier and approve three requests
+        description: I confirm Groq is on the Free plan and approve three Groq requests
         required: true
         default: false
         type: boolean
@@ -19,7 +19,7 @@ jobs:
       - name: Require free-tier confirmation
         if: ${{ inputs.confirm_free_tier != true }}
         run: |
-          echo "::error::Confirm the Groq account is on its free tier before generating proposals."
+          echo "::error::Confirm the Groq account is on its Free plan before generating proposals."
           exit 1
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -37,12 +37,12 @@ jobs:
         run: |
           set -euo pipefail
           for condition in source_only runtime_only hybrid; do
-            python -m legacylift propose --condition "$condition"
+            python -m legacylift propose --provider groq --condition "$condition"
           done
       - name: Upload proposals for review
         uses: actions/upload-artifact@v4
         with:
-          name: groq-proposals
+          name: model-proposals
           path: artifacts/proposals/*.json
           if-no-files-found: error
           retention-days: 7

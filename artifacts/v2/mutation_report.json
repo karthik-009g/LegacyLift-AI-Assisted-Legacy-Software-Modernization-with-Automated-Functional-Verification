@@ -1,0 +1,68 @@
+{
+  "detected_count": 6,
+  "guidance_scenarios_available": 18,
+  "guidance_sha256": "97e75caab7902860283963bb73d6817b944b5939fe0fa4ea37483c3f8cc030ca",
+  "held_out_read": false,
+  "model_requests": 0,
+  "mutation_count": 6,
+  "oracle_sha256": "c2abdccfe9f9ba29d1e60fdf1f98ce7e0ec24d57270af68671a75a53ae09972a",
+  "results": [
+    {
+      "detected": true,
+      "expected_mismatch_path": "steps[0].response.status",
+      "mismatch_paths": [
+        "steps[0].response.status"
+      ],
+      "mutation_id": "authorization_status",
+      "scenario_id": "read.outsider"
+    },
+    {
+      "detected": true,
+      "expected_mismatch_path": "steps[0].response.status",
+      "mismatch_paths": [
+        "steps[0].response.status"
+      ],
+      "mutation_id": "validation_status",
+      "scenario_id": "create.blank"
+    },
+    {
+      "detected": true,
+      "expected_mismatch_path": "steps[0].response.headers.content-type",
+      "mismatch_paths": [
+        "steps[0].response.headers.content-type"
+      ],
+      "mutation_id": "response_header",
+      "scenario_id": "create.basic"
+    },
+    {
+      "detected": true,
+      "expected_mismatch_path": "steps[0].response.body_empty",
+      "mismatch_paths": [
+        "steps[0].response.body_empty"
+      ],
+      "mutation_id": "empty_body_semantics",
+      "scenario_id": "update.advance"
+    },
+    {
+      "detected": true,
+      "expected_mismatch_path": "steps[0].database_after.issues[0].subject",
+      "mismatch_paths": [
+        "steps[0].database_after.issues[0].subject"
+      ],
+      "mutation_id": "database_state",
+      "scenario_id": "create.basic"
+    },
+    {
+      "detected": true,
+      "expected_mismatch_path": "steps[0].database_after.journals.length",
+      "mismatch_paths": [
+        "steps[0].database_after.journals.length"
+      ],
+      "mutation_id": "audit_effect",
+      "scenario_id": "update.advance"
+    }
+  ],
+  "runtime_execution": false,
+  "scope": "guidance_comparator_sensitivity_only",
+  "status": "passed"
+}

@@ -1,0 +1,1469 @@
+{
+  "fixture": {
+    "actor_ids": {
+      "alice": 5,
+      "outsider": 6
+    },
+    "issue_id": 1,
+    "priority_id": 2,
+    "project_id": 1,
+    "status_ids": {
+      "closed": 5,
+      "in_progress": 2,
+      "new": 1
+    },
+    "tracker_id": 1
+  },
+  "runtime": {
+    "capabilities_dropped": [
+      "ALL"
+    ],
+    "cpu_limit": 2000000000,
+    "fixture_clock": "2026-01-15T12:00:00Z; advanced per request by the trusted driver",
+    "host_api_keys_passed": false,
+    "image": "redmine:4.2.10@sha256:d26185b803ec88617d101a041c3614c136385011fd0d7b2c6acb8cacb58e6e1e",
+    "image_id": "sha256:d26185b803ec88617d101a041c3614c136385011fd0d7b2c6acb8cacb58e6e1e",
+    "memory_limit_bytes": 1073741824,
+    "network": "none",
+    "pid_limit": 128,
+    "profile": "redmine-4.2.10",
+    "published_ports": {},
+    "read_only_root": true,
+    "source_commit": "9118c6dcb4ffe203f7029eb89523cd8a56b85cde",
+    "user": "999:999",
+    "versions": {
+      "rails": "5.2.8.1",
+      "ruby": "2.7.8"
+    }
+  },
+  "steps": [
+    {
+      "database_after": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 1,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:00:00"
+          }
+        ],
+        "journal_details": [],
+        "journals": []
+      },
+      "database_before": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 1,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:00:00"
+          }
+        ],
+        "journal_details": [],
+        "journals": []
+      },
+      "request": {
+        "actor": "alice",
+        "fixture_epoch": 1768478460,
+        "json_body": null,
+        "method": "GET",
+        "path": "/issues/1.json"
+      },
+      "response": {
+        "body_bytes": 481,
+        "headers": {
+          "cache-control": "max-age=0, private, must-revalidate",
+          "content-type": "application/json; charset=utf-8"
+        },
+        "json": {
+          "issue": {
+            "author": {
+              "id": 5,
+              "name": "Alice Fixture"
+            },
+            "closed_on": null,
+            "created_on": "2026-01-15T12:00:00Z",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "id": 1,
+            "is_private": false,
+            "priority": {
+              "id": 2,
+              "name": "Normal"
+            },
+            "project": {
+              "id": 1,
+              "name": "LegacyLift Fixture"
+            },
+            "start_date": null,
+            "status": {
+              "id": 1,
+              "name": "New"
+            },
+            "subject": "Seeded legacy issue",
+            "total_estimated_hours": null,
+            "tracker": {
+              "id": 1,
+              "name": "Bug"
+            },
+            "updated_on": "2026-01-15T12:00:00Z"
+          }
+        },
+        "status": 200
+      },
+      "step_id": "get_owned"
+    },
+    {
+      "database_after": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 1,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:00:00"
+          }
+        ],
+        "journal_details": [],
+        "journals": []
+      },
+      "database_before": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 1,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:00:00"
+          }
+        ],
+        "journal_details": [],
+        "journals": []
+      },
+      "request": {
+        "actor": "outsider",
+        "fixture_epoch": 1768478520,
+        "json_body": null,
+        "method": "GET",
+        "path": "/issues/1.json"
+      },
+      "response": {
+        "body_bytes": 0,
+        "headers": {
+          "cache-control": "no-cache",
+          "content-type": "application/json"
+        },
+        "json": null,
+        "status": 403
+      },
+      "step_id": "deny_outsider"
+    },
+    {
+      "database_after": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 1,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:00:00"
+          }
+        ],
+        "journal_details": [],
+        "journals": []
+      },
+      "database_before": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 1,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:00:00"
+          }
+        ],
+        "journal_details": [],
+        "journals": []
+      },
+      "request": {
+        "actor": "anonymous",
+        "fixture_epoch": 1768478580,
+        "json_body": null,
+        "method": "GET",
+        "path": "/issues/1.json"
+      },
+      "response": {
+        "body_bytes": 0,
+        "headers": {
+          "cache-control": "no-cache",
+          "content-type": "application/json"
+        },
+        "json": null,
+        "status": 401
+      },
+      "step_id": "deny_anonymous"
+    },
+    {
+      "database_after": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 1,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:00:00"
+          },
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:04:00",
+            "description": "Synthetic scenario.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 2,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 2,
+            "start_date": "2026-01-15",
+            "status_id": 1,
+            "subject": "Migrating a real legacy workflow",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:04:00"
+          }
+        ],
+        "journal_details": [],
+        "journals": []
+      },
+      "database_before": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 1,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:00:00"
+          }
+        ],
+        "journal_details": [],
+        "journals": []
+      },
+      "request": {
+        "actor": "alice",
+        "fixture_epoch": 1768478640,
+        "json_body": {
+          "issue": {
+            "description": "Synthetic scenario.",
+            "project_id": 1,
+            "subject": "Migrating a real legacy workflow",
+            "tracker_id": 1
+          }
+        },
+        "method": "POST",
+        "path": "/issues.json"
+      },
+      "response": {
+        "body_bytes": 503,
+        "headers": {
+          "cache-control": "max-age=0, private, must-revalidate",
+          "content-type": "application/json; charset=utf-8",
+          "location": "http://127.0.0.1:3000/issues/2"
+        },
+        "json": {
+          "issue": {
+            "author": {
+              "id": 5,
+              "name": "Alice Fixture"
+            },
+            "closed_on": null,
+            "created_on": "2026-01-15T12:04:00Z",
+            "description": "Synthetic scenario.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "id": 2,
+            "is_private": false,
+            "priority": {
+              "id": 2,
+              "name": "Normal"
+            },
+            "project": {
+              "id": 1,
+              "name": "LegacyLift Fixture"
+            },
+            "start_date": "2026-01-15",
+            "status": {
+              "id": 1,
+              "name": "New"
+            },
+            "subject": "Migrating a real legacy workflow",
+            "total_estimated_hours": null,
+            "tracker": {
+              "id": 1,
+              "name": "Bug"
+            },
+            "updated_on": "2026-01-15T12:04:00Z"
+          }
+        },
+        "status": 201
+      },
+      "step_id": "create_issue"
+    },
+    {
+      "database_after": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 1,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:00:00"
+          },
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:04:00",
+            "description": "Synthetic scenario.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 2,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 2,
+            "start_date": "2026-01-15",
+            "status_id": 1,
+            "subject": "Migrating a real legacy workflow",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:04:00"
+          }
+        ],
+        "journal_details": [],
+        "journals": []
+      },
+      "database_before": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 1,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:00:00"
+          },
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:04:00",
+            "description": "Synthetic scenario.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 2,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 2,
+            "start_date": "2026-01-15",
+            "status_id": 1,
+            "subject": "Migrating a real legacy workflow",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:04:00"
+          }
+        ],
+        "journal_details": [],
+        "journals": []
+      },
+      "request": {
+        "actor": "alice",
+        "fixture_epoch": 1768478700,
+        "json_body": {
+          "issue": {
+            "project_id": 1,
+            "subject": "",
+            "tracker_id": 1
+          }
+        },
+        "method": "POST",
+        "path": "/issues.json"
+      },
+      "response": {
+        "body_bytes": 38,
+        "headers": {
+          "cache-control": "no-cache",
+          "content-type": "application/json; charset=utf-8"
+        },
+        "json": {
+          "errors": [
+            "Subject cannot be blank"
+          ]
+        },
+        "status": 422
+      },
+      "step_id": "empty_subject"
+    },
+    {
+      "database_after": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 1,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 1,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:06:00"
+          },
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:04:00",
+            "description": "Synthetic scenario.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 2,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 2,
+            "start_date": "2026-01-15",
+            "status_id": 1,
+            "subject": "Migrating a real legacy workflow",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:04:00"
+          }
+        ],
+        "journal_details": [],
+        "journals": [
+          {
+            "created_on": "2026-01-15 12:06:00",
+            "id": 1,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Skipped transition probe",
+            "private_notes": 0,
+            "user_id": 5
+          }
+        ]
+      },
+      "database_before": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 1,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:00:00"
+          },
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:04:00",
+            "description": "Synthetic scenario.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 2,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 2,
+            "start_date": "2026-01-15",
+            "status_id": 1,
+            "subject": "Migrating a real legacy workflow",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:04:00"
+          }
+        ],
+        "journal_details": [],
+        "journals": []
+      },
+      "request": {
+        "actor": "alice",
+        "fixture_epoch": 1768478760,
+        "json_body": {
+          "issue": {
+            "notes": "Skipped transition probe",
+            "status_id": 5
+          }
+        },
+        "method": "PUT",
+        "path": "/issues/1.json"
+      },
+      "response": {
+        "body_bytes": 0,
+        "headers": {
+          "cache-control": "no-cache"
+        },
+        "json": null,
+        "status": 204
+      },
+      "step_id": "skip_status"
+    },
+    {
+      "database_after": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 2,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 2,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:07:00"
+          },
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:04:00",
+            "description": "Synthetic scenario.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 2,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 2,
+            "start_date": "2026-01-15",
+            "status_id": 1,
+            "subject": "Migrating a real legacy workflow",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:04:00"
+          }
+        ],
+        "journal_details": [
+          {
+            "id": 1,
+            "journal_id": 2,
+            "old_value": "1",
+            "prop_key": "status_id",
+            "property": "attr",
+            "value": "2"
+          }
+        ],
+        "journals": [
+          {
+            "created_on": "2026-01-15 12:06:00",
+            "id": 1,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Skipped transition probe",
+            "private_notes": 0,
+            "user_id": 5
+          },
+          {
+            "created_on": "2026-01-15 12:07:00",
+            "id": 2,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Observed transition",
+            "private_notes": 0,
+            "user_id": 5
+          }
+        ]
+      },
+      "database_before": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 1,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 1,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:06:00"
+          },
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:04:00",
+            "description": "Synthetic scenario.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 2,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 2,
+            "start_date": "2026-01-15",
+            "status_id": 1,
+            "subject": "Migrating a real legacy workflow",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:04:00"
+          }
+        ],
+        "journal_details": [],
+        "journals": [
+          {
+            "created_on": "2026-01-15 12:06:00",
+            "id": 1,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Skipped transition probe",
+            "private_notes": 0,
+            "user_id": 5
+          }
+        ]
+      },
+      "request": {
+        "actor": "alice",
+        "fixture_epoch": 1768478820,
+        "json_body": {
+          "issue": {
+            "notes": "Observed transition",
+            "status_id": 2
+          }
+        },
+        "method": "PUT",
+        "path": "/issues/1.json"
+      },
+      "response": {
+        "body_bytes": 0,
+        "headers": {
+          "cache-control": "no-cache"
+        },
+        "json": null,
+        "status": 204
+      },
+      "step_id": "advance_status"
+    },
+    {
+      "database_after": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": "2026-01-15 12:08:00",
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 3,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 5,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:08:00"
+          },
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:04:00",
+            "description": "Synthetic scenario.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 2,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 2,
+            "start_date": "2026-01-15",
+            "status_id": 1,
+            "subject": "Migrating a real legacy workflow",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:04:00"
+          }
+        ],
+        "journal_details": [
+          {
+            "id": 1,
+            "journal_id": 2,
+            "old_value": "1",
+            "prop_key": "status_id",
+            "property": "attr",
+            "value": "2"
+          },
+          {
+            "id": 2,
+            "journal_id": 3,
+            "old_value": "2",
+            "prop_key": "status_id",
+            "property": "attr",
+            "value": "5"
+          }
+        ],
+        "journals": [
+          {
+            "created_on": "2026-01-15 12:06:00",
+            "id": 1,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Skipped transition probe",
+            "private_notes": 0,
+            "user_id": 5
+          },
+          {
+            "created_on": "2026-01-15 12:07:00",
+            "id": 2,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Observed transition",
+            "private_notes": 0,
+            "user_id": 5
+          },
+          {
+            "created_on": "2026-01-15 12:08:00",
+            "id": 3,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Closing fixture",
+            "private_notes": 0,
+            "user_id": 5
+          }
+        ]
+      },
+      "database_before": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 2,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 2,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:07:00"
+          },
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:04:00",
+            "description": "Synthetic scenario.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 2,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 2,
+            "start_date": "2026-01-15",
+            "status_id": 1,
+            "subject": "Migrating a real legacy workflow",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:04:00"
+          }
+        ],
+        "journal_details": [
+          {
+            "id": 1,
+            "journal_id": 2,
+            "old_value": "1",
+            "prop_key": "status_id",
+            "property": "attr",
+            "value": "2"
+          }
+        ],
+        "journals": [
+          {
+            "created_on": "2026-01-15 12:06:00",
+            "id": 1,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Skipped transition probe",
+            "private_notes": 0,
+            "user_id": 5
+          },
+          {
+            "created_on": "2026-01-15 12:07:00",
+            "id": 2,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Observed transition",
+            "private_notes": 0,
+            "user_id": 5
+          }
+        ]
+      },
+      "request": {
+        "actor": "alice",
+        "fixture_epoch": 1768478880,
+        "json_body": {
+          "issue": {
+            "notes": "Closing fixture",
+            "status_id": 5
+          }
+        },
+        "method": "PUT",
+        "path": "/issues/1.json"
+      },
+      "response": {
+        "body_bytes": 0,
+        "headers": {
+          "cache-control": "no-cache"
+        },
+        "json": null,
+        "status": 204
+      },
+      "step_id": "close_issue"
+    },
+    {
+      "database_after": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": "2026-01-15 12:08:00",
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 3,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 5,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:08:00"
+          },
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:04:00",
+            "description": "Synthetic scenario.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 2,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 2,
+            "start_date": "2026-01-15",
+            "status_id": 1,
+            "subject": "Migrating a real legacy workflow",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:04:00"
+          }
+        ],
+        "journal_details": [
+          {
+            "id": 1,
+            "journal_id": 2,
+            "old_value": "1",
+            "prop_key": "status_id",
+            "property": "attr",
+            "value": "2"
+          },
+          {
+            "id": 2,
+            "journal_id": 3,
+            "old_value": "2",
+            "prop_key": "status_id",
+            "property": "attr",
+            "value": "5"
+          }
+        ],
+        "journals": [
+          {
+            "created_on": "2026-01-15 12:06:00",
+            "id": 1,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Skipped transition probe",
+            "private_notes": 0,
+            "user_id": 5
+          },
+          {
+            "created_on": "2026-01-15 12:07:00",
+            "id": 2,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Observed transition",
+            "private_notes": 0,
+            "user_id": 5
+          },
+          {
+            "created_on": "2026-01-15 12:08:00",
+            "id": 3,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Closing fixture",
+            "private_notes": 0,
+            "user_id": 5
+          }
+        ]
+      },
+      "database_before": {
+        "issues": [
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": "2026-01-15 12:08:00",
+            "created_on": "2026-01-15 12:00:00",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 1,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 3,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 1,
+            "start_date": null,
+            "status_id": 5,
+            "subject": "Seeded legacy issue",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:08:00"
+          },
+          {
+            "assigned_to_id": null,
+            "author_id": 5,
+            "category_id": null,
+            "closed_on": null,
+            "created_on": "2026-01-15 12:04:00",
+            "description": "Synthetic scenario.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "fixed_version_id": null,
+            "id": 2,
+            "is_private": 0,
+            "lft": 1,
+            "lock_version": 0,
+            "parent_id": null,
+            "priority_id": 2,
+            "project_id": 1,
+            "rgt": 2,
+            "root_id": 2,
+            "start_date": "2026-01-15",
+            "status_id": 1,
+            "subject": "Migrating a real legacy workflow",
+            "tracker_id": 1,
+            "updated_on": "2026-01-15 12:04:00"
+          }
+        ],
+        "journal_details": [
+          {
+            "id": 1,
+            "journal_id": 2,
+            "old_value": "1",
+            "prop_key": "status_id",
+            "property": "attr",
+            "value": "2"
+          },
+          {
+            "id": 2,
+            "journal_id": 3,
+            "old_value": "2",
+            "prop_key": "status_id",
+            "property": "attr",
+            "value": "5"
+          }
+        ],
+        "journals": [
+          {
+            "created_on": "2026-01-15 12:06:00",
+            "id": 1,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Skipped transition probe",
+            "private_notes": 0,
+            "user_id": 5
+          },
+          {
+            "created_on": "2026-01-15 12:07:00",
+            "id": 2,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Observed transition",
+            "private_notes": 0,
+            "user_id": 5
+          },
+          {
+            "created_on": "2026-01-15 12:08:00",
+            "id": 3,
+            "journalized_id": 1,
+            "journalized_type": "Issue",
+            "notes": "Closing fixture",
+            "private_notes": 0,
+            "user_id": 5
+          }
+        ]
+      },
+      "request": {
+        "actor": "alice",
+        "fixture_epoch": 1768478940,
+        "json_body": null,
+        "method": "GET",
+        "path": "/issues/1.json?include=journals"
+      },
+      "response": {
+        "body_bytes": 1103,
+        "headers": {
+          "cache-control": "max-age=0, private, must-revalidate",
+          "content-type": "application/json; charset=utf-8"
+        },
+        "json": {
+          "issue": {
+            "author": {
+              "id": 5,
+              "name": "Alice Fixture"
+            },
+            "closed_on": "2026-01-15T12:08:00Z",
+            "created_on": "2026-01-15T12:00:00Z",
+            "description": "Synthetic fixture.",
+            "done_ratio": 0,
+            "due_date": null,
+            "estimated_hours": null,
+            "id": 1,
+            "is_private": false,
+            "journals": [
+              {
+                "created_on": "2026-01-15T12:06:00Z",
+                "details": [],
+                "id": 1,
+                "notes": "Skipped transition probe",
+                "private_notes": false,
+                "user": {
+                  "id": 5,
+                  "name": "Alice Fixture"
+                }
+              },
+              {
+                "created_on": "2026-01-15T12:07:00Z",
+                "details": [
+                  {
+                    "name": "status_id",
+                    "new_value": "2",
+                    "old_value": "1",
+                    "property": "attr"
+                  }
+                ],
+                "id": 2,
+                "notes": "Observed transition",
+                "private_notes": false,
+                "user": {
+                  "id": 5,
+                  "name": "Alice Fixture"
+                }
+              },
+              {
+                "created_on": "2026-01-15T12:08:00Z",
+                "details": [
+                  {
+                    "name": "status_id",
+                    "new_value": "5",
+                    "old_value": "2",
+                    "property": "attr"
+                  }
+                ],
+                "id": 3,
+                "notes": "Closing fixture",
+                "private_notes": false,
+                "user": {
+                  "id": 5,
+                  "name": "Alice Fixture"
+                }
+              }
+            ],
+            "priority": {
+              "id": 2,
+              "name": "Normal"
+            },
+            "project": {
+              "id": 1,
+              "name": "LegacyLift Fixture"
+            },
+            "start_date": null,
+            "status": {
+              "id": 5,
+              "name": "Closed"
+            },
+            "subject": "Seeded legacy issue",
+            "total_estimated_hours": null,
+            "tracker": {
+              "id": 1,
+              "name": "Bug"
+            },
+            "updated_on": "2026-01-15T12:08:00Z"
+          }
+        },
+        "status": 200
+      },
+      "step_id": "get_closed"
+    }
+  ]
+}

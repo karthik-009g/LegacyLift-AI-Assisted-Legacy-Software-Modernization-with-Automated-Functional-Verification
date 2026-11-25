@@ -1,0 +1,17 @@
+{
+  "kind": "user_acceptance_of_reported_external_source_review",
+  "date": "2026-11-25",
+  "review_status": "user_approved_as_completed",
+  "review_type": "external_ai_assisted_source_relevance_review",
+  "approval_statement": "approve review as completed and state progress",
+  "source_commit": "9118c6dcb4ffe203f7029eb89523cd8a56b85cde",
+  "item_ids": "R01-R29",
+  "annotation_record_received": false,
+  "retrieval_metrics_recomputed": false,
+  "independent_human_review_claimed": false,
+  "original_pool_modified": false,
+  "developer_judgments_modified": false,
+  "candidate_source_approval_granted_by_this_record": false,
+  "remaining_evidence": "Obtain the external reviewer's actual grades, reasons and identity/type, retain them separately, then derive and run the scoring input.",
+  "blind_context_zip_status": "not_built; user instructed Codex to leave ZIP/manual work to them; existing drafts retained"
+}

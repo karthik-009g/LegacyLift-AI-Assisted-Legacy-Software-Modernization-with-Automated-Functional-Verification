@@ -1,0 +1,41 @@
+{
+  "study_id": "5788dbc46e2a46ef8848d44985a0e583",
+  "state": "incomplete",
+  "planned_trials": 27,
+  "recorded_trials": 0,
+  "next_run_id": "a11da6bc27db434d83e230b1db9b782f",
+  "in_progress": null,
+  "requests_consumed": 0,
+  "maximum_http_requests": 81,
+  "guidance_passing_trials": 0,
+  "held_out_evaluated_trials": 0,
+  "workflow_passing_trials": 0,
+  "reported_tokens": 0,
+  "requests_without_token_usage": 0,
+  "security_verdict": "not_assessed",
+  "outcome_counts": {},
+  "condition_counts": {
+    "source_only": {
+      "planned": 9,
+      "recorded": 0,
+      "workflow_passed": 0
+    },
+    "runtime_only": {
+      "planned": 9,
+      "recorded": 0,
+      "workflow_passed": 0
+    },
+    "hybrid": {
+      "planned": 9,
+      "recorded": 0,
+      "workflow_passed": 0
+    }
+  },
+  "records": [],
+  "limitations": [
+    "Incomplete studies do not establish evidence-condition superiority.",
+    "Reported token usage excludes unknown usage from failed or interrupted requests.",
+    "Local checksums are consistency checks under trusted-controller ownership.",
+    "Compatibility is separate from security assessment and human source approval."
+  ]
+}

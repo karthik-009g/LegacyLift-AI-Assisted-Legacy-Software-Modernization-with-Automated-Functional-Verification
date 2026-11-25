@@ -1,0 +1,44 @@
+{
+  "version": "redmine-source-relevance-dev-1",
+  "source_commit": "9118c6dcb4ffe203f7029eb89523cd8a56b85cde",
+  "split": "source_guidance_development",
+  "label_origin": "Developer judgments from public source and selected workflow requirements; existing workflow anchors predate these labels.",
+  "grades": {"3": "essential", "2": "relevant", "1": "supporting"},
+  "workflows": {
+    "read": [
+      {"path": "app/controllers/issues_controller.rb", "symbol": "show", "grade": 3, "reason": "Selected read entrypoint and dependent response setup."},
+      {"path": "app/views/issues/show.api.rsb", "symbol": "show.api.rsb", "grade": 3, "reason": "API response fields and conditional serialization."},
+      {"path": "app/controllers/application_controller.rb", "symbol": "find_issue", "grade": 3, "reason": "Issue lookup, visibility check and missing-resource handling."},
+      {"path": "app/controllers/application_controller.rb", "symbol": "authorize", "grade": 3, "reason": "Controller permission enforcement."},
+      {"path": "app/controllers/application_controller.rb", "symbol": "find_current_user", "grade": 3, "reason": "API key and anonymous user resolution."},
+      {"path": "app/models/issue.rb", "symbol": "visible?", "grade": 3, "reason": "Object-level issue visibility."},
+      {"path": "app/models/issue.rb", "symbol": "visible_condition", "grade": 2, "reason": "Role and project visibility conditions."},
+      {"path": "app/models/issue.rb", "symbol": "visible_journals_with_index", "grade": 1, "reason": "Read action journal visibility and response ordering."}
+    ],
+    "create": [
+      {"path": "app/controllers/issues_controller.rb", "symbol": "create", "grade": 3, "reason": "Create authorization, persistence and HTTP result."},
+      {"path": "app/controllers/issues_controller.rb", "symbol": "build_new_issue_from_params", "grade": 3, "reason": "Before-action issue defaults and request assignment."},
+      {"path": "app/models/issue.rb", "symbol": "safe_attributes=", "grade": 3, "reason": "Permitted request fields and assignment behavior."},
+      {"path": "app/models/issue.rb", "symbol": "validate_issue", "grade": 2, "reason": "Model validation behavior."},
+      {"path": "app/models/issue.rb", "symbol": "validate_permissions", "grade": 2, "reason": "Tracker permission validation."},
+      {"path": "app/controllers/application_controller.rb", "symbol": "find_current_user", "grade": 3, "reason": "API key and anonymous user resolution."},
+      {"path": "app/views/issues/show.api.rsb", "symbol": "show.api.rsb", "grade": 3, "reason": "Create action renders the show API template on success."},
+      {"path": "app/models/issue.rb", "symbol": "default_assign", "grade": 2, "reason": "Default author, assignee and dates for a new issue."},
+      {"path": "app/models/issue.rb", "symbol": "create_journal", "grade": 1, "reason": "Journal callback behavior during persistence."}
+    ],
+    "update": [
+      {"path": "app/controllers/issues_controller.rb", "symbol": "update", "grade": 3, "reason": "Selected update entrypoint and HTTP result."},
+      {"path": "app/controllers/issues_controller.rb", "symbol": "update_issue_from_params", "grade": 3, "reason": "Journal initialization and request attribute handling."},
+      {"path": "app/controllers/issues_controller.rb", "symbol": "save_issue_with_child_records", "grade": 3, "reason": "Transactional issue persistence and validation outcome."},
+      {"path": "app/models/issue.rb", "symbol": "safe_attributes=", "grade": 3, "reason": "Field permissions and status assignment."},
+      {"path": "app/models/issue.rb", "symbol": "new_statuses_allowed_to", "grade": 3, "reason": "Allowed workflow transitions for the actor."},
+      {"path": "app/models/issue_status.rb", "symbol": "new_statuses_allowed_to", "grade": 2, "reason": "Role-dependent transition lookup."},
+      {"path": "app/models/issue.rb", "symbol": "init_journal", "grade": 3, "reason": "Audit user and notes initialization."},
+      {"path": "app/models/issue.rb", "symbol": "create_journal", "grade": 3, "reason": "Persist audit record when saving issue."},
+      {"path": "app/models/journal.rb", "symbol": "start", "grade": 2, "reason": "Capture issue attributes before applying changes."},
+      {"path": "app/models/journal.rb", "symbol": "save", "grade": 3, "reason": "Create journal details and determine whether an audit is saved."},
+      {"path": "app/controllers/application_controller.rb", "symbol": "authorize", "grade": 3, "reason": "Controller permission enforcement."},
+      {"path": "app/controllers/application_controller.rb", "symbol": "find_current_user", "grade": 3, "reason": "API identity resolution before update."}
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+name: legacylift-local
+
+# Infrastructure only. The API and RQ worker run on the host so the worker can use
+# the local Docker CLI without mounting the Docker socket into an application container.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: legacylift
+      POSTGRES_USER: legacylift
+      POSTGRES_PASSWORD: ${LEGACYLIFT_POSTGRES_PASSWORD:-local-only-change-me}
+    ports:
+      - "127.0.0.1::5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U legacylift -d legacylift"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  valkey:
+    image: valkey/valkey:8-alpine
+    command: ["valkey-server", "--appendonly", "yes"]
+    ports:
+      - "127.0.0.1::6379"
+    volumes:
+      - valkey-data:/data
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  postgres-data:
+  valkey-data:

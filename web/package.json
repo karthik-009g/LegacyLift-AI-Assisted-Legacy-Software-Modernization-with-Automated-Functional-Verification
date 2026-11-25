@@ -1,0 +1,33 @@
+{
+  "name": "legacylift-workbench",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test:e2e:review": "npm run build && tsc -p tsconfig.e2e.json && playwright test --config playwright.review.config.ts --reporter=line"
+  },
+  "dependencies": {
+    "@monaco-editor/react": "4.7.0",
+    "@tanstack/react-query": "5.107.1",
+    "lucide-react": "1.73.0",
+    "monaco-editor": "0.56.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "recharts": "3.10.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1",
+    "@types/node": "26.6.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.3.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.8"
+  },
+  "overrides": {
+    "dompurify": "3.4.18"
+  }
+}

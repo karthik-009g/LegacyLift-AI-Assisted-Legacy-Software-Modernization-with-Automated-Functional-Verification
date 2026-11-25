@@ -13,6 +13,16 @@ dependencies = [
     "fastapi>=0.134,<1",
     "httpx>=0.28,<1",
     "pydantic>=2,<3",
+    "SQLAlchemy>=2.0,<2.1",
+    "alembic>=1.14,<2",
+    "psycopg[binary]>=3.2,<4",
+    "rq>=2,<3",
+    "redis>=6,<8",
+    "uvicorn>=0.34,<1",
+    "tree-sitter>=0.25,<0.27",
+    "tree-sitter-ruby>=0.23,<0.24",
+    "rank-bm25>=0.2,<0.3",
+    "python-multipart>=0.0.20,<1",
 ]
 
 [project.scripts]
@@ -27,6 +37,9 @@ dev = [
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["legacylift*"]
+
+[tool.setuptools.package-data]
+"legacylift.runtimes" = ["assets/*.rb", "assets/*.yml", "assets/*.py", "assets/*.txt", "assets/*.lock"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

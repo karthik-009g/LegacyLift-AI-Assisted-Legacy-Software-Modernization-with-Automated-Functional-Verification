@@ -1,0 +1,140 @@
+{
+  "candidate_code_executed": false,
+  "conditions": {
+    "hybrid": {
+      "candidate_sha256": "94674b3eccbd1a88e5e90ea174c0350e1a449d65f8add78050be18378a6ccf06",
+      "code_executed": false,
+      "derivation": {
+        "changes": [
+          "Import SessionMiddleware from its installed Starlette module.",
+          "Register session middleware outside the observer so request.session exists."
+        ],
+        "kind": "agent_compatibility_repair",
+        "parent_candidate_sha256": "d70ddc88251cd76bf64bc9d26bf7629d598ac875fa47a8cba7b4387cea8ba7c2"
+      },
+      "expected_prompt_sha256": "b923dd697a61008571e975ceb5db4d69c6e802b60d6c66624a8115a1841343a1",
+      "imports": [
+        "fastapi",
+        "fastapi.responses",
+        "os",
+        "pathlib",
+        "pydantic",
+        "sqlite3",
+        "starlette.middleware.sessions",
+        "typing"
+      ],
+      "line_count": 184,
+      "manual_review_flags": [
+        "status_transition:verify_current_state_guard:update_ticket_status"
+      ],
+      "model": "openai/gpt-oss-120b",
+      "prompt_current": true,
+      "prompt_sha256": "b923dd697a61008571e975ceb5db4d69c6e802b60d6c66624a8115a1841343a1",
+      "provider": "groq",
+      "provider_attempts": [],
+      "request_id": "chatcmpl-9e467f65-3270-463a-8ab0-2c0ec2181294",
+      "requires_human_review": true,
+      "status": "manual_review_required",
+      "usage": {
+        "completion_tokens": 2388,
+        "prompt_tokens": 4530,
+        "total_tokens": 6918
+      }
+    },
+    "runtime_only": {
+      "candidate_sha256": "58f7f73ebb4bfc6a777995a4d5e7b089b1cd767670041228bd7ebc289689d4dd",
+      "code_executed": false,
+      "derivation": {
+        "changes": [
+          "Use the injected Request instance to update observer after-state."
+        ],
+        "kind": "agent_compatibility_repair",
+        "parent_candidate_sha256": "37d8c95b9485c2ff7974f95017faaab0e912f15d38a13d11dd394c19d44deed6"
+      },
+      "expected_prompt_sha256": "47562c99c5e4b0bfcaa0d18aa985702f2b0540a37230728be3132992350a63c5",
+      "imports": [
+        "fastapi",
+        "fastapi.responses",
+        "hashlib",
+        "hmac",
+        "os",
+        "pydantic",
+        "sqlite3",
+        "typing",
+        "uuid"
+      ],
+      "line_count": 199,
+      "manual_review_flags": [
+        "status_transition:verify_current_state_guard:update_status"
+      ],
+      "model": "openai/gpt-oss-120b",
+      "prompt_current": true,
+      "prompt_sha256": "47562c99c5e4b0bfcaa0d18aa985702f2b0540a37230728be3132992350a63c5",
+      "provider": "groq",
+      "provider_attempts": [],
+      "request_id": "chatcmpl-b4ae36d3-a153-4cc2-9383-6b7fe28be7fe",
+      "requires_human_review": true,
+      "status": "manual_review_required",
+      "usage": {
+        "completion_tokens": 2229,
+        "prompt_tokens": 2294,
+        "total_tokens": 4523
+      }
+    },
+    "source_only": {
+      "candidate_sha256": "b475f53c0208da56ffcd884e4e14f2927b62d7ddcca76043ecfa0ac906c4b1af",
+      "code_executed": false,
+      "derivation": {
+        "changes": [
+          "Import SessionMiddleware from its installed Starlette module.",
+          "Remove Flask-only root_path access when constructing default config.",
+          "Invoke the normalized session observer once per request, including validation errors, inside the session middleware. No route or business rule is corrected."
+        ],
+        "kind": "agent_compatibility_repair",
+        "parent_candidate_sha256": "e2de6df72fa7a286e25b7a5fe3a4499c1084a9264ae248b3188a0c8d557a53b8"
+      },
+      "expected_prompt_sha256": "dc15c8b3100815dc6fa05aee413ab5cb99791f43d9f8f6b49068ee7a5badd748",
+      "imports": [
+        "fastapi",
+        "fastapi.responses",
+        "os",
+        "pathlib",
+        "pydantic",
+        "sqlite3",
+        "starlette.middleware.sessions",
+        "typing"
+      ],
+      "line_count": 196,
+      "manual_review_flags": [
+        "authentication:ticket_read_may_not_require_session:get_ticket",
+        "ownership:ticket_read_may_not_filter_owner:get_ticket",
+        "ownership:verify_status_update_owner:update_ticket_status",
+        "status_transition:verify_current_state_guard:update_ticket_status"
+      ],
+      "model": "openai/gpt-oss-120b",
+      "prompt_current": true,
+      "prompt_sha256": "dc15c8b3100815dc6fa05aee413ab5cb99791f43d9f8f6b49068ee7a5badd748",
+      "provider": "groq",
+      "provider_attempts": [],
+      "request_id": "chatcmpl-4714e27d-5a0b-45ff-ad06-3528bd321225",
+      "requires_human_review": true,
+      "status": "manual_review_required",
+      "usage": {
+        "completion_tokens": 2516,
+        "prompt_tokens": 2907,
+        "total_tokens": 5423
+      }
+    }
+  },
+  "functional_evaluation": "not_run",
+  "limitations": [
+    "AST parsing checks syntax and selected patterns only; it cannot establish safety.",
+    "Manual review and isolated functional evaluation are still required."
+  ],
+  "manual_review_required": true,
+  "mode": "static_only",
+  "report_path": "artifacts/experiments/compatibility_static_review.json",
+  "security_assurance": "none",
+  "static_review_schema_version": "1.1",
+  "status": "manual_review_required"
+}

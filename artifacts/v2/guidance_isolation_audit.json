@@ -1,0 +1,16 @@
+{
+  "controller_open_guard": [
+    "oracle.json",
+    "held-out.json",
+    ".env"
+  ],
+  "held_out_evaluated": false,
+  "passed_count": 1,
+  "provider_requests": 0,
+  "run_id": "f23f942766164c2484dc01924d63cfdf",
+  "runtime": "actual restricted Docker candidate replay",
+  "scenario_count": 6,
+  "seed_run_id": "2a0611ffcc034ad68586ca467cc0c7a9",
+  "source_sha256": "b8103021fa1eefd6f0d11deee316cf53c9ef0acfdc821519af7cb21b22c948b0",
+  "status": "compatibility_failed"
+}

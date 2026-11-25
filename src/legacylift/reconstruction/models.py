@@ -23,6 +23,16 @@ class ReconstructionRequest(BaseModel):
     source_excerpt_truncated: bool = False
 
 
+class ProposalDerivation(BaseModel):
+    """Changes to a saved model draft, distinct from original model output."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    kind: Literal["agent_compatibility_repair"]
+    parent_candidate_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    changes: list[str] = Field(min_length=1)
+
+
 class ReconstructionProposal(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -38,3 +48,5 @@ class ReconstructionProposal(BaseModel):
     request_id: str | None = None
     usage: dict[str, int] = Field(default_factory=dict)
     prompt_sha256: str | None = None
+    provider_attempts: list[str] = Field(default_factory=list)
+    derivation: ProposalDerivation | None = None

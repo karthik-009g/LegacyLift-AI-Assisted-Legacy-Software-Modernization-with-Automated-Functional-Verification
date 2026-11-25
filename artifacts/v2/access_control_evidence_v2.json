@@ -1,0 +1,175 @@
+{
+  "version": "literal-redmine-access-control-1",
+  "parser": "tree-sitter-ruby",
+  "status": "parsed",
+  "file_sha256": "c872afd9fe5467a44f09827da2c4cdf9fbc4ecc11b09cbe63790eda381fdb2bd",
+  "bindings": [
+    {
+      "evidence_id": "ruby-permission:lib/redmine.rb:99:106",
+      "kind": "literal_access_control_declaration",
+      "permission": "view_issues",
+      "controller_actions": {
+        "issues": [
+          "index",
+          "show",
+          "issue_tab"
+        ],
+        "auto_complete": [
+          "issues"
+        ],
+        "context_menus": [
+          "issues"
+        ],
+        "versions": [
+          "index",
+          "show",
+          "status_by"
+        ],
+        "journals": [
+          "index",
+          "diff"
+        ],
+        "queries": [
+          "index"
+        ],
+        "reports": [
+          "issue_report",
+          "issue_report_details"
+        ]
+      },
+      "path": "lib/redmine.rb",
+      "start_line": 99,
+      "end_line": 106,
+      "sha256": "66ec5969b1fd24fdf703a34dff36f6d2966aa1eff50cac27ba2ebea58c7364ae",
+      "file_sha256": "c872afd9fe5467a44f09827da2c4cdf9fbc4ecc11b09cbe63790eda381fdb2bd",
+      "text": "map.permission :view_issues, {:issues => [:index, :show, :issue_tab],\n                                  :auto_complete => [:issues],\n                                  :context_menus => [:issues],\n                                  :versions => [:index, :show, :status_by],\n                                  :journals => [:index, :diff],\n                                  :queries => :index,\n                                  :reports => [:issue_report, :issue_report_details]},\n                   :read => true"
+    },
+    {
+      "evidence_id": "ruby-permission:lib/redmine.rb:107:107",
+      "kind": "literal_access_control_declaration",
+      "permission": "add_issues",
+      "controller_actions": {
+        "issues": [
+          "new",
+          "create"
+        ],
+        "attachments": [
+          "upload"
+        ]
+      },
+      "path": "lib/redmine.rb",
+      "start_line": 107,
+      "end_line": 107,
+      "sha256": "da9a3a0dc50bf78602762e281626ccd8ae1e4ad525ea4f6639dfbbd8944fcb5a",
+      "file_sha256": "c872afd9fe5467a44f09827da2c4cdf9fbc4ecc11b09cbe63790eda381fdb2bd",
+      "text": "map.permission :add_issues, {:issues => [:new, :create], :attachments => :upload}"
+    },
+    {
+      "evidence_id": "ruby-permission:lib/redmine.rb:108:108",
+      "kind": "literal_access_control_declaration",
+      "permission": "edit_issues",
+      "controller_actions": {
+        "issues": [
+          "edit",
+          "update",
+          "bulk_edit",
+          "bulk_update"
+        ],
+        "journals": [
+          "new"
+        ],
+        "attachments": [
+          "upload"
+        ]
+      },
+      "path": "lib/redmine.rb",
+      "start_line": 108,
+      "end_line": 108,
+      "sha256": "9ea50cdd1ffa3d45cb964f1d1c6870cfedc6552a5072f4dbe463c33b383ac01f",
+      "file_sha256": "c872afd9fe5467a44f09827da2c4cdf9fbc4ecc11b09cbe63790eda381fdb2bd",
+      "text": "map.permission :edit_issues, {:issues => [:edit, :update, :bulk_edit, :bulk_update], :journals => [:new], :attachments => :upload}"
+    },
+    {
+      "evidence_id": "ruby-permission:lib/redmine.rb:109:109",
+      "kind": "literal_access_control_declaration",
+      "permission": "edit_own_issues",
+      "controller_actions": {
+        "issues": [
+          "edit",
+          "update",
+          "bulk_edit",
+          "bulk_update"
+        ],
+        "journals": [
+          "new"
+        ],
+        "attachments": [
+          "upload"
+        ]
+      },
+      "path": "lib/redmine.rb",
+      "start_line": 109,
+      "end_line": 109,
+      "sha256": "d40410b27e8a315d984ac9a0422d1a55299358f898ae090fffdf3b0a3e3a6ea8",
+      "file_sha256": "c872afd9fe5467a44f09827da2c4cdf9fbc4ecc11b09cbe63790eda381fdb2bd",
+      "text": "map.permission :edit_own_issues, {:issues => [:edit, :update, :bulk_edit, :bulk_update], :journals => [:new], :attachments => :upload}"
+    },
+    {
+      "evidence_id": "ruby-permission:lib/redmine.rb:110:110",
+      "kind": "literal_access_control_declaration",
+      "permission": "copy_issues",
+      "controller_actions": {
+        "issues": [
+          "new",
+          "create",
+          "bulk_edit",
+          "bulk_update"
+        ],
+        "attachments": [
+          "upload"
+        ]
+      },
+      "path": "lib/redmine.rb",
+      "start_line": 110,
+      "end_line": 110,
+      "sha256": "1baeabd54c17f077eda6b4aeffa01f77508b9bec771962a5c13e804be0541f1e",
+      "file_sha256": "c872afd9fe5467a44f09827da2c4cdf9fbc4ecc11b09cbe63790eda381fdb2bd",
+      "text": "map.permission :copy_issues, {:issues => [:new, :create, :bulk_edit, :bulk_update], :attachments => :upload}"
+    },
+    {
+      "evidence_id": "ruby-permission:lib/redmine.rb:115:115",
+      "kind": "literal_access_control_declaration",
+      "permission": "add_issue_notes",
+      "controller_actions": {
+        "issues": [
+          "edit",
+          "update"
+        ],
+        "journals": [
+          "new"
+        ],
+        "attachments": [
+          "upload"
+        ]
+      },
+      "path": "lib/redmine.rb",
+      "start_line": 115,
+      "end_line": 115,
+      "sha256": "f4e526837e78f1d4b4f747a8e7dfd87aa8041a62cccae1160668b072df17d3e5",
+      "file_sha256": "c872afd9fe5467a44f09827da2c4cdf9fbc4ecc11b09cbe63790eda381fdb2bd",
+      "text": "map.permission :add_issue_notes, {:issues => [:edit, :update], :journals => [:new], :attachments => :upload}"
+    }
+  ],
+  "unknowns": [
+    "Nonliteral permission declaration at lib/redmine.rb:142",
+    "Nonliteral permission declaration at lib/redmine.rb:168"
+  ],
+  "limits": [
+    "Declarations are source facts, not observations of authorization decisions.",
+    "Object-level permissions, controller filters and dynamic Ruby behavior need additional evidence and independent replay.",
+    "Only literal symbols and explicit route hashes in recognized AccessControl.map and project_module blocks are extracted."
+  ],
+  "literal_route_declaration_count": 62,
+  "source_commit": "9118c6dcb4ffe203f7029eb89523cd8a56b85cde",
+  "source_tree_sha256": "d8a8478f5b5a75a2c7b2187bc525a74e21313d07cbb79fc802d7f64a1e97ee6c"
+}

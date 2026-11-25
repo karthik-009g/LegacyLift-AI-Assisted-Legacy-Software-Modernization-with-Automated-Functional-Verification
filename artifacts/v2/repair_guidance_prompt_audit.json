@@ -1,0 +1,30 @@
+{
+  "kind": "saved_guidance_repair_prompt_audit",
+  "source_run_id": "4883a543bb544052b2568b12bffb4a2d",
+  "model_requests": 0,
+  "held_out_observations_read": false,
+  "prompt_bytes": 15363,
+  "prompt_sha256": "b6c1af5193000f4446959d602db64c2366b47ca3b5b1413902d45f063ca9a3b4",
+  "complete_source_retained": true,
+  "database_contract_retained": true,
+  "selected_examples": [
+    {
+      "evidence_id": "runtime:create.basic",
+      "steps": [
+        {
+          "method": "POST",
+          "path": "/issues.json",
+          "issue_request_fields": [
+            "description",
+            "project_id",
+            "subject",
+            "tracker_id"
+          ],
+          "expected_status": 201
+        }
+      ]
+    }
+  ],
+  "raw_selected_example_count": 2,
+  "source_only_added_runtime_examples": false
+}

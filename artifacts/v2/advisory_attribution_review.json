@@ -1,0 +1,27 @@
+{
+  "cve_id": "CVE-2026-76844",
+  "status": "conflicting_attribution_requires_triage",
+  "primary_cve_record": {
+    "url": "https://cveawg.mitre.org/api/cve/CVE-2026-76844",
+    "title": "webpack-dev-middleware before 7.4.6 and 8.3.0 Path Traversal via Non-Slash-Terminated publicPath",
+    "products": [
+      "webpack-dev-middleware"
+    ],
+    "raw_sha256": "93c3c0f484e2823ce76977fb46b5d59f0f4f18a1bfe967d31f6a5ece7d8d4c2f"
+  },
+  "debian_tracker": {
+    "url": "https://security-tracker.debian.org/tracker/CVE-2026-76844",
+    "product": "webpack-dev-middleware"
+  },
+  "debian_announcement": {
+    "url": "https://lists.debian.org/debian-security-announce/2026/msg00532.html",
+    "package": "zlib",
+    "fixed_version": "1:1.3.dfsg+really1.3.1-1+deb13u1",
+    "lists_this_cve": true
+  },
+  "scout_target_match": {
+    "package": "zlib",
+    "reported_fixed_version": "1:1.3.dfsg+really1.3.1-1+deb13u1"
+  },
+  "disposition": "Preserve original findings. Do not claim this ID is a confirmed zlib flaw or resolved by an advisory-count reduction. The zlib vendor update also addresses independently identified zlib issues."
+}

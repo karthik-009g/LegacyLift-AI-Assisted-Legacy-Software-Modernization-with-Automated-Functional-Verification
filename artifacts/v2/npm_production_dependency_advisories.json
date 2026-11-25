@@ -1,0 +1,36 @@
+{
+  "checked_at_utc": "2026-11-18T15:12:40.748012+00:00",
+  "scope": "npm production dependencies (--omit=dev)",
+  "certified_secure": false,
+  "package_lock_sha256": "76bd53cebc03a0647697f81cb82e1194283bfdbed44447261fca523d69d78775",
+  "command": [
+    "audit",
+    "--omit=dev",
+    "--json",
+    "--ignore-scripts",
+    "--registry=https://registry.npmjs.org"
+  ],
+  "exit_code": 0,
+  "audit": {
+    "auditReportVersion": 2,
+    "vulnerabilities": {},
+    "metadata": {
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "dependencies": {
+        "prod": 53,
+        "dev": 75,
+        "optional": 55,
+        "peer": 1,
+        "peerOptional": 0,
+        "total": 129
+      }
+    }
+  }
+}

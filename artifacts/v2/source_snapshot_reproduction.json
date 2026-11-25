@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "scope": "fresh local source snapshot on existing Windows host",
+  "snapshot_id": "ee5c3b3152f444f19193f52371226b19",
+  "source_file_count": 190,
+  "source_inventory_sha256": "52717e2dad5e7c1b5d3e2f3ecb20e1698aff98d4118e81fba150bc45169b7181",
+  "wheel_sha256": "5a32df8f416fbea1d25fdd5f153325d64021ff808f93d2395f95a07dace3edd9",
+  "installed_package_files_verified": 76,
+  "python_version": "3.11.9",
+  "python_tests_passed": 277,
+  "python_tests_skipped": 0,
+  "browser_tests_passed": 1,
+  "prompt_variants_passed": 12,
+  "reference_matches_saved": true,
+  "reference": {
+    "status": "prepared",
+    "contract": {
+      "version": "redmine-issues-2",
+      "scenario_sha256": "5bd241bf7f8174fd82834b34034cd83243777811c1528178928c86c13e2107d5",
+      "scenario_count": 30,
+      "guidance_count": 18,
+      "held_out_count": 12,
+      "comparison": {
+        "json": "strict types, keys, values and array order",
+        "headers": [
+          "content-type",
+          "cache-control",
+          "location"
+        ],
+        "database": [
+          "issues",
+          "journals",
+          "journal_details"
+        ],
+        "ignored": [
+          "HTTP serialization whitespace/body byte length",
+          "unselected HTTP headers such as Date and request ID"
+        ]
+      },
+      "scope": "Synthetic private project; selected REST endpoints; not full Redmine"
+    },
+    "oracle_sha256": "c2abdccfe9f9ba29d1e60fdf1f98ce7e0ec24d57270af68671a75a53ae09972a",
+    "runtime_route_count": 5
+  },
+  "installation_stages": 7,
+  "verification_stages": 8,
+  "generation_requests": 0,
+  "actual_controlled_model_trials": 0,
+  "security_verdict": "not_assessed",
+  "limitations": [
+    "Same Windows host and cached Docker/browser binaries.",
+    "Uncommitted source snapshot, not a published checkout.",
+    "Synthetic browser tests are not model migration evidence."
+  ],
+  "retained_failed_snapshot": "63e02f546e61477394d7377756306055",
+  "raw_evidence_directory": ".legacylift\\reproductions\\ee5c3b3152f444f19193f52371226b19"
+}

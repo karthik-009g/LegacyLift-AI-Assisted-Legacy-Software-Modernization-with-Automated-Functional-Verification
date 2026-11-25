@@ -1,0 +1,168 @@
+import os
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+from fastapi import FastAPI, Request, Response
+from fastapi.responses import JSONResponse
+from sqlalchemy import create_engine, text
+from sqlalchemy.engine import Engine
+
+app = FastAPI()
+
+# Synchronous engine from environment
+engine: Engine = create_engine(os.environ["DATABASE_URL"], future=True, echo=False)
+
+def parse_timestamp(ts_str: str) -> datetime:
+    # SQLite stores as 'YYYY-MM-DD HH:MM:SS'
+    return datetime.strptime(ts_str, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
+
+def format_iso(dt: datetime) -> str:
+    return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+def read_clock() -> datetime:
+    epoch = int(Path("/state/clock").read_text(encoding="utf-8"))
+    return datetime.fromtimestamp(epoch, tz=timezone.utc)
+
+def get_user_by_token(token: str):
+    with engine.connect() as conn:
+        row = conn.execute(
+            text("SELECT user_id FROM tokens WHERE value=:token AND action='api'"),
+            {"token": token}
+        ).mappings().first()
+        if row is None:
+            return None
+        user_id = row["user_id"]
+        user_row = conn.execute(
+            text("SELECT * FROM users WHERE id=:uid"),
+            {"uid": user_id}
+        ).mappings().first()
+        return user_row
+
+def user_project_membership(user_id: int, project_id: int):
+    with engine.connect() as conn:
+        mem = conn.execute(
+            text("SELECT id FROM members WHERE user_id=:uid AND project_id=:pid"),
+            {"uid": user_id, "pid": project_id}
+        ).mappings().first()
+        return mem is not None
+
+def user_roles_in_project(user_id: int, project_id: int):
+    with engine.connect() as conn:
+        rows = conn.execute(
+            text("""
+                SELECT r.id, r.permissions FROM roles r
+                JOIN member_roles mr ON mr.role_id=r.id
+                JOIN members m ON m.id=mr.member_id
+                WHERE m.user_id=:uid AND m.project_id=:pid
+            """) ,
+            {"uid": user_id, "pid": project_id}
+        ).mappings().all()
+        return rows
+
+def has_permission(user_id: int, project_id: int, permission: str) -> bool:
+    roles = user_roles_in_project(user_id, project_id)
+    for r in roles:
+        perms_text = r["permissions"] or ""
+        for line in perms_text.splitlines():
+            line = line.strip()
+            if line.startswith("- :"):
+                perm = line[3:].strip()
+                if perm == permission:
+                    return True
+    return False
+
+async def authenticate(request: Request):
+    token = request.headers.get("X-Redmine-API-Key")
+    if not token:
+        return None, 401
+    user = get_user_by_token(token)
+    if user is None:
+        return None, 401
+    return user, None
+
+@app.put("/issues/{issue_id}.json")
+async def update_issue(issue_id: int, request: Request):
+    user, err = await authenticate(request)
+    if err:
+        return Response(status_code=err, headers={"cache-control": "no-cache", "content-type": "application/json"})
+
+    # Load JSON body
+    try:
+        payload = await request.json()
+    except Exception:
+        return Response(status_code=400, headers={"cache-control": "no-cache", "content-type": "application/json"})
+
+    issue_data = payload.get("issue", {})
+    notes = issue_data.get("notes")
+    new_status_id = issue_data.get("status_id")
+
+    with engine.begin() as conn:
+        # Fetch issue
+        issue_row = conn.execute(
+            text("SELECT * FROM issues WHERE id=:iid"),
+            {"iid": issue_id}
+        ).mappings().first()
+        if issue_row is None:
+            return Response(status_code=404, headers={"cache-control": "no-cache", "content-type": "application/json"})
+
+        project_id = issue_row["project_id"]
+        # Membership check
+        if not user_project_membership(user["id"], project_id):
+            return Response(status_code=403, headers={"cache-control": "no-cache", "content-type": "application/json"})
+
+        # Permission check (edit_issues)
+        if not has_permission(user["id"], project_id, "edit_issues"):
+            return Response(status_code=403, headers={"cache-control": "no-cache", "content-type": "application/json"})
+
+        # Determine allowed status transition
+        allowed = False
+        if new_status_id is not None:
+            # Check workflow table
+            wf = conn.execute(
+                text("SELECT 1 FROM workflows WHERE role_id IN (SELECT role_id FROM member_roles mr JOIN members m ON m.id=mr.member_id WHERE m.user_id=:uid AND m.project_id=:pid) AND old_status_id=:old AND new_status_id=:new"),
+                {"uid": user["id"], "pid": project_id, "old": issue_row["status_id"], "new": new_status_id}
+            ).mappings().first()
+            allowed = wf is not None
+
+        # Prepare updates
+        now = read_clock()
+        updates = {"updated_on": now.strftime("%Y-%m-%d %H:%M:%S"), "lock_version": issue_row["lock_version"] + 1}
+        if allowed:
+            updates["status_id"] = new_status_id
+        # Apply update
+        set_clause = ", ".join([f"{k}=:{k}" for k in updates.keys()])
+        conn.execute(
+            text(f"UPDATE issues SET {set_clause} WHERE id=:iid"),
+            {**updates, "iid": issue_id}
+        )
+
+        # Closed_on handling
+        if allowed:
+            # Determine if new status is closed
+            status_row = conn.execute(
+                text("SELECT is_closed FROM issue_statuses WHERE id=:sid"),
+                {"sid": new_status_id}
+            ).mappings().first()
+            if status_row and status_row["is_closed"]:
+                conn.execute(
+                    text("UPDATE issues SET closed_on=:closed WHERE id=:iid"),
+                    {"closed": now.strftime("%Y-%m-%d %H:%M:%S"), "iid": issue_id}
+                )
+
+        # Journal handling
+        if notes is not None or allowed:
+            # Insert journal
+            conn.execute(
+                text("INSERT INTO journals (journalized_id, journalized_type, user_id, notes, created_on, private_notes) VALUES (:jid, 'Issue', :uid, :notes, :created, 0)"),
+                {"jid": issue_id, "uid": user["id"], "notes": notes or "", "created": now.strftime("%Y-%m-%d %H:%M:%S")}
+            )
+            journal_id = conn.execute(text("SELECT last_insert_rowid() as id")).mappings().first()["id"]
+            if allowed:
+                conn.execute(
+                    text("INSERT INTO journal_details (journal_id, property, prop_key, old_value, value) VALUES (:jid, 'attr', 'status_id', :old, :new)"),
+                    {"jid": journal_id, "old": str(issue_row["status_id"]), "new": str(new_status_id)}
+                )
+
+    # Return 204 No Content
+    return Response(status_code=204, headers={"cache-control": "no-cache"})

@@ -127,12 +127,6 @@ def _capture_fastapi_step(
     database_before = snapshot_database(database_path)
     response = client.request(step.method, step.path, json=step.json_body)
     database_after = snapshot_database(database_path)
-    if len(observations) != 1:
-        raise RuntimeError(
-            f"Expected one session observation for {step.method} {step.path}, "
-            f"received {len(observations)}"
-        )
-
     headers = {
         name: response.headers[name]
         for name in ("content-type", "vary", "cache-control")
@@ -142,19 +136,40 @@ def _capture_fastapi_step(
         response_json = response.json()
     except (ValueError, json.JSONDecodeError):
         response_json = None
-    return {
+    captured = {
         "response": {
             "status": response.status_code,
             "headers": headers,
             "cookies": cookie_metadata(response.headers.get_list("set-cookie")),
             "json": response_json,
         },
-        "session_before": observations[0]["before"],
-        "session_after": observations[0]["after"],
+        "session_before": observations[0]["before"] if len(observations) == 1 else None,
+        "session_after": observations[0]["after"] if len(observations) == 1 else None,
         "database_before": database_before,
         "database_after": database_after,
         "database_delta": database_delta(database_before, database_after),
     }
+    if len(observations) != 1:
+        captured["session_observation_error"] = (
+            f"Expected one session observation for {step.method} {step.path}, "
+            f"received {len(observations)}"
+        )
+    return captured
+
+
+def _same_typed_value(expected: Any, actual: Any) -> bool:
+    """Keep JSON types significant, including bool versus int and int versus float."""
+    if type(expected) is not type(actual):
+        return False
+    if isinstance(expected, dict):
+        return expected.keys() == actual.keys() and all(
+            _same_typed_value(value, actual[key]) for key, value in expected.items()
+        )
+    if isinstance(expected, list):
+        return len(expected) == len(actual) and all(
+            _same_typed_value(left, right) for left, right in zip(expected, actual)
+        )
+    return expected == actual
 
 
 def compare_observations(
@@ -169,7 +184,7 @@ def compare_observations(
         reconstructed_value: Any = reconstructed
         for component in field.split("."):
             reconstructed_value = reconstructed_value[component]
-        if value != reconstructed_value:
+        if not _same_typed_value(value, reconstructed_value):
             mismatches.append(
                 {
                     "field": field,
@@ -246,7 +261,9 @@ def compare_scenarios(
             step_results = []
             with (
                 legacy_app.test_client() as legacy_client,
-                TestClient(reconstructed_app) as reconstructed_client,
+                TestClient(
+                    reconstructed_app, raise_server_exceptions=False
+                ) as reconstructed_client,
             ):
                 for step in scenario.steps:
                     legacy = _capture_flask_step(legacy_client, legacy_database, step)

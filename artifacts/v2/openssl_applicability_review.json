@@ -1,0 +1,63 @@
+{
+  "source_url": "https://openssl-library.org/news/vulnerabilities/",
+  "source_html_sha256": "8a5099d2bb218ef8f2e0d83837123c6cbb864b429489a21d1b6e55d6e38469c0",
+  "debian_source_url": "https://security-tracker.debian.org/tracker/source-package/openssl",
+  "debian_security_version_observed": "3.5.7-1~deb13u3",
+  "findings": [
+    {
+      "id": "CVE-2026-107496",
+      "scanner_severity": "HIGH",
+      "upstream_severity": "Low",
+      "upstream_fixed_35_version": "3.5.10",
+      "feature": "CMS EC-recipient encryption",
+      "status": "present_open_requires_candidate_applicability_review"
+    },
+    {
+      "id": "CVE-2026-124709",
+      "scanner_severity": "HIGH",
+      "upstream_severity": "Low",
+      "upstream_fixed_35_version": "3.5.10",
+      "feature": "QUIC server rejected-stream accounting",
+      "status": "present_open_requires_candidate_applicability_review"
+    },
+    {
+      "id": "CVE-2026-88823",
+      "scanner_severity": "HIGH",
+      "upstream_severity": "Low",
+      "upstream_fixed_35_version": "3.5.10",
+      "feature": "AES-GCM-SIV additional authenticated data",
+      "status": "present_open_requires_candidate_applicability_review"
+    },
+    {
+      "id": "CVE-2026-95692",
+      "scanner_severity": "HIGH",
+      "upstream_severity": "Low",
+      "upstream_fixed_35_version": "3.5.10",
+      "feature": "AES-GCM-SIV IV length handling",
+      "status": "present_open_requires_candidate_applicability_review"
+    },
+    {
+      "id": "CVE-2026-107493",
+      "scanner_severity": "HIGH",
+      "upstream_severity": "Low",
+      "upstream_fixed_35_version": "3.5.10",
+      "feature": "PEM certificate-info caller stack handling",
+      "status": "present_open_requires_candidate_applicability_review"
+    },
+    {
+      "id": "CVE-2026-95691",
+      "scanner_severity": "HIGH",
+      "upstream_severity": "Low",
+      "upstream_fixed_35_version": "3.5.10",
+      "feature": "QUIC retransmitted CRYPTO frames",
+      "status": "present_open_requires_candidate_applicability_review"
+    }
+  ],
+  "scanner_findings_suppressed": false,
+  "current_profile_observations": [
+    "Application HTTP binds loopback inside network-none containers.",
+    "Trusted driver requests HTTP, not TLS; no public port is published.",
+    "These observations constrain exposure but do not prove every generated source cannot invoke affected APIs."
+  ],
+  "release_action": "Retain open findings and scanner labels; review feature reachability for the exact approved candidate and adopt a separately verified vendor security update when available."
+}

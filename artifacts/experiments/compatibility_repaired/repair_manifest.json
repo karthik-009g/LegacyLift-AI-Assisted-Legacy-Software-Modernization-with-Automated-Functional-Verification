@@ -1,0 +1,41 @@
+{
+  "candidate_code_executed": false,
+  "conditions": {
+    "hybrid": {
+      "candidate_sha256": "94674b3eccbd1a88e5e90ea174c0350e1a449d65f8add78050be18378a6ccf06",
+      "changes": [
+        "Import SessionMiddleware from its installed Starlette module.",
+        "Register session middleware outside the observer so request.session exists."
+      ],
+      "diff": "--- raw/hybrid.py\n+++ compatibility_repaired/hybrid.py\n@@ -5,7 +5,7 @@\n \n from fastapi import FastAPI, Request, Response, HTTPException, Depends, status\n from fastapi.responses import JSONResponse\n-from fastapi.middleware.sessions import SessionMiddleware\n+from starlette.middleware.sessions import SessionMiddleware\n from pydantic import BaseModel, Field, validator\n \n # Types\n@@ -93,8 +93,8 @@\n     conn.close()\n \n     # Add session middleware \u2013 uses signed cookie named \"session\"\n+    app.middleware(\"http\")(session_observer_middleware)\n     app.add_middleware(SessionMiddleware, secret_key=secret_key, session_cookie=\"session\")\n-    app.middleware(\"http\")(session_observer_middleware)\n \n     @app.post(\"/session\")\n     async def start_test_session(payload: SessionStart, request: Request, response: Response):\n",
+      "kind": "agent_compatibility_repair",
+      "parent_candidate_sha256": "d70ddc88251cd76bf64bc9d26bf7629d598ac875fa47a8cba7b4387cea8ba7c2"
+    },
+    "runtime_only": {
+      "candidate_sha256": "58f7f73ebb4bfc6a777995a4d5e7b089b1cd767670041228bd7ebc289689d4dd",
+      "changes": [
+        "Use the injected Request instance to update observer after-state."
+      ],
+      "diff": "--- raw/runtime_only.py\n+++ compatibility_repaired/runtime_only.py\n@@ -104,7 +104,7 @@\n     SessionMiddleware(app, secret_key, session_observer)\n \n     @app.post(\"/session\")\n-    async def start_session(req: SessionRequest, response: Response):\n+    async def start_session(req: SessionRequest, response: Response, request: Request):\n         # Set session cookie\n         signed = sign_session(req.user_id, secret_key)\n         response.set_cookie(\n@@ -116,7 +116,7 @@\n             samesite=\"lax\",\n         )\n         # Update request state for observer after middleware runs\n-        request = Request.scope\n+        request.state.user_id = req.user_id\n         # FastAPI provides request via dependency; we use response directly\n         # Set state for downstream observer (middleware already called observer before response)\n         # To make after-state reflect new user_id, we set it on request.state now\n",
+      "kind": "agent_compatibility_repair",
+      "parent_candidate_sha256": "37d8c95b9485c2ff7974f95017faaab0e912f15d38a13d11dd394c19d44deed6"
+    },
+    "source_only": {
+      "candidate_sha256": "b475f53c0208da56ffcd884e4e14f2927b62d7ddcca76043ecfa0ac906c4b1af",
+      "changes": [
+        "Import SessionMiddleware from its installed Starlette module.",
+        "Remove Flask-only root_path access when constructing default config.",
+        "Invoke the normalized session observer once per request, including validation errors, inside the session middleware. No route or business rule is corrected."
+      ],
+      "diff": "--- raw/source_only.py\n+++ compatibility_repaired/source_only.py\n@@ -5,7 +5,7 @@\n \n from fastapi import FastAPI, Request, Response, HTTPException, Depends, status\n from fastapi.responses import JSONResponse\n-from fastapi.middleware.sessions import SessionMiddleware\n+from starlette.middleware.sessions import SessionMiddleware\n from pydantic import BaseModel, Field, validator\n \n # Types\n@@ -83,7 +83,7 @@\n     # Default configuration\n     config: Dict[str, Any] = {\n         \"SECRET_KEY\": os.environ.get(\"LEGACYLIFT_SECRET_KEY\", \"local-development-only\"),\n-        \"DATABASE\": str(Path(app.root_path) / \"instance\" / \"legacylift.sqlite3\"),\n+        \"DATABASE\": str(Path(\"instance\") / \"legacylift.sqlite3\"),\n         \"SESSION_OBSERVER\": None,\n     }\n \n@@ -97,7 +97,6 @@\n         initialize_database(str(db_path))\n \n     # Session middleware (uses signed cookie)\n-    app.add_middleware(SessionMiddleware, secret_key=config[\"SECRET_KEY\"], session_cookie=\"session\")\n \n     # Dependency that attaches a DB connection to the request state\n     async def db_dependency(request: Request):\n@@ -106,6 +105,15 @@\n             yield request.state.db\n         finally:\n             close_db(request)\n+\n+    @app.middleware(\"http\")\n+    async def observe_request_session(request: Request, call_next):\n+        before = {\"user_id\": request.session.get(\"user_id\")}\n+        response = await call_next(request)\n+        observer = config.get(\"SESSION_OBSERVER\")\n+        if observer and request.url.path.startswith((\"/session\", \"/tickets\")):\n+            observer({\"before\": before, \"after\": {\"user_id\": request.session.get(\"user_id\")}})\n+        return response\n \n     # Utility to invoke SESSION_OBSERVER with before/after snapshots\n     def observe_session(request: Request, before: Dict[str, Any]):\n@@ -123,7 +131,6 @@\n         request.session[\"user_id\"] = payload.user_id\n         response = JSONResponse(content={\"user_id\": request.session[\"user_id\"]})\n         # Ensure Set-Cookie header is sent (FastAPI's SessionMiddleware handles it)\n-        observe_session(request, before)\n         return response\n \n     @app.post(\"/tickets\")\n@@ -135,7 +142,6 @@\n         before = dict(request.session) if hasattr(request, \"session\") else {}\n         user_id = request.session.get(\"user_id\")\n         if user_id is None:\n-            observe_session(request, before)\n             raise HTTPException(\n                 status_code=status.HTTP_401_UNAUTHORIZED,\n                 detail={\"code\": \"authentication_required\", \"message\": \"start a session before creating tickets\"},\n@@ -146,7 +152,6 @@\n         )\n         db.commit()\n         ticket_id = cursor.lastrowid\n-        observe_session(request, before)\n         return JSONResponse(content={\"id\": ticket_id, \"owner_id\": user_id, \"subject\": payload.subject, \"description\": payload.description, \"status\": \"open\"})\n \n     @app.get(\"/tickets/{ticket_id}\")\n@@ -157,7 +162,6 @@\n     ):\n         before = dict(request.session) if hasattr(request, \"session\") else {}\n         row = db.execute(\"SELECT * FROM tickets WHERE id = ?\", (ticket_id,)).fetchone()\n-        observe_session(request, before)\n         if row is None:\n             raise HTTPException(status_code=404, detail=\"Ticket not found\")\n         return JSONResponse(content=dict(row))\n@@ -172,7 +176,6 @@\n         before = dict(request.session) if hasattr(request, \"session\") else {}\n         user_id = request.session.get(\"user_id\")\n         if user_id is None:\n-            observe_session(request, before)\n             raise HTTPException(\n                 status_code=status.HTTP_401_UNAUTHORIZED,\n                 detail={\"code\": \"authentication_required\", \"message\": \"start a session before updating tickets\"},\n@@ -180,14 +183,14 @@\n         # Verify ticket exists and belongs to the user (optional, mirrors legacy behavior)\n         row = db.execute(\"SELECT owner_id FROM tickets WHERE id = ?\", (ticket_id,)).fetchone()\n         if row is None:\n-            observe_session(request, before)\n             raise HTTPException(status_code=404, detail=\"Ticket not found\")\n         db.execute(\n             \"UPDATE tickets SET status = ? WHERE id = ?\",\n             (payload.status, ticket_id),\n         )\n         db.commit()\n-        observe_session(request, before)\n         return JSONResponse(content={\"id\": ticket_id, \"status\": payload.status})\n \n+    app.add_middleware(SessionMiddleware, secret_key=config[\"SECRET_KEY\"], session_cookie=\"session\")\n+\n     return app",
+      "kind": "agent_compatibility_repair",
+      "parent_candidate_sha256": "e2de6df72fa7a286e25b7a5fe3a4499c1084a9264ae248b3188a0c8d557a53b8"
+    }
+  },
+  "human_correction_effort": {
+    "reason": "Repairs were made by an agent; no human correction session was timed.",
+    "status": "not_measured"
+  },
+  "schema_version": "1.0",
+  "scope": "Fixed startup and evaluator callback repairs; business logic remains as generated."
+}

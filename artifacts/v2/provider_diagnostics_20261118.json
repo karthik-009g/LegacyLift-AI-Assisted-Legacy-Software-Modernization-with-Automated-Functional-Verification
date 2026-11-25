@@ -1,0 +1,61 @@
+{
+  "scope": "two minimal connectivity probes; not migration or controlled study",
+  "reports": [
+    {
+      "id": "df9758329fa24836aa25aac3568eae96",
+      "provider": "groq",
+      "model": "openai/gpt-oss-120b",
+      "purpose": "connectivity; not migration quality",
+      "repository_data_sent": false,
+      "candidate_executed": false,
+      "status": "structured_response_received",
+      "provenance": {
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "attempts": [
+          {
+            "provider": "groq",
+            "status": "generated"
+          }
+        ],
+        "usage": {
+          "queue_time": 0.323543777,
+          "prompt_tokens": 222,
+          "prompt_time": 0.05439079,
+          "completion_tokens": 70,
+          "completion_time": 0.148730735,
+          "total_tokens": 292,
+          "total_time": 0.203121525,
+          "completion_tokens_details": {
+            "reasoning_tokens": 14
+          }
+        },
+        "latency_seconds": 1.578,
+        "prompt_sha256": "baff4a4adc07807df2f05c96ca5377df293a15825f0fde5f7827f22c4cd43011",
+        "temperature": 0
+      },
+      "returned_source_sha256": "5c737c3e4556725d91f4ac1361ff6694e163d37ebf94b2dab054510a856c1262",
+      "elapsed_seconds": 1.609,
+      "http_requests_reserved": 1
+    },
+    {
+      "id": "0f6ea53b5b47426198ca7a6b2bee6a4a",
+      "provider": "gemini",
+      "model": "gemini-3.8-flash",
+      "purpose": "connectivity; not migration quality",
+      "repository_data_sent": false,
+      "candidate_executed": false,
+      "status": "failed",
+      "category": "provider_failed",
+      "attempts": [
+        {
+          "provider": "gemini",
+          "category": "provider_unavailable",
+          "http_status": 503
+        }
+      ],
+      "elapsed_seconds": 5.437,
+      "http_requests_reserved": 1
+    }
+  ]
+}

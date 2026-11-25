@@ -720,8 +720,8 @@
       "external_provider_calls": 0,
       "held_out_runtime_workflows_in_context": [],
       "omitted_evidence_count": 0,
-      "prompt_char_count": 12091,
-      "prompt_sha256": "33d77579044ff17c9ee528f30d7f325493857cba76112e9de45786dfdfb7e698",
+      "prompt_char_count": 11518,
+      "prompt_sha256": "dc15c8b3100815dc6fa05aee413ab5cb99791f43d9f8f6b49068ee7a5badd748",
       "runtime_workflows": [],
       "selected_evidence_counts": {
         "facts": 23,
@@ -739,8 +739,8 @@
       "external_provider_calls": 0,
       "held_out_runtime_workflows_in_context": [],
       "omitted_evidence_count": 0,
-      "prompt_char_count": 12361,
-      "prompt_sha256": "4bda3542c23a0e0bfe5dc7b098a0ddbd09b47b3e091b76a15e9a3eaeeff16d41",
+      "prompt_char_count": 9856,
+      "prompt_sha256": "47562c99c5e4b0bfcaa0d18aa985702f2b0540a37230728be3132992350a63c5",
       "runtime_workflows": [
         "create_ticket",
         "retrieve_owned_ticket",
@@ -762,8 +762,8 @@
       "external_provider_calls": 0,
       "held_out_runtime_workflows_in_context": [],
       "omitted_evidence_count": 0,
-      "prompt_char_count": 22943,
-      "prompt_sha256": "9d8a717b1d3882fde77d977ce8c9bb96a6dd19a8a420a0e40e313c5c2c5e967c",
+      "prompt_char_count": 19028,
+      "prompt_sha256": "b923dd697a61008571e975ceb5db4d69c6e802b60d6c66624a8115a1841343a1",
       "runtime_workflows": [
         "create_ticket",
         "retrieve_owned_ticket",
@@ -835,16 +835,188 @@
   },
   "strategy_comparison": {
     "comparative_claims_supported": false,
-    "conditions": {
-      "hybrid": "context_prepared_only",
-      "runtime_only": "context_prepared_only",
-      "source_only": "context_prepared_only"
+    "compatibility_repaired": {
+      "conditions": {
+        "hybrid": {
+          "candidate_sha256": "94674b3eccbd1a88e5e90ea174c0350e1a449d65f8add78050be18378a6ccf06",
+          "metrics": {
+            "database_state_agreement": {
+              "agreement_rate": 0.8888888888888888,
+              "compared_field_count": 18,
+              "matched_field_count": 16
+            },
+            "response_contract_agreement": {
+              "agreement_rate": 0.5833333333333334,
+              "compared_field_count": 24,
+              "matched_field_count": 14
+            },
+            "session_transition_agreement": {
+              "agreement_rate": 0.8333333333333334,
+              "compared_field_count": 12,
+              "matched_field_count": 10
+            }
+          },
+          "scenario_match_rate": 0.0,
+          "status": "evaluated",
+          "step_match_rate": 0.0
+        },
+        "runtime_only": {
+          "candidate_sha256": "58f7f73ebb4bfc6a777995a4d5e7b089b1cd767670041228bd7ebc289689d4dd",
+          "metrics": {
+            "database_state_agreement": {
+              "agreement_rate": 0.8888888888888888,
+              "compared_field_count": 18,
+              "matched_field_count": 16
+            },
+            "response_contract_agreement": {
+              "agreement_rate": 0.4166666666666667,
+              "compared_field_count": 24,
+              "matched_field_count": 10
+            },
+            "session_transition_agreement": {
+              "agreement_rate": 1.0,
+              "compared_field_count": 12,
+              "matched_field_count": 12
+            }
+          },
+          "scenario_match_rate": 0.0,
+          "status": "evaluated",
+          "step_match_rate": 0.0
+        },
+        "source_only": {
+          "candidate_sha256": "b475f53c0208da56ffcd884e4e14f2927b62d7ddcca76043ecfa0ac906c4b1af",
+          "metrics": {
+            "database_state_agreement": {
+              "agreement_rate": 0.8888888888888888,
+              "compared_field_count": 18,
+              "matched_field_count": 16
+            },
+            "response_contract_agreement": {
+              "agreement_rate": 0.5833333333333334,
+              "compared_field_count": 24,
+              "matched_field_count": 14
+            },
+            "session_transition_agreement": {
+              "agreement_rate": 0.8333333333333334,
+              "compared_field_count": 12,
+              "matched_field_count": 10
+            }
+          },
+          "scenario_match_rate": 0.0,
+          "status": "evaluated",
+          "step_match_rate": 0.0
+        }
+      },
+      "experiment_metrics": {
+        "hybrid": {
+          "candidate_execution_succeeded": true,
+          "functional_metrics_available": true,
+          "operational_scenario_pass_rate": 0.0,
+          "operational_step_pass_rate": 0.0,
+          "planned_scenario_count": 3,
+          "planned_step_count": 6
+        },
+        "runtime_only": {
+          "candidate_execution_succeeded": true,
+          "functional_metrics_available": true,
+          "operational_scenario_pass_rate": 0.0,
+          "operational_step_pass_rate": 0.0,
+          "planned_scenario_count": 3,
+          "planned_step_count": 6
+        },
+        "source_only": {
+          "candidate_execution_succeeded": true,
+          "functional_metrics_available": true,
+          "operational_scenario_pass_rate": 0.0,
+          "operational_step_pass_rate": 0.0,
+          "planned_scenario_count": 3,
+          "planned_step_count": 6
+        }
+      },
+      "functional_evaluation_complete": true,
+      "report_path": "artifacts/experiments/compatibility_comparison.json",
+      "report_sha256": "e126fbf2058f924e45a9430ae06b3c5e29e7639ec26f5ee94f590ac6803a5675",
+      "reviewer": "agent",
+      "run_status": "completed",
+      "runtime": "docker"
     },
-    "provider": "groq",
-    "provider_status": "groq_implemented_not_run",
-    "reason": "A Groq provider is implemented, but no model-generated reconstruction has yet been produced for any evidence condition.",
-    "status": "not_run",
-    "suggested_model": "openai/gpt-oss-20b"
+    "limitations": [
+      "Two raw drafts fail import; only runtime-only has raw functional agreement rates.",
+      "The repaired study includes agent changes and is not a raw model comparison.",
+      "One draft per condition and one synthetic split cannot establish superiority.",
+      "Human correction effort and independent unsupported behavior counts are unmeasured."
+    ],
+    "raw_model_output": {
+      "conditions": {
+        "hybrid": {
+          "candidate_sha256": "d70ddc88251cd76bf64bc9d26bf7629d598ac875fa47a8cba7b4387cea8ba7c2",
+          "error": "candidate evaluation failed: ModuleNotFoundError: No module named 'fastapi.middleware.sessions'",
+          "status": "evaluation_failed"
+        },
+        "runtime_only": {
+          "candidate_sha256": "37d8c95b9485c2ff7974f95017faaab0e912f15d38a13d11dd394c19d44deed6",
+          "metrics": {
+            "database_state_agreement": {
+              "agreement_rate": 1.0,
+              "compared_field_count": 18,
+              "matched_field_count": 18
+            },
+            "response_contract_agreement": {
+              "agreement_rate": 0.125,
+              "compared_field_count": 24,
+              "matched_field_count": 3
+            },
+            "session_transition_agreement": {
+              "agreement_rate": 0.0,
+              "compared_field_count": 12,
+              "matched_field_count": 0
+            }
+          },
+          "scenario_match_rate": 0.0,
+          "status": "evaluated",
+          "step_match_rate": 0.0
+        },
+        "source_only": {
+          "candidate_sha256": "e2de6df72fa7a286e25b7a5fe3a4499c1084a9264ae248b3188a0c8d557a53b8",
+          "error": "candidate evaluation failed: ModuleNotFoundError: No module named 'fastapi.middleware.sessions'",
+          "status": "evaluation_failed"
+        }
+      },
+      "experiment_metrics": {
+        "hybrid": {
+          "candidate_execution_succeeded": false,
+          "functional_metrics_available": false,
+          "operational_scenario_pass_rate": 0.0,
+          "operational_step_pass_rate": 0.0,
+          "planned_scenario_count": 3,
+          "planned_step_count": 6
+        },
+        "runtime_only": {
+          "candidate_execution_succeeded": true,
+          "functional_metrics_available": true,
+          "operational_scenario_pass_rate": 0.0,
+          "operational_step_pass_rate": 0.0,
+          "planned_scenario_count": 3,
+          "planned_step_count": 6
+        },
+        "source_only": {
+          "candidate_execution_succeeded": false,
+          "functional_metrics_available": false,
+          "operational_scenario_pass_rate": 0.0,
+          "operational_step_pass_rate": 0.0,
+          "planned_scenario_count": 3,
+          "planned_step_count": 6
+        }
+      },
+      "functional_evaluation_complete": false,
+      "report_path": "artifacts/experiments/raw_comparison.json",
+      "report_sha256": "a3157b97a997d15b2f7f1b4cb30b998b1980681fff840ddc3a64754b02d60051",
+      "reviewer": "agent",
+      "run_status": "completed_with_candidate_failures",
+      "runtime": "docker"
+    },
+    "reason": "Raw outcomes and a separate agent repair experiment are recorded.",
+    "status": "recorded"
   },
   "study": "initial_ticket_workflow_evidence_conditions"
 }

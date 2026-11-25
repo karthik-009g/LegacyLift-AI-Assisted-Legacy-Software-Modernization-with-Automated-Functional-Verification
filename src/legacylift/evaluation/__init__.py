@@ -3,6 +3,7 @@
 from .plan import GUIDANCE_SCENARIO_IDS, HELD_OUT_SCENARIO_IDS, split_scenarios
 from .reviewed import run_reviewed_proposals
 from .runner import run_evaluation, write_evaluation_artifacts
+from .static_review import inspect_proposals
 
 __all__ = [
     "GUIDANCE_SCENARIO_IDS",
@@ -10,5 +11,6 @@ __all__ = [
     "run_evaluation",
     "split_scenarios",
     "run_reviewed_proposals",
+    "inspect_proposals",
     "write_evaluation_artifacts",
 ]

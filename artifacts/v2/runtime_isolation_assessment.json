@@ -1,0 +1,52 @@
+{
+  "assessment_version": "1.0",
+  "status": "passed",
+  "scope": "candidate_container_controls",
+  "certified_secure": false,
+  "model_requests": 0,
+  "held_out_observations_read": false,
+  "checks": {
+    "network_namespace_none": true,
+    "no_published_ports": true,
+    "no_host_or_volume_mounts": true,
+    "read_only_root": true,
+    "non_root_user": true,
+    "not_privileged": true,
+    "capabilities_dropped": true,
+    "no_new_privileges": true,
+    "seccomp_filter_active": true,
+    "resource_limits_configured": true,
+    "resource_limits_observed": true,
+    "credential_environment_absent": true,
+    "sensitive_paths_absent": true,
+    "candidate_directory_write_denied": true,
+    "outbound_connection_unroutable": true,
+    "disposable_state_writable": true
+  },
+  "probe_observations": {
+    "uid": 999,
+    "effective_capabilities": "0000000000000000",
+    "no_new_privileges": "1",
+    "seccomp": "2",
+    "credential_environment_names": [],
+    "visible_sensitive_paths": [],
+    "candidate_directory_write_errno": 30,
+    "state_write_succeeded": true,
+    "outbound_connect_errno": 101,
+    "cgroup": {
+      "memory.max": "805306368",
+      "pids.max": "96",
+      "cpu.max": "100000 100000"
+    }
+  },
+  "image_id": "sha256:afa82d7564adef973931be62623bf61cfa28d46c7f6c0c5310cc4d1ee30402ef",
+  "probe_sha256": "4cb6cb0ba279385a37cd6b5184c70e434c4a8c41a56903333c1da688925c282d",
+  "limitations": [
+    "Trusted diagnostic app and a new synthetic database; not a generated migration.",
+    "Checks controls and simple negative probes, not a container escape penetration test.",
+    "Docker daemon, host kernel, controller and pinned images remain trusted.",
+    "Dependency vulnerabilities and application authorization/SQL logic are separate.",
+    "Finite resource limits were inspected; destructive exhaustion was not attempted.",
+    "Candidate and driver share writable synthetic state; this is not process separation."
+  ]
+}

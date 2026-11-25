@@ -1,0 +1,50 @@
+{
+  "reviewed_on": "2026-11-25",
+  "timezone": "Asia/Calcutta",
+  "status": "reviewed_with_open_vendor_findings",
+  "certified_secure": false,
+  "primary_sources": [
+    "https://security-tracker.debian.org/tracker/source-package/openssl",
+    "https://openssl-library.org/news/vulnerabilities/"
+  ],
+  "target_image": "legacylift-target-base:afae956d324f60e0bfa6",
+  "target_image_id": "sha256:e98ac3b6930f430750670a2d95d4eb17a98f43b614abd6050fc3605835b746b7",
+  "installed_openssl_runtime": "3.5.7",
+  "installed_openssl_package": "3.5.7-1~deb13u3",
+  "debian_trixie_version_observed": "3.5.9-1~deb13u1",
+  "debian_trixie_security_version_observed": "3.5.7-1~deb13u3",
+  "original_six_finding_ids": [
+    "CVE-2026-107496",
+    "CVE-2026-124709",
+    "CVE-2026-88823",
+    "CVE-2026-95692",
+    "CVE-2026-107493",
+    "CVE-2026-95691"
+  ],
+  "vendor_findings_status": "open; published versions remain below the recorded upstream 3.5.10 fixes",
+  "reviewed_candidate": {
+    "run_id": "664dedffc38744058e786f61c65d0f25",
+    "source_sha256": "d81331cc44c4a2bd59deb29fc6338bbcb03442ec37220f8ef92da722d8a18abc",
+    "imports": [
+      "datetime",
+      "fastapi",
+      "json",
+      "os",
+      "pathlib",
+      "sqlalchemy"
+    ],
+    "direct_affected_api_identifiers_found": []
+  },
+  "profile_observations": [
+    "Runtime replay uses loopback HTTP inside a network-none container.",
+    "The reviewed application implements SQLite issue and journal operations.",
+    "Direct source inspection found none of the selected OpenSSL feature API identifiers."
+  ],
+  "limitations": [
+    "This is a direct-source applicability review of the approved update only.",
+    "It does not establish complete indirect dependency reachability or immunity to native-library defects.",
+    "Final read/create application sources require their own review.",
+    "The frozen image and study were preserved; this assessment installs no update."
+  ],
+  "scanner_findings_suppressed": false
+}

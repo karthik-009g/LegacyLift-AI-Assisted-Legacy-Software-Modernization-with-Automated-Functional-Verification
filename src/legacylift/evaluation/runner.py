@@ -26,6 +26,7 @@ from legacylift.static_analysis import analyze_paths
 from legacylift.verification.runner import compare_scenarios
 
 from .plan import HELD_OUT_SCENARIO_IDS, split_scenarios
+from .recorded import recorded_comparison
 
 CONDITIONS: tuple[EvidenceCondition, ...] = ("source_only", "runtime_only", "hybrid")
 EVALUATION_SCHEMA_VERSION = "1.0"
@@ -182,6 +183,9 @@ def run_evaluation(
         },
     }
     context_audit = _condition_audit(record, root)
+    recorded = recorded_comparison(
+        root, {item["condition"]: item["prompt_sha256"] for item in context_audit}
+    )
 
     report = {
         "evaluation_schema_version": EVALUATION_SCHEMA_VERSION,
@@ -214,15 +218,17 @@ def run_evaluation(
             "differential_report": held_out_report,
         },
         "condition_audit": context_audit,
-        "strategy_comparison": {
+        "strategy_comparison": recorded
+        or {
             "status": "not_run",
             "reason": (
-                "A Groq provider is implemented, but no model-generated reconstruction "
-                "has yet been produced for any evidence condition."
+                "Groq-first automatic fallback is available; this report "
+                "contains no functionally evaluated model-generated candidate."
             ),
-            "provider_status": "groq_implemented_not_run",
-            "provider": "groq",
-            "suggested_model": "openai/gpt-oss-20b",
+            "provider_status": "groq_first_comparison_not_run",
+            "provider": "groq-first-auto",
+            "suggested_model": "openai/gpt-oss-120b",
+            "fallback_model": None,
             "conditions": {condition: "context_prepared_only" for condition in CONDITIONS},
             "comparative_claims_supported": False,
         },

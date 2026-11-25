@@ -4,6 +4,10 @@ import copy
 import json
 from pathlib import Path
 
+import pytest
+from fastapi import FastAPI
+
+from legacylift.runtime_capture.scenarios import DEFAULT_SCENARIOS
 from legacylift.verification.runner import (
     compare_observations,
     compare_scenarios,
@@ -39,6 +43,48 @@ def test_mismatch_report_names_the_differing_field():
             "reconstructed": 503,
         }
     ]
+
+
+@pytest.mark.parametrize("changed_id", [True, 1.0])
+def test_comparison_preserves_response_json_types(changed_id):
+    report = compare_scenarios()
+    legacy = copy.deepcopy(report["scenarios"][0]["steps"][0]["legacy"])
+    legacy["response"]["json"] = {"tickets": [{"id": 1}]}
+    reconstructed = copy.deepcopy(legacy)
+    reconstructed["response"]["json"]["tickets"][0]["id"] = changed_id
+
+    mismatches = compare_observations(legacy, reconstructed)
+
+    assert [item["field"] for item in mismatches] == ["response.json"]
+    assert type(mismatches[0]["legacy"]["tickets"][0]["id"]) is int
+    assert type(mismatches[0]["reconstructed"]["tickets"][0]["id"]) is type(changed_id)
+
+
+def test_candidate_request_failure_and_missing_observer_are_recorded_without_aborting():
+    def faulty_app(_config):
+        app = FastAPI()
+
+        @app.post("/session")
+        def fail_session():
+            raise RuntimeError("synthetic candidate request failure")
+
+        return app
+
+    report = compare_scenarios((DEFAULT_SCENARIOS[0],), reconstructed_app_factory=faulty_app)
+
+    first, second = report["scenarios"][0]["steps"]
+    assert report["summary"]["step_count"] == 2
+    assert report["summary"]["passed"] is False
+    assert first["reconstructed"]["response"]["status"] == 500
+    assert first["reconstructed"]["session_before"] is None
+    assert first["reconstructed"]["session_after"] is None
+    assert "received 0" in first["reconstructed"]["session_observation_error"]
+    assert {entry["field"] for entry in first["mismatches"]} >= {
+        "response.status",
+        "session_before",
+        "session_after",
+    }
+    assert second["reconstructed"]["response"]["status"] == 404
 
 
 def test_differential_report_is_byte_for_byte_deterministic(tmp_path):

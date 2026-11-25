@@ -1,0 +1,12 @@
+{
+  "source_run_id": "ed2bbe8070bb451890ae59ab39b54cfe",
+  "model_requests": 0,
+  "held_out_observations_read": false,
+  "response_format": "source",
+  "prompt_bytes": 15478,
+  "prompt_sha256": "0471be45fa154bf9686627de25fbe1461352cd2931e1a72583130654b6fcbd77",
+  "complete_source_retained": true,
+  "database_contract_retained": true,
+  "prior_guidance_feedback_retained": true,
+  "old_run_rewritten": false
+}

@@ -1,0 +1,173 @@
+{
+  "study_id": "5788dbc46e2a46ef8848d44985a0e583",
+  "state": "incomplete",
+  "planned_trials": 27,
+  "recorded_trials": 3,
+  "next_run_id": "c733d3e9d4854ba6a58c0281b319bd8a",
+  "in_progress": null,
+  "requests_consumed": 8,
+  "maximum_http_requests": 81,
+  "guidance_passing_trials": 0,
+  "held_out_evaluated_trials": 0,
+  "workflow_passing_trials": 0,
+  "reported_tokens": 43777,
+  "requests_without_token_usage": 1,
+  "security_verdict": "not_assessed",
+  "outcome_counts": {
+    "compatibility_failed": 1,
+    "candidate_boot_failed": 1,
+    "provider_failed": 1
+  },
+  "condition_counts": {
+    "source_only": {
+      "planned": 9,
+      "recorded": 1,
+      "workflow_passed": 0
+    },
+    "runtime_only": {
+      "planned": 9,
+      "recorded": 1,
+      "workflow_passed": 0
+    },
+    "hybrid": {
+      "planned": 9,
+      "recorded": 1,
+      "workflow_passed": 0
+    }
+  },
+  "records": [
+    {
+      "artifacts": {
+        "app.py": "d09a2417530f5bb757bc137afda461548ecd738e85ec0a048a6be8966019ecb4",
+        "call-0.json": "0f05839e4d8cce8746448aff6afefeefae18e9e28d7caf30b61d7f7cf38c2ccc",
+        "call-1.json": "2228a39e686717257ac3d43c63ddac97f3e8b414e10e88892ec0d1010ef7f29f",
+        "call-2.json": "7e8d378b8b5335290fc00444a669a09044fd23c50c9ddfa52b4870984d4f8cb1",
+        "context.json": "3405e3238f4471d895e9486c677ae1fac8e2a77669e5bc2b802060dd08d6c320",
+        "draft-0.json": "7ea4ee11cca76d3098f879cb9076b6b6cfc7ab6a1dfaa9ce819c479b05380abd",
+        "draft-0.py": "32f4521ccd7bfcb197402a3edeb8e1470351042676d339dd10ebfec0b84e2d68",
+        "draft-1.json": "e6eef086f03bb4aa15e3bba7c7b1b90fc6bd9f67b93b827a5d924b072fa4427b",
+        "draft-1.py": "266df340a570f794349640f819c1d351f007d1e89d1692e27aa447f2f033f746",
+        "draft-2.json": "133aedeee30b553a41df4d71be28d4e862aaf9c14ea03997268f39584819cf56",
+        "draft-2.py": "d09a2417530f5bb757bc137afda461548ecd738e85ec0a048a6be8966019ecb4",
+        "guidance-0.json": "b8f730c8d286552bc8d4ba7c02e2c49624bb4e33e315ac0315f8184593034670",
+        "guidance-1.json": "992fced4c3ab5760fb7de0886d4f18b41279a197a003035d8763a0d6ab7455d7",
+        "guidance-2.json": "4f9ef73c2c2e8be585748fe36abe8f9db8e95b6a10a4a21f43bda0d7e600cd6d",
+        "progress.json": "86d59a9cc1d2335ee2315370ab4febcd43585c78d41a36e744351ef204e8a8d9",
+        "provider-0.attempts.jsonl": "eaf5fe8ba6c40c3fdf19a66b50e9a3631d04112d6a93a8e5ac30c0888a488441",
+        "provider-1.attempts.jsonl": "6cb842da8f9cacf5cb3acde5e53fa81964acb17ced0c20b4adc69368b7d71bee",
+        "provider-2.attempts.jsonl": "95b0ae8ac30b5ba2b0479cd10cb37e61afef2ff7ce628ca186e08ed4f79d5aec",
+        "result.json": "85ff8232de1e737e10bcdfc28e78691bf7c43a78ca1ef1eb1ea51dd83d9801ec"
+      },
+      "cell": {
+        "condition": "hybrid",
+        "context_sha256": "4c0018e6c54cee63cfe3b8a0f457a3767cc53e87d149efa69a3aa116db11e263",
+        "replicate": 2,
+        "run_id": "a11da6bc27db434d83e230b1db9b782f",
+        "workflow": "update"
+      },
+      "failure_category": null,
+      "guidance_passed": false,
+      "guidance_passed_count": 5,
+      "guidance_scenario_count": 6,
+      "held_out_evaluated": false,
+      "held_out_passed_count": null,
+      "held_out_scenario_count": null,
+      "held_out_status": null,
+      "record_sha256": "b46ea1692e0e7f52f6f015d708f3f17b2363da959b6c59bcc4dd739aa2830e19",
+      "reported_tokens": 22020,
+      "requests_consumed": 3,
+      "requests_without_token_usage": 0,
+      "security_verdict": "not_assessed",
+      "status": "compatibility_failed",
+      "workflow_passed": false
+    },
+    {
+      "artifacts": {
+        "app.py": "4d887f125b8962807ade2d93c33e158f88b0e1d8be16c35c2e49bfa72884a09b",
+        "call-0.json": "e8de095ce0786a48eb765e952ca5c9088dcb5fd1d9ec9fe42dbbdff0bb542703",
+        "call-1.json": "2e942b4d294483cccd1546434334b93f887437416e6182a5e556921cf91f548f",
+        "call-2.json": "a20adcca9742b6e7a4c7e495c2ddafecf4700c58f6a900a9c9b2e0b373bebdc5",
+        "context.json": "37dc1a33e13143bc0bcbf6d3076447a54d9398d0b3d912268bb9c68bfa4d7238",
+        "draft-0.json": "00ad591582106bd7e4232f0ffab4fe518c1eb5c1b4c6e4b717bc6aa7cb258dcd",
+        "draft-0.py": "56289a0f50cba6692828354e2bfe35bc8674c7329b3ca8e13827face66a1df58",
+        "draft-1.json": "e01950fa008680190800e8527aa77f93daa4f2fe7f9bdff879afbf647e04df4d",
+        "draft-1.py": "09e88a4f8352040b45495e400de2f1d4c797d1293b19762318d4da9b9a5307c4",
+        "draft-2.json": "6d45341d55a8ed11546f22e087f42ce7817f2cda877f5b5303bb09e8430e3e2b",
+        "draft-2.py": "4d887f125b8962807ade2d93c33e158f88b0e1d8be16c35c2e49bfa72884a09b",
+        "guidance-0.json": "217f15177245f6a058613cd612f4d4274e7edaf716659a5baaf7e50975196871",
+        "guidance-1.json": "217f15177245f6a058613cd612f4d4274e7edaf716659a5baaf7e50975196871",
+        "guidance-2.json": "217f15177245f6a058613cd612f4d4274e7edaf716659a5baaf7e50975196871",
+        "progress.json": "4a027cc5ca4187f911ed3bd96fef343564af250c38af093f70e344ea738b926f",
+        "provider-0.attempts.jsonl": "160e5f21fe13a14d0ac1d9a3081ad1a9c30dbbb31a23b460565c0531610cd5eb",
+        "provider-1.attempts.jsonl": "ca73187ab4b14adcf24a3cd7de1662a5dc4d1bf985a2be703f5dc5058e5c9a3f",
+        "provider-2.attempts.jsonl": "b27458030a5d904485f0b830e745f9c61088b86d2dc4f5131e1004d1272ab887",
+        "result.json": "09ae912bc6264c4d6865c95227979df422441f5412fd7c3c19ef2dd1a6b6193f"
+      },
+      "cell": {
+        "condition": "source_only",
+        "context_sha256": "fe24c5796f201a7261f51e9f69a1287d02f9141f3f4fb9d6456984b70fc72051",
+        "replicate": 3,
+        "run_id": "8942ec8a5d7148a8ac0318bf78f58810",
+        "workflow": "create"
+      },
+      "failure_category": null,
+      "guidance_passed": false,
+      "guidance_passed_count": 0,
+      "guidance_scenario_count": 0,
+      "held_out_evaluated": false,
+      "held_out_passed_count": null,
+      "held_out_scenario_count": null,
+      "held_out_status": null,
+      "record_sha256": "3b7337d9f90a5027e40457fa85f3b421869eaa63b35b9d227a80719755caff58",
+      "reported_tokens": 17515,
+      "requests_consumed": 3,
+      "requests_without_token_usage": 0,
+      "security_verdict": "not_assessed",
+      "status": "candidate_boot_failed",
+      "workflow_passed": false
+    },
+    {
+      "artifacts": {
+        "call-0.json": "82887dc7b2c5290a0714faa1458f2db5410605fd8e5893ff7b58ce243b9fec6a",
+        "call-1.json": "985c132ba12ff8a82245f2e2d3e3ac8c019e346072e16af64da7931a80cebb2b",
+        "context.json": "6d3d60214c185c5b5a12bed68766219121c97563e6a6baf5b291db1edc070a6c",
+        "draft-0.json": "90f278af967f520e80629f22697afd6f895cbde9e66ecdbe1fde35e84ad1783a",
+        "draft-0.py": "49dd0aa9e32828655ab551e8a6df8ee19934b6f1dd2bd7dc974ba7e3c4ea24e1",
+        "guidance-0.json": "2ed0727b97b292ccfd5af11943ccee4613176d5f1cfc86a7ba7402ef8499acf0",
+        "progress.json": "7c4834c32a8ef6a4101e68f6e13905a3dd60d3cb744a5fc53e6cd1f5af4be3f9",
+        "provider-0.attempts.jsonl": "6f46395d725eac0d3699b2a0caa0cd5c3366fa1802e3fa2788a9403c69511026",
+        "provider-1.attempts.jsonl": "5b63ef70bfb57e4a353b447fad6f97e6f6cd72ab8b55a55283f864356d6a8b18",
+        "provider-1.failure.json": "91e3bc6db42c3f01bab348cbd00a4ce96b4e5136663b735f86bb3d7bd14e0dd5",
+        "result.json": "edf3d5adb918643a22b44167ae79a2f94b485f3a9ebfe86067aabcfa552cd74b"
+      },
+      "cell": {
+        "condition": "runtime_only",
+        "context_sha256": "2d76d1b3a80ded11029a9d539f23f7c523d0e5e4c9ead2d80ab6ca1b34e39f6a",
+        "replicate": 2,
+        "run_id": "d4be989bb01d42a09c835f9a053bc390",
+        "workflow": "read"
+      },
+      "failure_category": "provider_failed",
+      "guidance_passed": false,
+      "guidance_passed_count": 0,
+      "guidance_scenario_count": 0,
+      "held_out_evaluated": false,
+      "held_out_passed_count": null,
+      "held_out_scenario_count": null,
+      "held_out_status": null,
+      "record_sha256": "9bb2d1ca00cfbdc8116279948cd3c39c0a346a232ade68f59322a121c2eac64d",
+      "reported_tokens": 4242,
+      "requests_consumed": 2,
+      "requests_without_token_usage": 1,
+      "security_verdict": "not_assessed",
+      "status": "provider_failed",
+      "workflow_passed": false
+    }
+  ],
+  "limitations": [
+    "Incomplete studies do not establish evidence-condition superiority.",
+    "Reported token usage excludes unknown usage from failed or interrupted requests.",
+    "Local checksums are consistency checks under trusted-controller ownership.",
+    "Compatibility is separate from security assessment and human source approval."
+  ]
+}

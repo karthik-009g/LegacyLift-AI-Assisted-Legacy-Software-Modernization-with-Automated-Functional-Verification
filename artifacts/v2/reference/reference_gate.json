@@ -1,0 +1,50 @@
+{
+  "checks": {
+    "independent_replays_match": true,
+    "issue_creation_succeeds": true,
+    "journal_changes_observed": true,
+    "network_disabled": true,
+    "no_published_ports": true,
+    "outsider_denied": true,
+    "reference_read_succeeds": true,
+    "root_filesystem_read_only": true,
+    "status_update_succeeds": true,
+    "unprivileged_user": true
+  },
+  "gate": "legacy_reference_reproducibility",
+  "limits": [
+    "Observations cover declared synthetic issue workflows and selected database tables.",
+    "A deterministic test clock is injected; monotonic timeout clocks remain real.",
+    "Production data and security certification are outside this reference gate."
+  ],
+  "migration_performed": false,
+  "runtime": {
+    "capabilities_dropped": [
+      "ALL"
+    ],
+    "cpu_limit": 2000000000,
+    "fixture_clock": "2026-01-15T12:00:00Z; advanced per request by the trusted driver",
+    "host_api_keys_passed": false,
+    "image": "redmine:4.2.10@sha256:d26185b803ec88617d101a041c3614c136385011fd0d7b2c6acb8cacb58e6e1e",
+    "image_id": "sha256:d26185b803ec88617d101a041c3614c136385011fd0d7b2c6acb8cacb58e6e1e",
+    "memory_limit_bytes": 1073741824,
+    "network": "none",
+    "pid_limit": 128,
+    "profile": "redmine-4.2.10",
+    "published_ports": {},
+    "read_only_root": true,
+    "source_commit": "9118c6dcb4ffe203f7029eb89523cd8a56b85cde",
+    "user": "999:999",
+    "versions": {
+      "rails": "5.2.8.1",
+      "ruby": "2.7.8"
+    }
+  },
+  "schema_version": "1.0",
+  "status": "passed",
+  "step_count_per_replay": 9,
+  "trace_sha256": [
+    "f1f8913e20c3eade7779e9510e71cc8f67de680bea2442cc77e3286abdee7d04",
+    "f1f8913e20c3eade7779e9510e71cc8f67de680bea2442cc77e3286abdee7d04"
+  ]
+}
